@@ -1,0 +1,14 @@
+{
+    "name": "Sapphire",
+    "alias": "sapphire",
+    "description": "",
+    "keywords": [],
+    "order":  1,
+    "priority": 0,
+    "providers": [
+        "Modules\\Sapphire\\Providers\\ModuleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

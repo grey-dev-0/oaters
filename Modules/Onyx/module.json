@@ -1,0 +1,14 @@
+{
+    "name": "Onyx",
+    "alias": "onyx",
+    "description": "",
+    "keywords": [],
+    "order":  5,
+    "priority": 4,
+    "providers": [
+
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

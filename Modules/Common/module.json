@@ -1,0 +1,15 @@
+{
+    "name": "Common",
+    "alias": "common",
+    "description": "",
+    "keywords": [],
+    "order":  2,
+    "priority": 1,
+    "providers": [
+        "Modules\\Common\\Providers\\ModuleServiceProvider",
+        "Modules\\Common\\Providers\\ChartServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

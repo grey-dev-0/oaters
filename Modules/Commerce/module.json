@@ -1,0 +1,14 @@
+{
+    "name": "Commerce",
+    "alias": "commerce",
+    "description": "",
+    "keywords": [],
+    "order":  4,
+    "priority": 3,
+    "providers": [
+
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

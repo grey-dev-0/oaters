@@ -1,0 +1,14 @@
+{
+    "name": "Amethyst",
+    "alias": "amethyst",
+    "description": "",
+    "keywords": [],
+    "order":  6,
+    "priority": 5,
+    "providers": [
+
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

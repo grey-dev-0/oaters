@@ -1,0 +1,14 @@
+{
+    "name": "Ruby",
+    "alias": "ruby",
+    "description": "",
+    "keywords": [],
+    "order":  9,
+    "priority": 8,
+    "providers": [
+
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Topaz",
+    "alias": "topaz",
+    "description": "",
+    "keywords": [],
+    "order":  7,
+    "priority": 6,
+    "providers": [
+
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

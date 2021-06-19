@@ -1,0 +1,70 @@
+#! /bin/sh
+
+json=$(cat pages.json)
+moduleKeys=($(echo "$json" | jq -r 'keys | .[]'))
+
+# Generates the bundle js file content of the given components.
+prepare () {
+    local components=$1; local imports=''; local exports=''
+    local keys=($(echo "$components" | jq -r 'keys | .[]'))
+    for i in ${keys[@]}; do
+        local title=$(echo $components | jq -r ".[$i].title")
+        local filename=$(echo $components | jq -r ".[$i].filename")
+        imports=$imports"import $title from '/resources/components/"$(echo $filename | sed -r 's/\.(vue)|(js)$//')"';
+"
+        if [[ $filename =~ \.(vue)|(js)$ ]]; then
+            exports=$exports"{$title}, "
+        else
+            exports=$exports"$title, "
+        fi
+    done
+    echo "$imports
+export default Object.assign({}, "$(echo $exports | sed -r 's/, *$//')")"
+}
+
+# Bundles the provided module's page with the assigned components.
+bundle () {
+    local module=$1; local page=$2; local components=$3
+    echo "Building $module/$page bundle.."
+    directories=(resources/bundles/$module resources/js/bundles/$module)
+    for directory in ${directories[@]}; do
+        if [ ! -d $directory ]; then
+            mkdir -p $directory
+        fi
+    done
+    prepare "$components" > resources/bundles/$module/$page.js
+    vue build --target lib --name $page resources/bundles/$module/$page.js
+    mv resources/lib/$page.umd.min.js resources/js/bundles/$module/$page.js
+}
+
+# Bundles the components of a particular module or page
+bundle_module () {
+    local module=$1; local components; local pageKeys
+    if [ $# -eq 1 ]; then
+        pageKeys=$(echo "$module" | jq -r 'keys | .[]')
+    else
+        pageKeys=("$2")
+    fi
+    for pageKey in ${pageKeys[@]}; do
+        components=$(echo "$module" | jq ".$pageKey")
+        bundle $moduleKey $pageKey "$components"
+    done
+}
+
+# It all starts here!
+if [ $# -eq 0 ]; then
+    for moduleKey in ${moduleKeys[@]}; do
+        module=$(echo "$json" | jq ".$moduleKey")
+        bundle_module "$module"
+    done
+else
+    moduleKey=$1
+    module=$(echo "$json" | jq ".$moduleKey")
+    if [ $# -eq 1 ]; then
+        bundle_module "$module"
+    elif [ $# -eq 2 ]; then
+        bundle_module "$module" $2
+    fi
+fi
+
+rm -rf resources/lib resources/bundles

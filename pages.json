@@ -1,0 +1,14 @@
+{
+    "sapphire": {
+        "admin_dashboard": [
+            {
+                "filename": "navbar",
+                "title": "Navbar"
+            },
+            {
+                "filename": "counter.vue",
+                "title": "Counter"
+            }
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Emerald",
+    "alias": "emerald",
+    "description": "",
+    "keywords": [],
+    "order":  8,
+    "priority": 7,
+    "providers": [
+
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

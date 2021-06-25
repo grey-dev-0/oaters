@@ -67,4 +67,4 @@ else
     fi
 fi
 
-rm -rf resources/lib resources/bundles
+rm -rf resources/lib

@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'common' => [
+        'modules' => 'Subscribed Modules',
+        'extend' => 'Extend Subscription'
+    ],
     'login'=> [
         'username' => 'Username',
         'password' => 'Password',

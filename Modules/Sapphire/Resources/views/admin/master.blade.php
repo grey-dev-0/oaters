@@ -9,7 +9,7 @@
     @include('common::resources')
     @stack('styles')
 </head>
-<body>
+<body class="bg-grey-8">
 <div id="app">
     <navbar brand="OATERS" home="{{url('sa')}}" scheme="dark" bg-color="blue-2">
         <nav-item url="{{url('sa/tenants')}}">{{trans('sapphire::admin.tenants.title')}}</nav-item>

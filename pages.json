@@ -9,6 +9,24 @@
                 "filename": "counter.vue",
                 "title": "Counter"
             }
+        ],
+        "tenants": [
+            {
+                "filename": "navbar",
+                "title": "Navbar"
+            },
+            {
+                "filename": "breadcrumb",
+                "title": "Breadcrumb"
+            },
+            {
+                "filename": "card.vue",
+                "title": "Card"
+            },
+            {
+                "filename": "datatable",
+                "title": "Datatable"
+            }
         ]
     }
 }

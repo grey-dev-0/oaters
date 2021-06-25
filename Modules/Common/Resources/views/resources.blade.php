@@ -6,3 +6,6 @@
 <script type="text/javascript" src="{{asset('resources/js/bootbox.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('resources/js/vue.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('resources/js/vue-loader.min.js')}}"></script>
+<script type="text/javascript">
+    $.ajaxSettings.headers = {'X-CSRF-TOKEN': '{{csrf_token()}}'};
+</script>

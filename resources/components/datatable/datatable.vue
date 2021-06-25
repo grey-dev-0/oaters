@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-hover table-responsive" :id="datatableId">
+  <table class="table table-hover table-responsive d-table" :id="datatableId">
     <thead>
     <tr>
       <slot></slot>
@@ -76,3 +76,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.dataTables_wrapper{
+    margin: 16px 0 16px;
+}
+</style>

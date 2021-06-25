@@ -1,5 +1,5 @@
 <template>
-    <div class="card counter">
+    <div :class="cardClass">
         <h4 :class="headerClass">{{title}}</h4>
         <div class="card-body text-center">{{value}}</div>
         <div class="card-footer text-center" v-if="extraTitle !== undefined">
@@ -22,6 +22,7 @@ export default {
         },
         extraTitle: String,
         extraValue: String,
+        'class': String,
         color: String,
         whiteText: {
             type: Boolean,
@@ -29,6 +30,12 @@ export default {
         }
     },
     computed: {
+        cardClass: function(){
+            var theClass = 'card counter';
+            if(this.class !== undefined)
+                theClass += ' ' + this.class;
+            return theClass;
+        },
         headerClass: function(){
             var theClass = 'card-header mb-0 text-center';
             if(this.color !== undefined){

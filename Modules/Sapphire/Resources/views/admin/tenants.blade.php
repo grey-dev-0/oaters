@@ -19,7 +19,13 @@
     <div class="row">
         <div class="col">
             <card title="{{trans('sapphire::admin.tenants.title')}}" color="green-2">
-                <vue-datatable datatable-id="tenants-table">
+                <vue-datafilter>
+                    <dt-filter ref="x" name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
+                    <dt-filter ref="y" name="email" type="text" label="{{trans('common::words.email')}}"></dt-filter>
+                    <dt-filter name="subdomain" type="text" label="{{trans('common::words.subdomain')}}"></dt-filter>
+                </vue-datafilter>
+
+                <vue-datatable datatable-id="tenants-table" ref="tenantsTable">
                     <dt-column name="name" data="name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="email" data="email">{{trans('common::words.email')}}</dt-column>
                     <dt-column name="subdomain" data="subdomain">{{trans('common::words.subdomain')}}</dt-column>
@@ -36,8 +42,10 @@
     <script>
         import {BcItem, Breadcrumb, Card, VueDatatable} from "resources/bundles/sapphire/tenants";
         import DtColumn from "resources/components/datatable/column";
+        import VueDatafilter from "../../../../../resources/components/datatable/datafilter";
+        import DtFilter from "../../../../../resources/components/datatable/filter-input";
         export default {
-            components: {BcItem, Breadcrumb, Card, VueDatatable, DtColumn}
+            components: {DtFilter, VueDatafilter, BcItem, Breadcrumb, Card, VueDatatable, DtColumn}
         }
     </script>
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.min.js')}}"></script>

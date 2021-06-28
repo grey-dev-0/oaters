@@ -1,6 +1,6 @@
 <template>
     <div class="list-group list-group-flush">
-        <div :class="'list-group-item bg-' + color">
+        <div :class="'list-group-item pb-0 bg-' + color">
             <div class="row">
                 <slot></slot>
             </div>
@@ -26,6 +26,11 @@ export default {
         color: {
             type: String,
             default: 'grey-10'
+        }
+    },
+    computed: {
+        count: function(){
+            return Object.keys(this.filters).length;
         }
     },
     mounted: function(){

@@ -11,15 +11,15 @@ class DataTablesHelper{
      */
     public function filterByDate(&$query, $attributes){
         $columns = $this->getColumns();
-        foreach($attributes as $attribute)
-            if(!empty($attribute = request("columns.{$columns[$attribute]}.search.value"))){
-                $attribute = explode(' to  ', $attribute);
-                if(count($attribute) == 1)
-                    $query->whereDate('presenter_views.created_at', (new Carbon($attribute[0]))->toDateString());
+        foreach($attributes as $key)
+            if(!empty($value = request("columns.{$columns[$key]}.search.value"))){
+                $value = explode(' to ', $value);
+                if(count($value) == 1)
+                    $query->whereDate($key, (new Carbon($value[0]))->toDateString());
                 else{
-                    $query->whereBetween('presenter_views.created_at', [
-                        (new Carbon($attribute[0]))->toDateString(),
-                        (new Carbon($attribute[1]))->addDay()->toDateString()
+                    $query->whereBetween($key, [
+                        (new Carbon($value[0]))->toDateString(),
+                        (new Carbon($value[1]))->addDay()->toDateString()
                     ]);
                 }
             }

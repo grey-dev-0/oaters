@@ -6,6 +6,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{asset('resources/css/jquery.dataTables.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('resources/css/daterangepicker.min.css')}}" type="text/css">
 @endpush
 
 @section('content')
@@ -19,10 +20,12 @@
     <div class="row">
         <div class="col">
             <card title="{{trans('sapphire::admin.tenants.title')}}" color="green-2">
-                <vue-datafilter>
-                    <dt-filter ref="x" name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
-                    <dt-filter ref="y" name="email" type="text" label="{{trans('common::words.email')}}"></dt-filter>
+                <vue-datafilter cols="5">
+                    <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
+                    <dt-filter name="email" type="text" label="{{trans('common::words.email')}}"></dt-filter>
                     <dt-filter name="subdomain" type="text" label="{{trans('common::words.subdomain')}}"></dt-filter>
+                    <dt-filter name="tenants.created_at" type="date" label="{{trans('common::words.joined_at')}}" :options="{opens: 'left'}"></dt-filter>
+                    <dt-filter name="expires_at" type="date" label="{{trans('common::words.expires_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>
 
                 <vue-datatable datatable-id="tenants-table" ref="tenantsTable">
@@ -51,6 +54,8 @@
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.bs4.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/lodash.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/js/moment.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/js/daterangepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/bundles/sapphire/tenants.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/views/sapphire/tenants.min.js')}}"></script>
 @endpush

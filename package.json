@@ -39,6 +39,6 @@
             "plugin:vue/vue3-essential",
             "eslint:recommended"
         ],
-        "rules": {}
+        "rules": {"vue/no-multiple-template-root": "off" }
     }
 }

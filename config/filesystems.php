@@ -68,7 +68,8 @@ return [
     'links' => [
         public_path('storage') => storage_path('app'),
         public_path('resources/css') => base_path('resources/css'),
-        public_path('resources/js') => base_path('resources/js')
+        public_path('resources/js') => base_path('resources/js'),
+        public_path('resources/webfonts') => base_path('resources/webfonts'),
     ],
 
 ];

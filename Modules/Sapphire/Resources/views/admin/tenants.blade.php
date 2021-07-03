@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col">
             <card title="{{trans('sapphire::admin.tenants.title')}}" color="green-2">
-                <vue-datafilter cols="5">
+                <vue-datafilter :cols="5">
                     <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
                     <dt-filter name="email" type="text" label="{{trans('common::words.email')}}"></dt-filter>
                     <dt-filter name="subdomain" type="text" label="{{trans('common::words.subdomain')}}"></dt-filter>
@@ -34,7 +34,15 @@
                     <dt-column name="subdomain" data="subdomain">{{trans('common::words.subdomain')}}</dt-column>
                     <dt-column name="tenants.created_at" data="created_at" :searchable="false">{{trans('common::words.joined_at')}}</dt-column>
                     <dt-column name="expires_at" data="expires_at" :searchable="false">{{trans('common::words.expires_at')}}</dt-column>
-                    <dt-column :orderable="false" :searchable="false" :data="renderActions" last>{{trans('common::words.actions')}}</dt-column>
+                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" :data="null" last>
+                        {{trans('common::words.actions')}}
+                        <template #actions>
+                            <div class="btn btn-sm btn-outline-primary payments" title="{{trans('sapphire::admin.payments.title')}}"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="btn btn-sm btn-outline-info modules" title="{{trans('sapphire::admin.common.modules')}}"><i class="fas fa-layer-group"></i></div>
+                            <div class="btn btn-sm btn-outline-success extend" title="{{trans('sapphire::admin.common.extend')}}"><i class="fas fa-calendar-plus"></i></div>
+                            <div class="btn btn-sm btn-outline-warning revoke" title="{{trans('sapphire::admin.tenants.revoke')}}"><i class="fas fa-ban"></i></div>
+                        </template>
+                    </dt-column>
                 </vue-datatable>
             </card>
         </div>

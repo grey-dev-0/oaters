@@ -77,8 +77,18 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .dataTables_wrapper{
-    margin: 16px 0 16px;
+  margin: 16px 0 16px;
+  td{
+    padding: 8px 18px !important;
+    vertical-align: inherit !important;
+  }
+  .btn-sm{
+    min-width: 32px;
+  }
+  .nowrap{
+    white-space: nowrap;
+  }
 }
 </style>

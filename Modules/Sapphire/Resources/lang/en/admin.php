@@ -13,7 +13,8 @@ return [
         'logout' => 'Logout'
     ],
     'tenants' => [
-        'title' => 'Tenants'
+        'title' => 'Tenants',
+        'revoke' => 'Revoke Subscription'
     ],
     'subscriptions' => [
         'title' => 'Subscriptions'

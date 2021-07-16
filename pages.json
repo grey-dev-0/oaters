@@ -26,6 +26,10 @@
             {
                 "filename": "datatable",
                 "title": "Datatable"
+            },
+            {
+                "filename": "modal.vue",
+                "title": "Modal"
             }
         ]
     }

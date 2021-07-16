@@ -1,8 +1,9 @@
 (function(){
-    var view = Vue.createApp({
+    var app = Vue.createApp({
         data: function(){
             return {
-                emitter: null
+                emitter: null,
+                inspectedUser: null
             };
         },
         methods: {
@@ -13,9 +14,17 @@
         computed: {
             dataTable: function(){
                 return this.$refs.tenantsTable.dataTable;
+            },
+            paymentsModal: function(){
+                return this.$refs.paymentsModal;
             }
         }
     });
-    loadComponents(view, 'tenants');
-    view.mount('#app');
+    loadComponents(app, 'tenants');
+    var view = app.mount('#app');
+
+    $('body').on('click', '#tenants-table .payments', function (){
+        view.inspectedUser = view.dataTable.row($(this).closest('tr')).data()['name'];
+        view.paymentsModal.show();
+    });
 })();

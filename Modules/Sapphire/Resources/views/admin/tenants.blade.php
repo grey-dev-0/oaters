@@ -47,6 +47,8 @@
             </card>
         </div>
     </div>
+
+    <x-sapphire::admin.modals.payments/>
 @stop
 
 @push('scripts')

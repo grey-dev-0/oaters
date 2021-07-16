@@ -20,6 +20,7 @@ return [
         'title' => 'Subscriptions'
     ],
     'payments' => [
-        'title' => 'Payments'
+        'title' => 'Payments',
+        'tenant' => 'Tenant'
     ],
 ];

@@ -70,7 +70,7 @@ export default {
     this.$parent.columns.push(column);
     // Removes the action column elements template form DOM after it's rendered.
     this.renderActionsTemplate = false;
-    if(this.last)
+    if(this.last && !this.$parent.deferred)
       this.$parent.init();
   }
 }

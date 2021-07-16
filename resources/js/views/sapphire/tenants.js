@@ -3,13 +3,11 @@
         data: function(){
             return {
                 emitter: null,
-                inspectedUser: null
+                openUser: {
+                    id: 0,
+                    name: null
+                }
             };
-        },
-        methods: {
-            renderActions: function(){
-                return '<small class="text-muted">to be specified</small>';
-            }
         },
         computed: {
             dataTable: function(){
@@ -17,6 +15,9 @@
             },
             paymentsModal: function(){
                 return this.$refs.paymentsModal;
+            },
+            paymentsTable: function(){
+                return this.$refs.paymentsTable;
             }
         }
     });
@@ -24,7 +25,16 @@
     var view = app.mount('#app');
 
     $('body').on('click', '#tenants-table .payments', function (){
-        view.inspectedUser = view.dataTable.row($(this).closest('tr')).data()['name'];
-        view.paymentsModal.show();
+        var button = $(this);
+        view.paymentsModal.show(function(){
+            var tenant = view.dataTable.row(button.closest('tr')).data();
+            view.openUser = {
+                id: tenant['id'],
+                name: tenant['name']
+            };
+            view.$nextTick(function(){
+                view.paymentsTable.init();
+            });
+        });
     });
 })();

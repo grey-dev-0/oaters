@@ -21,6 +21,10 @@ export default {
     datatableId: {
       type: String
     },
+    deferred: {
+      type: Boolean,
+      default: false
+    },
     url: {
       type: String,
       default: ''

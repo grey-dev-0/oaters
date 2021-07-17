@@ -52,14 +52,12 @@
 @stop
 
 @push('scripts')
-    <script>
-        import {BcItem, Breadcrumb, Card, VueDatatable} from "resources/bundles/sapphire/tenants";
-        import DtColumn from "resources/components/datatable/column";
-        import VueDatafilter from "../../../../../resources/components/datatable/datafilter";
-        import DtFilter from "../../../../../resources/components/datatable/filter-input";
-        export default {
-            components: {DtFilter, VueDatafilter, BcItem, Breadcrumb, Card, VueDatatable, DtColumn}
-        }
+    <script type="text/javascript">
+        locale.common = @json([
+            'yes' => trans('common::words.yes'),
+            'no' => trans('common::words.no'),
+            'unpaid' => trans('common::words.unpaid')
+        ]);
     </script>
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.bs4.min.js')}}"></script>

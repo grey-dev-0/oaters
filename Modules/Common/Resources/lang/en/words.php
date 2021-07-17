@@ -8,9 +8,13 @@ return [
     'expires_at' => 'Expires At',
     'joined_at' => 'Joined At',
     'name' => 'Name',
+    'na' => 'N/A',
+    'no' => 'No',
     'paid_at' => 'Paid At',
     'payments' => 'Payments',
     'revoke' => 'Revoke',
     'subdomain' => 'Subdomain',
-    'updated_at' => 'Updated At'
+    'unpaid' => 'Unpaid',
+    'updated_at' => 'Updated At',
+    'yes' => 'Yes'
 ];

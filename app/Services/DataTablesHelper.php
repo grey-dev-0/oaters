@@ -30,7 +30,29 @@ class DataTablesHelper{
      *
      * @return array
      */
-    private function getColumns(){
+    public function getColumns(){
         return array_flip(array_column(request('columns'), 'name'));
+    }
+
+    /**
+     * Formats designated timestamp columns returned to datatables instance.
+     *
+     * @param mixed $datatable The datatable response.
+     * @param string[] $columns The timestamp columns to format.
+     * @param string $format The required timestamp format
+     * @param ?string $timezone The timezone to set the columns to.
+     */
+    public function formatTimestampColumns(&$datatable, $columns, $format = 'd/m/Y h:i:s A', $timezone = null){
+        foreach($columns as $column)
+            $datatable->editColumn($column, function($tenant) use($column, $format, $timezone){
+                if(empty($tenant->$column))
+                    return null;
+                else{
+                    $datetime = new Carbon($tenant->$column);
+                    if(!is_null($timezone))
+                        $datetime->setTimezone($timezone);
+                    return $datetime->format($format);
+                }
+            });
     }
 }

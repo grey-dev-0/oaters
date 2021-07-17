@@ -2,7 +2,6 @@
 
 namespace Modules\Sapphire\Http\Controllers\Admin;
 
-use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Modules\Sapphire\Entities\Tenant;
 
@@ -12,14 +11,7 @@ class TenantController extends Controller{
             ->orderBy('s.id', 'desc')->groupBy('s.id'))->filter(function($query){
                 \DataTablesHelper::filterByDate($query, ['tenants.created_at', 'expires_at']);
             });
-
-        foreach(['created_at', 'expires_at'] as $attribute)
-            $response->editColumn($attribute, function($tenant) use($attribute){
-                if(empty($tenant->$attribute))
-                    return null;
-                else
-                    return (new Carbon($tenant->$attribute))->format('d/m/Y h:i:s A');
-            });
+        \DataTablesHelper::formatTimestampColumns($response, ['created_at', 'expires_at']);
 
         return $response->make(true);
     }

@@ -9,5 +9,6 @@
 <script type="text/javascript" src="{{asset('resources/js/vue-loader.min.js')}}"></script>
 @bukScripts(true)
 <script type="text/javascript">
+    var locale = {};
     $.ajaxSettings.headers = {'X-CSRF-TOKEN': '{{csrf_token()}}'};
 </script>

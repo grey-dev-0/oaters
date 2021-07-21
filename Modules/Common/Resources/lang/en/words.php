@@ -1,11 +1,14 @@
 <?php
 return [
     'actions' => 'Actions',
+    'active' => 'Active',
     'amount' => 'Amount',
     'created_at' => 'Created At',
     'email' => 'Email',
     'executed' => 'Executed',
+    'expired' => 'Expired',
     'expires_at' => 'Expires At',
+    'inactive' => 'Inactive',
     'joined_at' => 'Joined At',
     'name' => 'Name',
     'na' => 'N/A',

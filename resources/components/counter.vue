@@ -1,7 +1,9 @@
 <template>
     <div :class="cardClass">
         <h4 :class="headerClass">{{title}}</h4>
-        <div class="card-body text-center">{{value}}</div>
+        <div class="card-body">
+            <span class="text-center">{{value}}</span>
+        </div>
         <div class="card-footer text-center" v-if="extraTitle !== undefined">
             {{extraTitle}}: {{extraValue}}
         </div>
@@ -51,9 +53,21 @@ export default {
 
 <style lang="scss">
 .card.counter{
+    position: relative;
     .card-body{
-        font-weight: bolder;
-        font-size: 2em;
+        position: static;
+        span{
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            font-weight: bolder;
+            font-size: 2em;
+            height: 1em;
+            line-height: 1;
+        }
     }
 }
 </style>

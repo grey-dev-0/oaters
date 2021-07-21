@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div v-if="!!$slots.toolbar" :class="headerClass">
-            <h4 :class="'pull-left mb-0' + (whiteTitle? ' text-white' : '')">{{title}}</h4>
+            <h4 :class="'float-left mb-0' + (whiteTitle? ' text-white' : '')">{{title}}</h4>
             <div class="btn-toolbar">
                 <slot name="toolbar"></slot>
             </div>
@@ -40,7 +40,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-
-</style>

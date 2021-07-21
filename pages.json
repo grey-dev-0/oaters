@@ -8,6 +8,10 @@
             {
                 "filename": "counter.vue",
                 "title": "Counter"
+            },
+            {
+                "filename": "chart.vue",
+                "title": "Chart"
             }
         ],
         "tenants": [

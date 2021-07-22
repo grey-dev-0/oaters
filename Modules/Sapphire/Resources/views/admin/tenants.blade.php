@@ -28,7 +28,7 @@
                     <dt-filter name="expires_at" type="date" label="{{trans('common::words.expires_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>
 
-                <vue-datatable datatable-id="tenants-table" ref="tenantsTable">
+                <vue-datatable datatable-id="tenants-table" ref="tenantsTable" :ajax-complete="onDatatableDraw">
                     <dt-column name="name" data="name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="email" data="email">{{trans('common::words.email')}}</dt-column>
                     <dt-column name="subdomain" data="subdomain">{{trans('common::words.subdomain')}}</dt-column>
@@ -38,7 +38,7 @@
                         {{trans('common::words.actions')}}
                         <template #actions>
                             <div class="btn btn-sm btn-outline-primary payments" title="{{trans('sapphire::admin.payments.title')}}"><i class="fas fa-dollar-sign"></i></div>
-                            <div class="btn btn-sm btn-outline-info modules" title="{{trans('sapphire::admin.common.modules')}}"><i class="fas fa-layer-group"></i></div>
+                            <div class="btn btn-sm btn-outline-info modules" title="{{trans('sapphire::admin.common.modules')}}" data-id="subscription_id"><i class="fas fa-layer-group"></i></div>
                             <div class="btn btn-sm btn-outline-success extend" title="{{trans('sapphire::admin.common.extend')}}"><i class="fas fa-calendar-plus"></i></div>
                             <div class="btn btn-sm btn-outline-warning revoke" title="{{trans('sapphire::admin.tenants.revoke')}}"><i class="fas fa-ban"></i></div>
                         </template>
@@ -53,11 +53,12 @@
 
 @push('scripts')
     <script type="text/javascript">
-        locale.common = @json([
-            'yes' => trans('common::words.yes'),
-            'no' => trans('common::words.no'),
-            'unpaid' => trans('common::words.unpaid')
-        ]);
+        @php
+        $locale = \Arr::only(trans('common::words'), ['yes', 'no', 'na', 'unpaid']) + [
+            'modules' => trans('sapphire::admin.common.modules')
+        ];
+        @endphp
+        locale.common = @json($locale);
     </script>
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.bs4.min.js')}}"></script>

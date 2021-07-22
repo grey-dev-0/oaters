@@ -8,6 +8,9 @@
     @yield('title')
     @include('common::resources')
     @stack('styles')
+    <script type="text/javascript">
+        var baseUrl = '{{url('sa')}}';
+    </script>
 </head>
 <body class="bg-grey-8">
 <div id="app">

@@ -18,6 +18,22 @@
             },
             renderPaidAt: function(row){
                 return (row['executed'] == 1)? row['updated_at'] : locale.common.unpaid;
+            },
+            onDatatableDraw: function(){
+                $('#tenants-table').find('.modules').each(function(){
+                    if($(this).attr('data-id') == '')
+                        $(this).addClass('disabled');
+                });
+            },
+            moduleColor: function(module){
+                switch(module){
+                    case 'amethyst': return 'info';
+                    case 'topaz': return 'warning';
+                    case 'emerald': return 'success';
+                    case 'ruby': return 'danger';
+                    case 'sapphire': return 'primary';
+                    default: return 'secondary';
+                }
             }
         },
         computed: {
@@ -47,5 +63,32 @@
                 view.paymentsTable.init();
             });
         });
+    }).on('click', '#tenants-table .modules', function(){
+        if($(this).hasClass('disabled'))
+            return;
+        var row = $(this).closest('tr');
+        var dtRow = view.dataTable.row(row);
+        if(dtRow.child.isShown())
+            dtRow.child.hide();
+        else{
+            var subscriptionId = $(this).attr('data-id');
+            var child = $('<tr/>').append('<td class="bg-sky-10"><strong>'+locale.common.modules
+                +'</strong></td><td class="bg-sky-10" colspan="' + (row.find('td').length - 1) + '" data-subscription-id="'
+                +subscriptionId+'"><i class="fas fa-spin fa-spinner"></i></td>');
+            dtRow.child(child).show();
+
+            $.ajax({
+                url: window.baseUrl + '/subscriptions/' + subscriptionId + '/modules',
+                type: 'GET',
+                success: function(response){
+                    var cell = $('[data-subscription-id="'+subscriptionId+'"]'), color;
+                    cell.empty();
+                    response.modules.forEach(function(module){
+                        color = view.moduleColor(module);
+                        cell.append('<div class="badge badge-'+color+'">'+module+'</div> ');
+                    });
+                }
+            });
+        }
     });
 })();

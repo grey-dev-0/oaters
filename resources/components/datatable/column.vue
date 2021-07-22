@@ -53,7 +53,7 @@ export default {
       this.$slots.actions().forEach(function(action){
         element = $(action.el);
         idKey = element.attr('data-id');
-        element.attr('data-id', row[(!idKey)? 'id' : idKey]);
+        element.attr('data-id', row[(!idKey)? 'id' : idKey] || '');
         actions.push($('<div/>').append(element).html());
       });
       return actions.join(' ');

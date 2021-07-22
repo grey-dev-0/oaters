@@ -9,6 +9,9 @@ Route::group(['middleware' => ['auth:admin', 'can:manage-tenants']], function(){
     Route::post('tenants', 'TenantController@postIndex');
     Route::view('payments', 'sapphire::admin.payments');
     Route::post('payments', 'PurchaseController@postIndex');
+    Route::group(['prefix' => 'subscriptions'], function(){
+        Route::get('{subscription}/modules', 'TenantController@getModules');
+    });
     Route::group(['prefix' => 'charts'], function(){
         Route::post('subscriptions-pie', 'DashboardController@postSubscriptionsPieChart');
     });

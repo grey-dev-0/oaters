@@ -1,8 +1,8 @@
 <template>
     <div :class="cardClass">
         <div v-if="ranged" :class="headerClass">
-            <h4 :class="'float-left mb-0' + (whiteTitle? ' text-white' : '')">{{title}}</h4>
-            <input autocomplete="off" type="text" class="form-control float-right" :placeholder="rangeTitle || title">
+            <h4 :class="'float-left mb-0 pt-1' + (whiteTitle? ' text-white' : '')">{{title}}</h4>
+            <input autocomplete="off" type="text" :id="id + '-range'" class="form-control float-right" :placeholder="rangeTitle || title">
         </div>
         <h4 v-else :class="headerClass + (whiteTitle? ' text-white' : '')">{{title}}</h4>
         <div :class="bodyClass">
@@ -73,9 +73,11 @@ export default {
                 theClass += ' bg-' + this.color;
                 if(this.whiteTitle)
                     theClass += ' text-white';
-                if(this.centerHeader)
-                    theClass += ' text-center';
             }
+            if(this.centerHeader)
+                theClass += ' text-center';
+            if(this.ranged)
+                theClass += ' pt-2 pb-2';
             return theClass;
         },
         bodyClass: function(){
@@ -86,6 +88,22 @@ export default {
         }
     },
     methods: {
+        initRangePicker: function(){
+            $('#' + this.id + '-range').daterangepicker({
+                showDropdowns: true,
+                autoUpdateInput: false,
+                opens: 'left',
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            }).on('apply.daterangepicker', function(e, picker){
+                var startDate = picker.startDate.format('YYYY-MM-DD');
+                var endDate = picker.endDate.format('YYYY-MM-DD');
+                $(this).val((startDate == endDate)? startDate : (startDate + ' to ' + endDate));
+            }).on('cancel.daterangepicker', function(){
+                $(this).val('');
+            });
+        },
         load: function(){
             var chart = this;
             $.ajax({
@@ -125,14 +143,22 @@ export default {
         }
     },
     mounted: function(){
+        if(this.ranged)
+            this.initRangePicker();
         this.load();
     }
 }
 </script>
 
 <style lang="scss">
+.card-header{
+    .form-control.float-right{
+        width: initial !important;
+    }
+}
 .card-body{
     position: relative;
+    min-height: 164px;
     .chart-loader{
         position: absolute;
         margin: auto;

@@ -14,6 +14,7 @@ Route::group(['middleware' => ['auth:admin', 'can:manage-tenants']], function(){
     });
     Route::group(['prefix' => 'charts'], function(){
         Route::post('subscriptions-pie', 'DashboardController@postSubscriptionsPieChart');
+        Route::post('subscriptions-line', 'DashboardController@postSubscriptionsLineChart');
     });
     Route::view('/', 'sapphire::admin.dashboard');
 });

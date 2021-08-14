@@ -17,10 +17,10 @@
     </div>
     <div class="row mb-3">
         <div class="col-md-6">
-            <chart id="subscriptions-line" color="cyan-10" ranged title="{{trans('sapphire::admin.subscriptions.title')}}" url="{{url('sa/charts/subscriptions-line')}}"></chart>
+            <chart id="subscriptions-line" color="cyan-10" ranged :default-range="defaultChartRange" title="{{trans('sapphire::admin.subscriptions.title')}}" url="{{url('sa/charts/subscriptions-line')}}"></chart>
         </div>
         <div class="col-md-6">
-            <chart id="payments-line" color="pink-10" ranged title="{{trans('sapphire::admin.payments.title')}}" url="{{url('sa/charts/payments-line')}}"></chart>
+            <chart id="payments-line" color="pink-10" ranged :default-range="defaultChartRange" title="{{trans('sapphire::admin.payments.title')}}" url="{{url('sa/charts/payments-line')}}"></chart>
         </div>
     </div>
 @stop

@@ -4,6 +4,7 @@ return [
     'active' => 'Active',
     'amount' => 'Amount',
     'created_at' => 'Created At',
+    'count' => 'Count',
     'email' => 'Email',
     'executed' => 'Executed',
     'expired' => 'Expired',

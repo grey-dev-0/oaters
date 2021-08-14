@@ -2,7 +2,7 @@
     <div :class="cardClass">
         <div v-if="ranged" :class="headerClass">
             <h4 :class="'float-left mb-0 pt-1' + (whiteTitle? ' text-white' : '')">{{title}}</h4>
-            <input autocomplete="off" type="text" :id="id + '-range'" class="form-control float-right" :placeholder="rangeTitle || title">
+            <input autocomplete="off" type="text" :id="id + '-range'" class="form-control float-right" :placeholder="rangeTitle || title" :value="defaultRange">
         </div>
         <h4 v-else :class="headerClass + (whiteTitle? ' text-white' : '')">{{title}}</h4>
         <div :class="bodyClass">
@@ -42,6 +42,7 @@ export default {
             type: Boolean,
             default: false
         },
+        defaultRange: String,
         rangeTitle: String,
         centerHeader: {
             type: Boolean,
@@ -89,6 +90,7 @@ export default {
     },
     methods: {
         initRangePicker: function(){
+            var chart = this;
             $('#' + this.id + '-range').daterangepicker({
                 showDropdowns: true,
                 autoUpdateInput: false,
@@ -100,8 +102,10 @@ export default {
                 var startDate = picker.startDate.format('YYYY-MM-DD');
                 var endDate = picker.endDate.format('YYYY-MM-DD');
                 $(this).val((startDate == endDate)? startDate : (startDate + ' to ' + endDate));
+                chart.load();
             }).on('cancel.daterangepicker', function(){
-                $(this).val('');
+                $(this).val(chart.defaultRange || '');
+                chart.load();
             });
         },
         load: function(){
@@ -109,6 +113,9 @@ export default {
             $.ajax({
                 url: this.url,
                 type: 'POST',
+                data: {
+                    range: $('#' + this.id + '-range').val()
+                },
                 success: function(response){
                     chart.datasets = response.datasets;
                     chart.labels = response.labels;
@@ -123,6 +130,8 @@ export default {
             });
         },
         draw: function(){
+            if(this.chart != null)
+                this.chart.destroy();
             var canvas = $('#' + this.id), chartOptions = {
                 legend: {
                     position: (this.type == 'pie' || this.type == 'doughnut')? 'bottom' : 'top'

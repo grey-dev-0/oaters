@@ -6,8 +6,7 @@
     "order":  2,
     "priority": 1,
     "providers": [
-        "Modules\\Common\\Providers\\ModuleServiceProvider",
-        "Modules\\Common\\Providers\\ChartServiceProvider"
+        "Modules\\Common\\Providers\\ModuleServiceProvider"
     ],
     "aliases": {},
     "files": [],

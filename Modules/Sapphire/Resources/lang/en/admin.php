@@ -17,7 +17,8 @@ return [
         'revoke' => 'Revoke Subscription'
     ],
     'subscriptions' => [
-        'title' => 'Subscriptions'
+        'title' => 'Subscriptions',
+        'new' => 'New Subscriptions'
     ],
     'payments' => [
         'title' => 'Payments',

@@ -5,9 +5,11 @@
             <input autocomplete="off" type="text" :id="id + '-range'" class="form-control float-right" :placeholder="rangeTitle || title" :value="defaultRange">
         </div>
         <h4 v-else :class="headerClass + (whiteTitle? ' text-white' : '')">{{title}}</h4>
-        <div :class="bodyClass">
+        <div v-if="loading" :class="bodyClass">
+            <h1 class="text-center chart-loader"><i class="fas fa-spin fa-spinner fa-pulse"></i></h1>
+        </div>
+        <div v-else :class="bodyClass">
             <canvas :id="id" :class="(loading)? 'd-none' : ''"></canvas>
-            <h1 v-if="loading" class="text-center chart-loader"><i class="fas fa-spin fa-spinner fa-pulse"></i></h1>
         </div>
     </div>
 </template>
@@ -119,6 +121,7 @@ export default {
                 success: function(response){
                     chart.datasets = response.datasets;
                     chart.labels = response.labels;
+                    chart.loading = false;
                     chart.$nextTick(function(){
                         chart.draw();
                     });
@@ -148,7 +151,6 @@ export default {
                 },
                 options: chartOptions
             });
-            this.loading = false;
         }
     },
     mounted: function(){

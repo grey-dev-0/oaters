@@ -19,7 +19,9 @@ return [
     ],
     'subscriptions' => [
         'title' => 'Subscriptions',
-        'new' => 'New Subscriptions'
+        'new' => 'New Subscriptions',
+        'tenant' => 'Tenant',
+        'modules' => 'Modules'
     ],
     'payments' => [
         'title' => 'Payments',

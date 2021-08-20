@@ -1,4 +1,46 @@
 {
+    "common": {
+        "datatable": [
+            {
+                "filename": "navbar",
+                "title": "Navbar"
+            },
+            {
+                "filename": "breadcrumb",
+                "title": "Breadcrumb"
+            },
+            {
+                "filename": "card.vue",
+                "title": "Card"
+            },
+            {
+                "filename": "datatable",
+                "title": "Datatable"
+            }
+        ],
+        "datatable_with_modal": [
+            {
+                "filename": "navbar",
+                "title": "Navbar"
+            },
+            {
+                "filename": "breadcrumb",
+                "title": "Breadcrumb"
+            },
+            {
+                "filename": "card.vue",
+                "title": "Card"
+            },
+            {
+                "filename": "datatable",
+                "title": "Datatable"
+            },
+            {
+                "filename": "modal.vue",
+                "title": "Modal"
+            }
+        ]
+    },
     "sapphire": {
         "admin_dashboard": [
             {
@@ -20,28 +62,6 @@
             {
                 "filename": "table",
                 "title": "VueTable"
-            }
-        ],
-        "tenants": [
-            {
-                "filename": "navbar",
-                "title": "Navbar"
-            },
-            {
-                "filename": "breadcrumb",
-                "title": "Breadcrumb"
-            },
-            {
-                "filename": "card.vue",
-                "title": "Card"
-            },
-            {
-                "filename": "datatable",
-                "title": "Datatable"
-            },
-            {
-                "filename": "modal.vue",
-                "title": "Modal"
             }
         ]
     }

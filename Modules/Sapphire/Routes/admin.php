@@ -7,6 +7,8 @@ Route::group(['middleware' => ['auth:admin', 'can:manage-tenants']], function(){
     Route::get('logout', 'ModuleController@getLogout');
     Route::view('tenants', 'sapphire::admin.tenants');
     Route::post('tenants', 'TenantController@postIndex');
+    Route::view('subscriptions', 'sapphire::admin.subscriptions');
+    Route::post('subscriptions', 'TenantController@postSubscriptions');
     Route::view('payments', 'sapphire::admin.payments');
     Route::post('payments', 'PurchaseController@postIndex');
     Route::group(['prefix' => 'subscriptions'], function(){

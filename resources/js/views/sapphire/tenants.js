@@ -48,7 +48,7 @@
             }
         }
     });
-    loadComponents(app, 'tenants');
+    loadComponents(app, 'datatable_with_modal');
     var view = app.mount('#app');
 
     $('body').on('click', '#tenants-table .payments', function (){

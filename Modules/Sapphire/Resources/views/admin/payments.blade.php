@@ -19,7 +19,7 @@
 
     <div class="row">
         <div class="col">
-            <card title="{{trans('sapphire::admin.payments.title')}}" color="green-2">
+            <card title="{{trans('sapphire::admin.payments.title')}}" color="blue-2">
                 <vue-datafilter :cols="5">
                     <dt-filter name="t.name" type="text" label="{{trans('sapphire::admin.payments.tenant')}}"></dt-filter>
                     <dt-filter name="amount" type="text" label="{{trans('common::words.amount')}}"></dt-filter>
@@ -47,6 +47,6 @@
     <script type="text/javascript" src="{{asset('resources/js/lodash.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/moment.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/bundles/sapphire/tenants.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/js/bundles/common/datatable.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/views/sapphire/payments.min.js')}}"></script>
 @endpush

@@ -22,6 +22,6 @@
             }
         }
     });
-    loadComponents(app, 'tenants');
+    loadComponents(app, 'datatable');
     app.mount('#app');
 })();

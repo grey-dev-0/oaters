@@ -14,7 +14,6 @@ class TenantController extends Controller{
                 \DataTablesHelper::filterByDate($query, ['tenants.created_at', 'expires_at']);
             });
         \DataTablesHelper::formatTimestampColumns($response, ['created_at', 'expires_at']);
-
         return $response->make(true);
     }
 
@@ -22,5 +21,11 @@ class TenantController extends Controller{
         return response()->json([
             'modules' => $subscription->modules()->pluck('name')
         ]);
+    }
+
+    public function postSubscriptions(){
+        $response = \DataTables::of(Subscription::with(['tenant:id,name', 'modules:id,name']));
+        \DataTablesHelper::formatTimestampColumns($response, ['created_at', 'expires_at']);
+        return $response->make(true);
     }
 }

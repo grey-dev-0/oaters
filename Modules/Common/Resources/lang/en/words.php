@@ -18,6 +18,8 @@ return [
     'payments' => 'Payments',
     'revoke' => 'Revoke',
     'subdomain' => 'Subdomain',
+    'this_month' => 'This Month',
+    'this_year' => 'This Year',
     'unpaid' => 'Unpaid',
     'updated_at' => 'Updated At',
     'yes' => 'Yes'

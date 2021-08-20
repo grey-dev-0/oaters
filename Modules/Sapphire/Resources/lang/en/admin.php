@@ -14,7 +14,8 @@ return [
     ],
     'tenants' => [
         'title' => 'Tenants',
-        'revoke' => 'Revoke Subscription'
+        'revoke' => 'Revoke Subscription',
+        'new' => 'New Users'
     ],
     'subscriptions' => [
         'title' => 'Subscriptions',
@@ -22,6 +23,7 @@ return [
     ],
     'payments' => [
         'title' => 'Payments',
-        'tenant' => 'Tenant'
+        'tenant' => 'Tenant',
+        'new' => 'Latest Payments'
     ],
 ];

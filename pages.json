@@ -12,6 +12,14 @@
             {
                 "filename": "chart.vue",
                 "title": "Chart"
+            },
+            {
+                "filename": "card.vue",
+                "title": "Card"
+            },
+            {
+                "filename": "table",
+                "title": "VueTable"
             }
         ],
         "tenants": [

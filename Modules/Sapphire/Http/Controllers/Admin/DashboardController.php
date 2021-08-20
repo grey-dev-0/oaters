@@ -6,8 +6,25 @@ use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Modules\Sapphire\Entities\Purchase;
 use Modules\Sapphire\Entities\Subscription;
+use Modules\Sapphire\Entities\Tenant;
 
 class DashboardController extends Controller{
+    public function getIndex(){
+        $startOfMonth = now()->startOfMonth();
+        return view('sapphire::admin.dashboard', [
+            'tenants' => Tenant::orderBy('created_at', 'desc')->take(10)->get(['name', 'email', 'created_at']),
+            'purchases' => Purchase::with('subscription.tenant:id,name,email')->orderBy('updated_at', 'desc')
+                ->get(['id', 'subscription_id', 'updated_at']),
+            'counters' => [
+                'tenants' => Tenant::count(),
+                'tenants_month' => Tenant::where('created_at', '>=', $startOfMonth)->count(),
+                'purchases' => Purchase::count(),
+                'purchases_month' => Purchase::where('updated_at', '>=', $startOfMonth)->count(),
+                'subscriptions' => Subscription::count()
+            ]
+        ]);
+    }
+
     public function postSubscriptionsPieChart(){
         return response()->json(\Chart::pie([
             Subscription::wherePaid(true)->where('expires_at', '>=', now())->count(),

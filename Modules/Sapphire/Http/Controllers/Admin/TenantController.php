@@ -3,6 +3,7 @@
 namespace Modules\Sapphire\Http\Controllers\Admin;
 
 use Illuminate\Routing\Controller;
+use Modules\Sapphire\Entities\Module;
 use Modules\Sapphire\Entities\Subscription;
 use Modules\Sapphire\Entities\Tenant;
 
@@ -21,6 +22,10 @@ class TenantController extends Controller{
         return response()->json([
             'modules' => $subscription->modules()->pluck('name')
         ]);
+    }
+
+    public function getSubscriptions(){
+        return view('sapphire::admin.subscriptions', ['modules' => Module::all()]);
     }
 
     public function postSubscriptions(){

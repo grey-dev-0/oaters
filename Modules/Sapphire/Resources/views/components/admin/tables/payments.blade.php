@@ -7,5 +7,5 @@
     <dt-column name="amount" data="amount" :render="renderAmount" :searchable="false">{{trans('common::words.amount')}}</dt-column>
     <dt-column name="executed" data="executed" :render="renderExecuted" :searchable="false">{{trans('common::words.executed')}}</dt-column>
     <dt-column name="purchases.created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
-    <dt-column name="purchases.updated_at" :data="renderPaidAt" :searchable="false" last>{{trans('common::words.paid_at')}}</dt-column>
+    <dt-column name="purchases.updated_at" :data="renderPaidAt" :searchable="false">{{trans('common::words.paid_at')}}</dt-column>
 </vue-datatable>

@@ -7,6 +7,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{asset('resources/css/jquery.dataTables.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('resources/css/daterangepicker.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('resources/css/select2.min.css')}}">
 @endpush
 
 @section('content')
@@ -20,6 +21,9 @@
     <div class="row">
         <div class="col">
             <card title="{{trans('sapphire::admin.subscriptions.title')}}" color="cyan-2">
+                <template #toolbar>
+                    <div class="btn btn-sm btn-success" title="{{trans('sapphire::admin.subscriptions.create')}}" @click="addSubscription"><i class="fa fas fa-plus"></i></div>
+                </template>
                 <!--<vue-datafilter :cols="5">
                     <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
                     <dt-filter name="email" type="text" label="{{trans('common::words.email')}}"></dt-filter>
@@ -35,10 +39,10 @@
                     <dt-column name="paid" data="paid" :render="renderPaid" :searchable="false">{{trans('common::words.paid')}}</dt-column>
                     <dt-column name="expires_at" data="expires_at" :searchable="false">{{trans('common::words.expires_at')}}</dt-column>
                     <dt-column name="created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
-                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" :data="null" last>
+                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" :data="null">
                         {{trans('common::words.actions')}}
                         <template #actions>
-                            <div class="btn btn-sm btn-outline-primary edit" title="{{trans('common::words.edit')}}"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="btn btn-sm btn-outline-primary edit" title="{{trans('common::words.edit')}}"><i class="fas fa-pen"></i></div>
                             <div class="btn btn-sm btn-outline-warning revoke" title="{{trans('sapphire::admin.subscriptions.revoke')}}"><i class="fas fa-ban"></i></div>
                             <div class="btn btn-sm btn-outline-danger delete" title="{{trans('common::words.delete')}}"><i class="fas fa-trash-alt"></i></div>
                         </template>
@@ -47,6 +51,9 @@
             </card>
         </div>
     </div>
+
+    <x-sapphire::admin.modals.subscription-form ref="createSubscription" id="add-subscription" color="green-2" title="{{trans('sapphire::admin.subscriptions.create')}}" :modules="$modules"/>
+    <x-sapphire::admin.modals.subscription-form ref="updateSubscription" id="edit-subscription" color="blue-3" title="{{trans('sapphire::admin.subscriptions.update')}}" :modules="$modules" :edit="true"/>
 @stop
 
 @push('scripts')
@@ -63,6 +70,7 @@
     <script type="text/javascript" src="{{asset('resources/js/lodash.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/moment.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/bundles/common/datatable_with_modal.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/js/select2.full.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/js/bundles/common/datatable_with_form.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/js/views/sapphire/subscriptions.min.js')}}"></script>
 @endpush

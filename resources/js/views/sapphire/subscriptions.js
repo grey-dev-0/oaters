@@ -2,7 +2,11 @@
     var view, app = Vue.createApp({
         data: function(){
             return {
-                locale: window.locale
+                locale: window.locale,
+                openSubscription: {
+                    id: 0,
+                    name: null
+                }
             }
         },
         methods: {
@@ -28,6 +32,11 @@
                     case 'sapphire': return 'primary';
                     default: return 'secondary';
                 }
+            },
+            addSubscription: function(){
+                this.$refs.createSubscription.show(function(){
+                    view.$refs.createSubscriptionForm.reset();
+                });
             }
         },
         computed: {
@@ -36,6 +45,6 @@
             }
         }
     });
-    loadComponents(app, 'datatable_with_modal');
+    loadComponents(app, 'datatable_with_form');
     view = app.mount('#app');
 })();

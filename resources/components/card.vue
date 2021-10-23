@@ -2,7 +2,7 @@
     <div class="card">
         <div v-if="!!$slots.toolbar" :class="headerClass">
             <h4 :class="'float-left mb-0' + (whiteTitle? ' text-white' : '')">{{title}}</h4>
-            <div class="btn-toolbar">
+            <div class="btn-toolbar float-right">
                 <slot name="toolbar"></slot>
             </div>
         </div>
@@ -40,3 +40,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.btn-toolbar{
+    max-height: 28px;
+}
+</style>

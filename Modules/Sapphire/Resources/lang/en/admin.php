@@ -21,7 +21,9 @@ return [
         'title' => 'Subscriptions',
         'new' => 'New Subscriptions',
         'tenant' => 'Tenant',
-        'modules' => 'Modules'
+        'modules' => 'Modules',
+        'create' => 'New Subscription',
+        'update' => 'Edit Subscription'
     ],
     'payments' => [
         'title' => 'Payments',

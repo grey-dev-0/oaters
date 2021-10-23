@@ -39,6 +39,32 @@
                 "filename": "modal.vue",
                 "title": "Modal"
             }
+        ],
+        "datatable_with_form": [
+            {
+                "filename": "navbar",
+                "title": "Navbar"
+            },
+            {
+                "filename": "breadcrumb",
+                "title": "Breadcrumb"
+            },
+            {
+                "filename": "card.vue",
+                "title": "Card"
+            },
+            {
+                "filename": "datatable",
+                "title": "Datatable"
+            },
+            {
+                "filename": "modal.vue",
+                "title": "Modal"
+            },
+            {
+                "filename": "form",
+                "title": "VueForm"
+            }
         ]
     },
     "sapphire": {

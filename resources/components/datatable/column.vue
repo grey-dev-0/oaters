@@ -34,11 +34,7 @@ export default {
       default: undefined
     },
     defaultContent: String,
-    className: String,
-    last: {
-      type: Boolean,
-      default: false
-    }
+    className: String
   },
   data(){
     return {
@@ -70,7 +66,7 @@ export default {
     this.$parent.columns.push(column);
     // Removes the action column elements template form DOM after it's rendered.
     this.renderActionsTemplate = false;
-    if(this.last && !this.$parent.deferred)
+    if(this.$parent.$slots.default().length == this.$parent.columns.length && !this.$parent.deferred)
       this.$parent.init();
   }
 }

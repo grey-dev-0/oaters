@@ -34,7 +34,7 @@
                     <dt-column name="subdomain" data="subdomain">{{trans('common::words.subdomain')}}</dt-column>
                     <dt-column name="tenants.created_at" data="created_at" :searchable="false">{{trans('common::words.joined_at')}}</dt-column>
                     <dt-column name="expires_at" data="expires_at" :searchable="false">{{trans('common::words.expires_at')}}</dt-column>
-                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" :data="null" last>
+                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" :data="null">
                         {{trans('common::words.actions')}}
                         <template #actions>
                             <div class="btn btn-sm btn-outline-primary payments" title="{{trans('sapphire::admin.payments.title')}}"><i class="fas fa-dollar-sign"></i></div>

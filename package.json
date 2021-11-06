@@ -28,7 +28,7 @@
     "dependencies": {
         "core-js": "^3.12.1",
         "mitt": "^3.0.0",
-        "vue": "^3.0.11"
+        "vue": "^3.0"
     },
     "eslintConfig": {
         "root": true,
@@ -39,6 +39,8 @@
             "plugin:vue/vue3-essential",
             "eslint:recommended"
         ],
-        "rules": {"vue/no-multiple-template-root": "off" }
+        "rules": {
+            "vue/no-multiple-template-root": "off"
+        }
     }
 }

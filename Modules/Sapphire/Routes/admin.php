@@ -19,5 +19,6 @@ Route::group(['middleware' => ['auth:admin', 'can:manage-tenants']], function(){
         Route::post('subscriptions-line', 'DashboardController@postSubscriptionsLineChart');
         Route::post('payments-line', 'DashboardController@postPurchasesLineChart');
     });
+    Route::post('autocomplete/tenants', 'TenantController@postAutocomplete');
     Route::get('/', 'DashboardController@getIndex');
 });

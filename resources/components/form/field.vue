@@ -8,24 +8,29 @@
                 <slot></slot>
             </label>
             <div :class="inputClass">
-                <input v-if="inputType == 1" :id="id" :class="(type != 'file')? 'form-control' : ''" :name="name" :type="textType" v-model="value" :autocomplete="!autocomplete? 'off' : null" :placeholder="placeholder" @change="onChange">
+                <input v-if="inputType == 1" :id="id" :class="(type != 'file')? 'form-control' : ''" :name="name" :type="textType" v-model="value" :autocomplete="!autocomplete? 'off' : 'on'" :placeholder="placeholder" @change="onChange">
                 <select v-else-if="inputType == 2" :id="id" class="form-control" :name="name" v-model="value" :multiple="multiple" @change="onChange">
                     <option value="">-- {{placeholder}} --</option>
                     <slot name="options"></slot>
                 </select>
-                <template v-else>
+                <template v-else-if="inputType == 3">
                     <slot name="options"></slot>
                 </template>
+                <autocomplete v-else :name="name" :id="id" :url="url" :placeholder="placeholder" @change="onAutocompleteChange"></autocomplete>
             </div>
         </div>
     </template>
 </template>
 
 <script>
+import Autocomplete from "../autocomplete.vue";
 var $ = window.$;
 
 export default {
     name: "VueField",
+    components:{
+        Autocomplete
+    },
     props: {
         id: String,
         name: String,
@@ -36,13 +41,18 @@ export default {
         type: {
             default: 'text',
             validator: function(value){
-                var supportedTypes = ['text', 'number', 'password', 'email', 'tel', 'daterange', 'file', 'select', 'select2', 'checkbox', 'radio'];
+                var supportedTypes = ['text', 'number', 'password', 'email', 'tel', 'daterange', 'file', 'select', 'select2', 'checkbox', 'radio', 'autocomplete'];
                 return supportedTypes.indexOf(value) != -1;
             }
         },
         multiple: {
             type: Boolean,
             default: false
+        },
+        url: String,
+        default: {
+            type: [String, Number, Boolean],
+            default: undefined
         }
     },
     data: function(){
@@ -73,9 +83,11 @@ export default {
                 case 'select':
                 case 'select2':
                     return 2;
-                default:
-                    // Checkboxes and radio buttons.
+                case 'radio':
+                case 'checkbox':
                     return 3;
+                default:
+                    return 4;
             }
         },
         textType: function(){
@@ -85,6 +97,10 @@ export default {
     methods: {
         onChange: function(){
             this.$parent.setField(this.name, this.value);
+        },
+        onAutocompleteChange: function(name, value){
+            this.value = value;
+            this.$nextTick(this.onChange);
         },
         construct: function(){
             switch(this.type){
@@ -96,6 +112,8 @@ export default {
             var element = $('#' + this.id);
             if(this.type == 'select2' && element.hasClass('select2-hidden-accessible'))
                 element.select2('destroy');
+            if([3, 4].indexOf(this.inputType) != -1 && this.name !== undefined)
+                this.$parent.emitter.emit('destroy', this.name);
         },
         initDatePicker: function(){
 
@@ -117,6 +135,10 @@ export default {
             this.$parent.emitter.on('init', function(){
                 field.destroy();
                 field.construct();
+                field.value = field.default;
+                field.onChange();
+                if(field.inputType == 3)
+                    field.$parent.emitter.emit('init:sub', field.name);
             });
         });
     }

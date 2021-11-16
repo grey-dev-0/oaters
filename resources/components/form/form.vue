@@ -62,6 +62,8 @@ export default {
     },
     mounted: function(){
         this.emitter = emitter();
+        if(this.$parent.$options.name != 'Modal')
+            this.emitter.emit('init');
     }
 }
 </script>

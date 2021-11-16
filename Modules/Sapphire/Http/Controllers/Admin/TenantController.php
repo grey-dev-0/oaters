@@ -33,4 +33,11 @@ class TenantController extends Controller{
         \DataTablesHelper::formatTimestampColumns($response, ['created_at', 'expires_at']);
         return $response->make(true);
     }
+
+    public function postAutocomplete(){
+        return response()->json(['suggestions' => (!empty($query = request('query')))?
+            Tenant::where('email', 'like', "%$query%")->orWhere('name', 'like', "%$query%")
+                ->selectRaw('id, CONCAT(name, \' - \', email) AS name')->take(request('limit'))->get()->pluck('name', 'id')
+            : []]);
+    }
 }

@@ -56,9 +56,6 @@ export default {
     };
   },
   methods: {
-      ping: function(){
-          console.log(this.$slots.default().length);
-      },
     init: function(){
       if(this.dataTable !== null)
         this.dataTable.destroy();

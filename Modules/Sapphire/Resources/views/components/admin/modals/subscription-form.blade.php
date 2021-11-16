@@ -4,7 +4,7 @@
         <span class="close text-muted" data-dismiss="modal">&times;</span>
     </template>
     <vue-form id="{{$id}}-form" ref="{{$ref}}Form" ajax action="{{url('sa/subscriptions/create')}}">
-        <vue-field name="tenant_id">{{trans('sapphire::admin.subscriptions.tenant')}}</vue-field>
+        <vue-field name="tenant_id" type="autocomplete" id="{{($edit?? false)? 'e_' : ''}}tenant-id" url="{{url('sa/autocomplete/tenants')}}">{{trans('sapphire::admin.subscriptions.tenant')}}</vue-field>
         <vue-field name="module_ids" type="select2" multiple id="{{($edit?? false)? 'e_' : ''}}modules">
             {{trans('sapphire::admin.subscriptions.modules')}}
             <template #options>
@@ -13,9 +13,9 @@
                 @endforeach
             </template>
         </vue-field>
-        <vue-field name="price" type="number">{{trans('common::words.price')}}</vue-field>
+        <vue-field name="price" type="number" :default="0">{{trans('common::words.price')}}</vue-field>
         <vue-field name="discount" type="number">{{trans('common::words.discount')}}</vue-field>
-        <vue-field name="discount_type" type="radio">
+        <vue-field name="discount_type" type="radio" :default="0">
             {{trans('common::words.type')}}
             <template #options>
                 <radio id="{{($edit?? false)? 'e_' : ''}}percent" name="discount_type" value="0">{{trans('common::words.percentage')}}</radio>

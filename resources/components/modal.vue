@@ -1,9 +1,12 @@
 <template>
-    <div class="modal fade" :id="id" :data-backdrop="(this.static)? 'static' : null" :data-keyboard="(this.static)? 'false' : null">
+    <div class="modal fade" :id="id" :data-backdrop="(this.static)? 'static' : null" :data-keyboard="(this.static)? 'false' : null" :style="zIndex? ('z-index: ' + (1050 + zIndex * 10)) : null">
         <div :class="dialogClass">
             <div :class="'modal-content border-' + color">
                 <div v-if="!!$slots.header" :class="'modal-header bg-' + color">
-                    <slot name="header"></slot>
+                  <component :is="titleTag" class="text-white m-0">
+                      <slot name="header"></slot>
+                  </component>
+                  <span class="close text-muted" data-dismiss="modal">&times;</span>
                 </div>
                 <div :class="bodyClass">
                     <slot></slot>
@@ -35,10 +38,15 @@ export default {
             type: String,
             default: 'grey-10'
         },
+        titleTag: {
+            type: String,
+            default: 'h3'
+        },
         noPadding: {
             type: Boolean,
             default: false
-        }
+        },
+        zIndex: Number
     },
     computed: {
         dialogClass: function(){
@@ -60,6 +68,14 @@ export default {
                 reset();
             $('#' + this.id).modal('show');
         }
+    },
+    mounted(){
+        if(this.zIndex)
+            $('body').on('show.bs.modal', '#' + this.id, () => {
+                setTimeout(() => {
+                    $('.modal-backdrop.show:last-of-type').css('z-index', 1050 + this.zIndex * 10 - 1);
+                }, 100);
+            });
     }
 }
 </script>

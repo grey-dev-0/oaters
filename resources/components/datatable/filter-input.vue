@@ -1,16 +1,16 @@
 <template>
-    <div class="mb-3 col">
+    <div class="mb-1 col-12 col-sm">
         <label :for="cssId" class="control-label">{{ label }}</label>
-        <select :id="cssId" class="form-control" v-if="type == 'select' || type == 'select2'" v-model="input" @change="filter(name, input)">
-            <option value="">-- {{ label }} --</option>
+        <select :id="cssId" class="form-control" v-if="type == 'select' || type == 'select2'" v-model="input" @change="filter(name, input)" :multiple="multiple">
+            <option v-if="!multiple" value="">-- {{ label }} --</option>
             <option v-for="(value, id) in values" :value="id" :key="id">{{ value }}</option>
         </select>
-        <input autocomplete="off" type="text" class="form-control" v-else :id="cssId" v-model="input" @keyup="debouncedFilter(name, input)" :placeholder="label">
+        <input autocomplete="off" type="text" class="form-control" v-else :id="cssId" v-model="input" @keydown.prevent.enter @keyup="debouncedFilter(name, input)" :placeholder="label">
     </div>
     <div class="w-100 clearfix" v-if="sort % $parent.cols == 0"></div>
     <template v-if="sort == $parent.count">
-        <div class="mb-3 col" v-for="n in clearCells" :key="n"></div>
-        <div class="mb-3 col">
+        <div class="mb-0 mb-sm-1 col-12 col-sm" v-for="n in clearCells" :key="n"></div>
+        <div class="mb-1 col-12 col-sm">
             <template v-if="$parent.count != $parent.cols">
                 <label><br/></label><br/>
             </template>
@@ -22,17 +22,22 @@
 <script>
 let $ = window.$;
 let _ = window._;
+let select2Options = {};
 
 export default {
     name: 'DtFilter',
     mounted: function(){
+        if(this.default)
+            this.$parent.defaults[this.name] = this.input = this.default;
         this.$nextTick(function(){
             var component = this;
             this.$parent.filters[this.name] = this.input;
             this.sort = Object.keys(this.$parent.filters).length;
             if(this.type == 'select2'){
                 var select = $('#' + this.cssId);
-                select.select2().on('change', function(){
+                if(this.multiple)
+                    select2Options.placeholder = this.label || '';
+                select.select2(select2Options).on('change', function(){
                     component.filter(component.name, select.val())
                 });
             } else if(this.type == 'date'){
@@ -55,7 +60,9 @@ export default {
                 });
             }
 
-            this.$root.emitter.on('clear', function(){
+            this.$root.emitter.on('clear', function(e){
+                if(component.$parent.datatableRef != e.ref)
+                    return;
                 component.clear();
             });
         });
@@ -73,12 +80,17 @@ export default {
             type: String,
             required: true
         },
+        multiple: {
+            type: Boolean,
+            default: false
+        },
         values: {
             type: Object
         },
         options: {
             type: Object
-        }
+        },
+        'default': String
     },
     data: function(){
         return {
@@ -105,11 +117,11 @@ export default {
             this.$parent.filter(field, value);
         },
         clear: function(){
-            this.input = '';
+            var element = $('#' + this.cssId), value = this.input = this.default || '';
             if(this.type == 'date' || this.type == 'select2')
-                $('#' + this.cssId).val('');
+                element.val(value);
             if(this.type == 'select2')
-                $('#' + this.cssId).select2('destroy').select2();
+                element.select2('destroy').select2(select2Options);
             this.$parent.filters[this.name] = '';
         }
     }

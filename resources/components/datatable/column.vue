@@ -1,7 +1,7 @@
 <template>
   <th>
     <slot></slot>
-    <slot name="actions" v-if="renderActionsTemplate"></slot>
+    <slot name="actions"></slot>
   </th>
 </template>
 
@@ -36,20 +36,20 @@ export default {
     defaultContent: String,
     className: String
   },
-  data(){
-    return {
-      // A temporary hack to create the actual DOM of the action buttons if injected to its slot by the user.
-      // Which will be used in the actions column for each fetched datatable row.
-      renderActionsTemplate: true
-    };
-  },
   methods: {
+    hideActionsTemplate: function(){
+      var element;
+      this.$slots.actions().forEach(function(action){
+        element = $(action.el);
+        element.addClass('d-none');
+      });
+    },
     renderActions(row){
       var actions = [], element, idKey;
       this.$slots.actions().forEach(function(action){
-        element = $(action.el);
+        element = $(action.el).clone();
         idKey = element.attr('data-id');
-        element.attr('data-id', row[(!idKey)? 'id' : idKey] || '');
+        element.attr('data-id', row[idKey || 'id'] || '').removeClass('d-none');
         actions.push($('<div/>').append(element).html());
       });
       return actions.join(' ');
@@ -61,11 +61,11 @@ export default {
     for(var i in props)
       if(this.$props[props[i]] !== undefined)
         column[props[i]] = this.$props[props[i]];
-    if(this.$slots.actions !== undefined)
+    if(this.$slots.actions !== undefined){
       column.data = this.renderActions;
+      this.hideActionsTemplate();
+    }
     this.$parent.columns.push(column);
-    // Removes the action column elements template form DOM after it's rendered.
-    this.renderActionsTemplate = false;
     if(this.$parent.$slots.default().length == this.$parent.columns.length && !this.$parent.deferred)
       this.$parent.init();
   }

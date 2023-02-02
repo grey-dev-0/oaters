@@ -11,7 +11,32 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+const glob = require('glob');
+const path = require('path');
+
+mix.setPublicPath(path.normalize('./public'));
+mix.version();
+
+mix.options({
+    runtimeChunkPath: 'js',
+    terser: {
+        extractComments: (astNode, comment) => false,
+    }
+});
+mix.webpackConfig({
+    output: {
+        chunkFilename: '[name].js',
+    }
+});
+
+mix.extract(['@vue'], 'js/vue.min');
+glob.sync('resources/js/*/*.js').forEach(function(file){
+    file = file.replace(/[\\\/]+/g, '/');
+    let dest = file.replace('resources', 'public');
+    mix.js(file, dest).vue();
+});
+glob.sync('resources/scss/*.scss').forEach(function(file){
+    file = file.replace(/[\\\/]+/g, '/');
+    let dest = file.replace('resources/scss', 'public/css').replace(/\.(scss|sass)$/, '.css');
+    mix.sass(file, dest);
+});

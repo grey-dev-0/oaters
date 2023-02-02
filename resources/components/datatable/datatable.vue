@@ -56,6 +56,11 @@ export default {
     };
   },
   methods: {
+    getRef(){
+        for(var ref in this.$root.$refs)
+            if(this.$root.$refs[ref] === this)
+                return ref;
+    },
     init: function(){
       if(this.dataTable !== null)
         this.dataTable.destroy();
@@ -76,6 +81,8 @@ export default {
           complete: this.ajaxComplete
         }
       });
+      if(this.$root.emitter !== undefined)
+          this.$root.emitter.emit('initialized', {ref: this.getRef()});
     }
   }
 };

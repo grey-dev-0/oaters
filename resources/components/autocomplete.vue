@@ -1,12 +1,15 @@
 <template>
-    <div class="autocomplete-group">
-        <input type="text" class="form-control autocomplete-input" :id="id + '-input'" :placeholder="placeholder" v-model="query" @keyup="search()" autocomplete="off">
-        <input type="hidden" class="autocomplete-value" :id="id + '-value'" :name="name || null" v-model="selection">
+    <div class="autocomplete-group" v-if="!multiple">
+        <input type="text" class="form-control autocomplete-input" :id="id + '-input'" :placeholder="placeholder" v-model="query" @keyup="search" @focus="search" @keyup.esc="close()" @focusout="close(true)" autocomplete="off" :required="required">
+        <input type="hidden" class="autocomplete-value" :id="id + '-value'" :name="name || null" v-model="selection" :required="required">
         <span v-if="!!selection" class="autocomplete-clear text-muted" @click="clear">&times;</span>
         <ul :class="dropdownClass" :id="id + '-selection'">
             <li class="dropdown-item" v-for="(value, key) in suggestions" :key="key" @click="select(key, value)">{{value}}</li>
         </ul>
     </div>
+    <select v-else class="form-control" :id="id" :name="name || null" multiple :required="required">
+        <slot name="options"></slot>
+    </select>
 </template>
 
 <script>
@@ -22,6 +25,14 @@ export default {
         },
         name: String,
         placeholder: String,
+        multiple: {
+            type: Boolean,
+            default: false
+        },
+        required: {
+            type: Boolean,
+            default: false
+        },
         url: {
             type: String,
             required: true
@@ -37,7 +48,9 @@ export default {
         limit: {
             type: Number,
             default: 5
-        }
+        },
+        selectedId: String,
+        selectedTitle: String
     },
     data: function(){
         return {
@@ -56,7 +69,10 @@ export default {
         }
     },
     methods: {
-        search: _.debounce(function(){
+        search: _.debounce(function(e){
+            var keyCode = e.keyCode || e.which;
+            if(keyCode == 27)
+                return;
             var request = {limit: this.limit};
             request[this.queryKey] = this.query;
             var component = this;
@@ -91,18 +107,57 @@ export default {
             this.query = '';
             this.selection = '';
             this.$emit('change', this.name, null);
+        },
+        close(delayed){
+            if(!delayed)
+                this.suggestions = [];
+            else {
+                var component = this;
+                setTimeout(function(){
+                    component.suggestions = [];
+                }, 250);
+            }
         }
     },
-    mounted: function(){
+    mounted(){
         if(this.$parent.$options.name != 'VueField')
             return;
-        var autocomplete = this;
+        if(this.selectedId !== undefined)
+            this.selection = this.selectedId;
+        if(this.selectedTitle !== undefined)
+            this.query = this.selectedTitle;
+        var component = this;
         this.$nextTick(function(){
-            this.$parent.$parent.emitter.on('destroy', function(fieldName){
-                if(autocomplete.name == fieldName)
-                    autocomplete.clear();
-            });
-        })
+          this.$parent.$parent.emitter.on('destroy', function(fieldName){
+            if(component.name == fieldName)
+              component.clear();
+          });
+        });
+        if(!this.multiple)
+            return;
+        var input = $('#' + this.id);
+        input.select2({
+            placeholder: this.placeholder,
+            ajax: {
+                url: this.url,
+                type: 'POST',
+                delay: 200,
+                data(parameters){
+                    var request = {limit: component.limit};
+                    request[component.queryKey] = parameters.term;
+                    return request;
+                },
+                processResults(response){
+                    var results = response[component.resultsKey], processed = [];
+                    for(var i in results)
+                        processed.push({id: i, text: results[i]});
+                    return {results: processed};
+                }
+            }
+        });
+        input.on('change', function(){
+            component.$emit('change', component.name, $(this).val());
+        });
     }
 }
 </script>

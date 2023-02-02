@@ -20,7 +20,7 @@
         <nav-item url="{{url('sa/payments')}}">{{trans('sapphire::admin.payments.title')}}</nav-item>
         <template v-slot:right>
             <nav-item>
-                <template v-slot:label>{{auth('admin')->user()->name}}</template>
+                <template #label>{{auth('admin')->user()->name}}</template>
                 <nav-item in-dropdown url="{{url('sa/logout')}}">{{trans('sapphire::admin.login.logout')}}</nav-item>
             </nav-item>
         </template>
@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-@stack('locale-scripts')
+
 @stack('scripts')
 </body>
 </html>

@@ -1,8 +1,5 @@
 <modal id="{{$id}}" ref="{{$ref}}" static size="lg" color="{{$color}}">
-    <template #header>
-        <h3 class="text-white m-0">{{$title}}@if($edit?? false) - @{{ openSubscription.name }}@endif</h3>
-        <span class="close text-muted" data-dismiss="modal">&times;</span>
-    </template>
+    <template #header>{$title}}@if($edit?? false) - @{{ openSubscription.name }}@endif</template>
     <vue-form id="{{$id}}-form" ref="{{$ref}}Form" ajax action="{{url('sa/subscriptions/create')}}">
         <vue-field name="tenant_id" type="autocomplete" id="{{($edit?? false)? 'e_' : ''}}tenant-id" url="{{url('sa/autocomplete/tenants')}}">{{trans('sapphire::admin.subscriptions.tenant')}}</vue-field>
         <vue-field name="module_ids" type="select2" multiple id="{{($edit?? false)? 'e_' : ''}}modules">

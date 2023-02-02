@@ -5,7 +5,7 @@
 @stop
 
 @push('styles')
-    <link rel="stylesheet" href="{{asset('resources/css/daterangepicker.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
 @endpush
 
 @section('content')
@@ -64,9 +64,8 @@
 @stop
 
 @push('scripts')
-    <script type="text/javascript" src="{{asset('resources/js/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/chart.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/bundles/sapphire/admin_dashboard.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/views/sapphire/admin_dashboard.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/chart.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/sapphire/dashboard.js')}}"></script>
 @endpush

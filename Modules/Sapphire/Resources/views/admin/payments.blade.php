@@ -5,8 +5,8 @@
 @stop
 
 @push('styles')
-    <link rel="stylesheet" href="{{asset('resources/css/jquery.dataTables.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('resources/css/daterangepicker.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
 @endpush
 
 @section('content')
@@ -42,11 +42,10 @@
             'unpaid' => trans('common::words.unpaid')
         ]);
     </script>
-    <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.bs4.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/lodash.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/bundles/common/datatable.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/views/sapphire/payments.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.dataTables.bs4.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/lodash.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset(mix('js/sapphire/payments.js'))}}"></script>
 @endpush

@@ -1,9 +1,10 @@
 import Chart from "../../components/chart";
 import Counter from "../../components/counter";
 import VueTable from "../../components/table";
+import {createApp} from "vue";
 let libraries = Object.assign({}, {Chart}, {Counter}, VueTable);
 
-let app = Vue.createApp({
+let app = createApp({
     data: function(){
         return {
             chartRange: {
@@ -29,7 +30,7 @@ import(
     '../../components/common'
     ).then((common) => {
     common.load(app);
-    for(var component in libraries)
+    for(let component in libraries)
         app.component(component, libraries[component]);
     app.mount('#app');
 });

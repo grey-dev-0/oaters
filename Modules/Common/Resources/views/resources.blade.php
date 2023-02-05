@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{asset('css/fontawesome.min.css')}}" type="text/css">
 <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" type="text/css">
-<link rel="stylesheet" href="{{asset('css/colors.min.css')}}" type="text/css">
+<link rel="stylesheet" href="{{asset(mix('css/colors.css'))}}" type="text/css">
 @bukStyles(true)
 <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>

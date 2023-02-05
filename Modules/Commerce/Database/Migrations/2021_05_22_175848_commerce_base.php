@@ -56,7 +56,7 @@ class CommerceBase extends Migration
             $table->increments('id');
             $table->unsignedInteger('refundable_id');
             $table->string('refundable_type', 30);
-            $table->index(['refundable_id', 'refundable_type'], 'refundable_morph');
+            $table->index(['refundable_type', 'refundable_id'], 'refundable_morph');
             $table->float('amount');
             $table->boolean('paid')->default(false);
             $table->timestamp('returned_at')->nullable();
@@ -76,7 +76,7 @@ class CommerceBase extends Migration
             $table->increments('id');
             $table->unsignedInteger('transferable_id');
             $table->string('transferable_type', 30);
-            $table->index(['transferable_id', 'transferable_type'], 'transferable_morph');
+            $table->index(['transferable_type', 'transferable_id'], 'transferable_morph');
             $table->enum('type', ['debit', 'credit']);
             $table->float('amount');
             $table->timestamp('created_at');

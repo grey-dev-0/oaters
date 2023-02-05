@@ -5,9 +5,9 @@
 @stop
 
 @push('styles')
-    <link rel="stylesheet" href="{{asset('resources/css/jquery.dataTables.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('resources/css/daterangepicker.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('resources/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
 @endpush
 
 @section('content')
@@ -65,12 +65,11 @@
         @endphp
         locale.common = @json($locale);
     </script>
-    <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/jquery.dataTables.bs4.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/lodash.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/select2.full.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/bundles/common/datatable_with_form.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/views/sapphire/subscriptions.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.dataTables.bs4.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/lodash.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/select2.full.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset(mix('js/sapphire/subscriptions.js'))}}"></script>
 @endpush

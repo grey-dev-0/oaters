@@ -4,7 +4,7 @@
     </template>
     <template v-else>
         <div class="form-group row">
-            <label :class="labelClass">
+            <label :class="labelClass" ref="label">
                 <slot></slot>
             </label>
             <div :class="inputClass">
@@ -129,7 +129,7 @@ export default {
         }
     },
     mounted: function(){
-        this.placeholder = this.$slots.default()[0].el.textContent.trim();
+        this.placeholder = $(this.$refs.label).children().first().text().trim();
         this.$nextTick(function(){
             var field = this;
             this.$parent.emitter.on('init', function(){

@@ -1,7 +1,9 @@
 <template>
   <th>
     <slot></slot>
-    <slot name="actions"></slot>
+    <div class="d-none" ref="actions" v-if="!!$slots.actions">
+      <slot name="actions"></slot>
+    </div>
   </th>
 </template>
 
@@ -37,19 +39,12 @@ export default {
     className: String
   },
   methods: {
-    hideActionsTemplate: function(){
-      var element;
-      this.$slots.actions().forEach(function(action){
-        element = $(action.el);
-        element.addClass('d-none');
-      });
-    },
     renderActions(row){
-      var actions = [], element, idKey;
-      this.$slots.actions().forEach(function(action){
-        element = $(action.el).clone();
+      var actions = [], elements = $(this.$refs.actions).children(), idKey;
+      elements.each(function(){
+        var element = $(this).clone();
         idKey = element.attr('data-id');
-        element.attr('data-id', row[idKey || 'id'] || '').removeClass('d-none');
+        element.attr('data-id', row[idKey || 'id'] || '');
         actions.push($('<div/>').append(element).html());
       });
       return actions.join(' ');
@@ -61,10 +56,8 @@ export default {
     for(var i in props)
       if(this.$props[props[i]] !== undefined)
         column[props[i]] = this.$props[props[i]];
-    if(this.$slots.actions !== undefined){
+    if(!!this.$slots.actions)
       column.data = this.renderActions;
-      this.hideActionsTemplate();
-    }
     this.$parent.columns.push(column);
     if(this.$parent.$slots.default().length == this.$parent.columns.length && !this.$parent.deferred)
       this.$parent.init();

@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>OATERS - Administration</title>
-    <link rel="stylesheet" href="{{asset('resources/css/bootstrap.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('resources/css/login.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('resources/css/colors.min.css')}}" type="text/css">
-    <script type="text/javascript" src="{{asset('resources/js/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('resources/js/bootstrap.min.js')}}"></script>
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{asset(mix('css/login.css'))}}" type="text/css">
+    <link rel="stylesheet" href="{{asset(mix('css/colors.css'))}}" type="text/css">
+    <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
 </head>
 <body class="bg-blue-grey-10">
 <div class="row">

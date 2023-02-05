@@ -24,7 +24,7 @@ export default {
             type: Number,
             default: 5
         },
-        datatableRef: String
+        datatableRef: String,
         color: {
             type: String,
             default: 'grey-10'

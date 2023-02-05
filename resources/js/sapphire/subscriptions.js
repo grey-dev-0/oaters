@@ -1,50 +1,63 @@
-(function(){
-    var view, app = Vue.createApp({
-        data: function(){
-            return {
-                locale: window.locale,
-                openSubscription: {
-                    id: 0,
-                    name: null
-                }
-            }
-        },
-        methods: {
-            renderModules: function(modules){
-                var rendered = [];
-                modules.forEach(function(module){
-                    rendered.push('<div class="badge badge-'+view.moduleColor(module.name)+'">'+module.name+'</div>');
-                });
-                return rendered.join(' ');
-            },
-            renderAmount: function(row){
-                return '$' + row.price;
-            },
-            renderPaid: function(paid){
-                return paid? window.locale.common.yes : window.locale.common.no;
-            },
-            moduleColor: function(module){
-                switch(module){
-                    case 'amethyst': return 'info';
-                    case 'topaz': return 'warning';
-                    case 'emerald': return 'success';
-                    case 'ruby': return 'danger';
-                    case 'sapphire': return 'primary';
-                    default: return 'secondary';
-                }
-            },
-            addSubscription: function(){
-                this.$refs.createSubscription.show(function(){
-                    view.$refs.createSubscriptionForm.reset();
-                });
-            }
-        },
-        computed: {
-            dataTable: function(){
-                return this.$refs.subscriptionsTable.dataTable;
+import {createApp} from "vue";
+import Datatable from "../../components/datatable";
+import Form from "../../components/form";
+import Modal from "../../components/modal.vue";
+let libraries = Object.assign({}, Datatable, Form, {Modal});
+
+let app = createApp({
+    data: function(){
+        return {
+            locale: window.locale,
+            openSubscription: {
+                id: 0,
+                name: null
             }
         }
-    });
-    loadComponents(app, 'datatable_with_form');
-    view = app.mount('#app');
-})();
+    },
+    methods: {
+        renderModules: function(modules){
+            let rendered = [];
+            modules.forEach((module) => {
+                rendered.push('<div class="badge badge-'+this.moduleColor(module.name)+'">'+module.name+'</div>');
+            });
+            return rendered.join(' ');
+        },
+        renderAmount: function(row){
+            return '$' + row.price;
+        },
+        renderPaid: function(paid){
+            return paid? window.locale.common.yes : window.locale.common.no;
+        },
+        moduleColor: function(module){
+            switch(module){
+                case 'amethyst': return 'info';
+                case 'topaz': return 'warning';
+                case 'emerald': return 'success';
+                case 'ruby': return 'danger';
+                case 'sapphire': return 'primary';
+                default: return 'secondary';
+            }
+        },
+        addSubscription: function(){
+            this.$refs.createSubscription.show(() => {
+                this.$refs.createSubscriptionForm.reset();
+            });
+        }
+    },
+    computed: {
+        dataTable: function(){
+            return this.$refs.subscriptionsTable.dataTable;
+        }
+    }
+});
+
+import(
+    /* webpackPreload: true */
+    /* webpackChunkName: "js/common" */
+    '../../components/common'
+    ).then((common) => {
+    common.load(app);
+    for(let component in libraries)
+        app.component(component, libraries[component]);
+    app.mount('#app');
+});

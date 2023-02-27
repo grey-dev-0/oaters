@@ -6,7 +6,7 @@
     "order":  9,
     "priority": 8,
     "providers": [
-
+        "Modules\\Ruby\\Providers\\ModuleServiceProvider"
     ],
     "aliases": {},
     "files": [],

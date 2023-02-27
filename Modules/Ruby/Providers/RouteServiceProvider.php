@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sapphire\Providers;
+namespace Modules\Ruby\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -12,7 +12,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $moduleNamespace = 'Modules\Sapphire\Http\Controllers';
+    protected $moduleNamespace = 'Modules\Ruby\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -45,8 +45,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware('web')->prefix('sa')
-            ->namespace("{$this->moduleNamespace}\\Admin")
-            ->group(module_path('Sapphire', '/Routes/admin.php'));
+        Route::middleware('web')->prefix('rm')
+            ->namespace("{$this->moduleNamespace}\\Manager")
+            ->group(module_path('Ruby', '/Routes/manager.php'));
     }
 }

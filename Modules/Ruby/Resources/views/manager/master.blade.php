@@ -14,7 +14,7 @@
 </head>
 <body class="bg-grey-8">
 <div id="app">
-    <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-6">
+    <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-4">
         <nav-item url="{{url('rm/personnel')}}">{{trans('ruby::words.personnel')}}</nav-item>
         <nav-item url="{{url('rm/payroll')}}">{{trans('ruby::words.payroll')}}</nav-item>
         <nav-item url="{{url('rm/notices')}}">{{trans('ruby::words.notices')}}</nav-item>

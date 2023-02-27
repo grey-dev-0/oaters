@@ -67,5 +67,5 @@
     <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/chart.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/sapphire/dashboard.js')}}"></script>
+    <script type="text/javascript" src="{{asset(mix('js/sapphire/dashboard.js'))}}"></script>
 @endpush

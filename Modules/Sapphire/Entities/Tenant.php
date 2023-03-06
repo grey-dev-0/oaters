@@ -2,10 +2,12 @@
 
 namespace Modules\Sapphire\Entities;
 
+use App\Traits\InitializesTenantDatabase;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Tenant extends Authenticatable
-{
+class Tenant extends Authenticatable{
+    use InitializesTenantDatabase;
+
     protected $guarded = ['id'];
     protected $hidden = ['password'];
 

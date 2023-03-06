@@ -5,7 +5,7 @@ namespace Modules\Ruby\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Leaf extends Model
+class Document extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,6 @@ class Leaf extends Model
     
     protected static function newFactory()
     {
-        return \Modules\Ruby\Database\factories\LeafFactory::new();
+        return \Modules\Ruby\Database\factories\DocumentFactory::new();
     }
 }

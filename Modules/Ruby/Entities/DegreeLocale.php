@@ -2,17 +2,25 @@
 
 namespace Modules\Ruby\Entities;
 
+use App\Traits\UsesTenantDatabase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class DegreeLocale extends Model
-{
-    use HasFactory;
+class DegreeLocale extends Model{
+    use HasFactory, UsesTenantDatabase;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Ruby\Database\factories\DegreeLocaleFactory::new();
-    }
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $table = 'r_degree_locales';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = [];
 }

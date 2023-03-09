@@ -2,17 +2,24 @@
 
 namespace Modules\Ruby\Entities;
 
+use App\Traits\UsesTenantDatabase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Document extends Model
-{
-    use HasFactory;
+class Document extends Model{
+    use HasFactory, UsesTenantDatabase;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Ruby\Database\factories\DocumentFactory::new();
+    /**
+     * @inheritdoc
+     */
+    protected $table = 'r_documents';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = [];
+
+    public function applicant(){
+        return $this->belongsTo(Applicant::class);
     }
 }

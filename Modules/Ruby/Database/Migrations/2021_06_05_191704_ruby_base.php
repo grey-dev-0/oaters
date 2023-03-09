@@ -86,22 +86,6 @@ class RubyBase extends Migration
             $table->timestamps();
         });
 
-        Schema::connection('tenant')->create('r_subordinates', function(Blueprint $table){
-            $table->unsignedInteger('manager_id');
-            $table->unsignedInteger('contact_id');
-            $table->primary(['manager_id', 'contact_id']);
-            $table->foreign('manager_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
-        });
-
-        Schema::connection('tenant')->create('r_punches', function(Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedInteger('contact_id');
-            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
-            $table->enum('type', ['in', 'out']);
-            $table->timestamp('created_at');
-        });
-
         Schema::connection('tenant')->create('r_departments', function(Blueprint $table){
             $table->increments('id');
             $table->timestamps();
@@ -113,6 +97,24 @@ class RubyBase extends Migration
             $table->foreign('department_id')->references('id')->on('r_departments')->onUpdate('cascade')->onDelete('cascade');
             $table->string('locale', 2);
             $table->string('name');
+        });
+
+        Schema::connection('tenant')->create('r_subordinates', function(Blueprint $table){
+            $table->unsignedInteger('manager_id');
+            $table->unsignedInteger('contact_id')->unique();
+            $table->unsignedInteger('department_id');
+            $table->primary(['manager_id', 'contact_id']);
+            $table->foreign('manager_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('r_departments')->onUpdate('cascade')->onDelete('cascade');
+        });
+
+        Schema::connection('tenant')->create('r_punches', function(Blueprint $table){
+            $table->bigIncrements('id');
+            $table->unsignedInteger('contact_id');
+            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
+            $table->enum('type', ['in', 'out']);
+            $table->timestamp('created_at');
         });
 
         Schema::connection('tenant')->create('r_vacancies', function(Blueprint $table){
@@ -187,10 +189,10 @@ class RubyBase extends Migration
         Schema::connection('tenant')->dropIfExists('r_degrees');
         Schema::connection('tenant')->dropIfExists('r_vacancy_locales');
         Schema::connection('tenant')->dropIfExists('r_vacancies');
-        Schema::connection('tenant')->dropIfExists('r_department_locales');
-        Schema::connection('tenant')->dropIfExists('r_departments');
         Schema::connection('tenant')->dropIfExists('r_punches');
         Schema::connection('tenant')->dropIfExists('r_subordinates');
+        Schema::connection('tenant')->dropIfExists('r_department_locales');
+        Schema::connection('tenant')->dropIfExists('r_departments');
         Schema::connection('tenant')->dropIfExists('r_leaves');
         Schema::connection('tenant')->dropIfExists('r_notices');
         Schema::connection('tenant')->dropIfExists('r_payment_components');

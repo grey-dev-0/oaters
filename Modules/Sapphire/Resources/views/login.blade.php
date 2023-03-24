@@ -26,7 +26,7 @@
                     {{csrf_field()}}
                     <input type="hidden" name="timezone" value="Asia/Kuwait">
                     <div class="row">
-                        <div class="col-sm-12 form-group"><input type="text" class="form-control" name="username" placeholder="{{trans('sapphire::admin.login.username')}}"></div>
+                        <div class="col-sm-12 form-group"><input type="text" class="form-control" name="email" placeholder="{{trans('sapphire::admin.login.username')}}"></div>
                         <div class="col-sm-12 form-group"><input type="password" class="form-control" name="password" placeholder="{{trans('sapphire::admin.login.password')}}"></div>
                         <div class="col-sm-12"><button class="btn btn-block btn-primary" type="submit">{{trans('sapphire::admin.login.login')}}</button></div>
                     </div>

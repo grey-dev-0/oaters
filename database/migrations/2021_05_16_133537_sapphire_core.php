@@ -30,7 +30,7 @@ class SapphireCore extends Migration
             $table->foreign('tenant_id')->references('id')->on('tenants')->onUpdate('cascade')->onDelete('cascade');
             $table->float('price');
             $table->integer('discount')->nullable();
-            $table->enum('discount_type', ['fixed', 'percent']);
+            $table->enum('discount_type', ['fixed', 'percent'])->default('fixed');
             $table->boolean('paid')->default(false);
             $table->timestamp('expires_at');
             $table->timestamps();

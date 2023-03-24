@@ -2,17 +2,30 @@
 
 namespace Modules\Sapphire\Entities;
 
+use App\Traits\UsesTenantDatabase;
+use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Role extends Model
-{
-    use HasFactory;
+class Role extends Model{
+    use Translatable, UsesTenantDatabase;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Sapphire\Database\factories\RoleFactory::new();
-    }
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $table = 's_roles';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = [];
+
+    /**
+     * @var string[] $translatedAttributes Attributes translated in the related localization table.
+     */
+    public $translatedAttributes = ['title'];
 }

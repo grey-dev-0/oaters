@@ -59,7 +59,8 @@ class CommonBase extends Migration
             $table->foreign('user_id')->references('id')->on('s_users')->onUpdate('cascade')->onDelete('set null');
             $table->unsignedInteger('timezone_id')->nullable();
             $table->foreign('timezone_id')->references('id')->on('lc_timezones')->onUpdate('cascade')->onDelete('set null');
-            $table->unsignedTinyInteger('type');
+            $table->unsignedInteger('role_id')->nullable();
+            $table->foreign('role_id')->references('id')->on('s_roles')->onUpdate('cascade')->onDelete('set null');
             $table->string('name');
             $table->string('job');
             $table->string('image')->nullable();

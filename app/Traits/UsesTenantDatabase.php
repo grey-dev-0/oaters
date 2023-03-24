@@ -3,8 +3,7 @@
 namespace App\Traits;
 
 trait UsesTenantDatabase{
-    /**
-     * @inheritdoc
-     */
-    protected $connection = 'tenant';
+    public function initializeUsesTenantDatabase(){
+        $this->connection = 'tenant';
+    }
 }

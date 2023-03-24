@@ -26,6 +26,14 @@ class Contact extends Model{
      */
     protected $hidden = ['departments'];
 
+    /**
+     * @inheritDoc
+     */
+    protected static function newFactory(){
+        return \Modules\Common\Database\factories\ContactsFactory::new();
+    }
+
+
     public function managed_departments(){
         return $this->belongsToMany(Department::class, 'r_subordinates', 'manager_id', 'department_id');
     }

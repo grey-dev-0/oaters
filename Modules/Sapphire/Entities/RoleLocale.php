@@ -2,17 +2,24 @@
 
 namespace Modules\Sapphire\Entities;
 
+use App\Traits\UsesTenantDatabase;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class RoleLocale extends Model
-{
-    use HasFactory;
+class RoleLocale extends Model{
+    use UsesTenantDatabase;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Sapphire\Database\factories\RoleLocaleFactory::new();
-    }
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $table = 's_role_locales';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = [];
 }

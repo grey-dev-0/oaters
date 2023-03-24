@@ -28,7 +28,7 @@ class TenantsTableSeeder extends Seeder{
             'name' => 'George Maxwell',
             'email' => 'george@maxwell.com',
             'password' => \Hash::make('test123'),
-            'hash' => sha1(\Str::random().time()),
+            'hash' => 'test321',
             'subdomain' => 'maxwell'
         ])->subscriptions()->create([
             'price' => 55.55,

@@ -72,18 +72,16 @@ class CommonBase extends Migration
 
         Schema::connection('tenant')->create('lc_phones', function(Blueprint $table){
             $table->increments('id');
-            $table->unsignedInteger('contactable_id');
-            $table->string('contactable_type');
-            $table->index(['contactable_type', 'contactable_id']);
+            $table->unsignedInteger('contact_id');
+            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
             $table->string('number', 16);
             $table->boolean('default')->default(false);
         });
 
         Schema::connection('tenant')->create('lc_emails', function(Blueprint $table){
             $table->increments('id');
-            $table->unsignedInteger('contactable_id');
-            $table->string('contactable_type');
-            $table->index(['contactable_type', 'contactable_id']);
+            $table->unsignedInteger('contact_id');
+            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
             $table->string('address');
             $table->boolean('default')->default(false);
         });

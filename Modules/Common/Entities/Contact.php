@@ -33,6 +33,14 @@ class Contact extends Model{
         return \Modules\Common\Database\factories\ContactsFactory::new();
     }
 
+    public function phones(){
+        return $this->hasMany(Phone::class);
+    }
+
+    public function emails(){
+        return $this->hasMany(Email::class);
+    }
+
 
     public function managed_departments(){
         return $this->belongsToMany(Department::class, 'r_subordinates', 'manager_id', 'department_id');

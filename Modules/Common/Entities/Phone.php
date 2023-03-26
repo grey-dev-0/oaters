@@ -2,17 +2,24 @@
 
 namespace Modules\Common\Entities;
 
+use App\Traits\UsesTenantDatabase;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Phone extends Model
-{
-    use HasFactory;
+class Phone extends Model{
+    use UsesTenantDatabase;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Common\Database\factories\PhoneFactory::new();
-    }
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $table = 'lc_phones';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = [];
 }

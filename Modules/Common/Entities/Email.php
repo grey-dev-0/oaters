@@ -2,17 +2,24 @@
 
 namespace Modules\Common\Entities;
 
+use App\Traits\UsesTenantDatabase;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Email extends Model
-{
-    use HasFactory;
+class Email extends Model{
+    use UsesTenantDatabase;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Common\Database\factories\EmailFactory::new();
-    }
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = false;
+
+    /**
+     * @inheritdoc
+     */
+    protected $table = 'lc_emails';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = [];
 }

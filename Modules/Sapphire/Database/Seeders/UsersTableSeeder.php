@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Common\Entities\Contact;
+use Modules\Sapphire\Entities\Tenant;
 use Modules\Sapphire\Entities\User;
 
 class UsersTableSeeder extends Seeder{
@@ -28,5 +29,12 @@ class UsersTableSeeder extends Seeder{
         };
         User::factory()->state(new Sequence($sequenceGenerator))
             ->has(Contact::factory()->state(new Sequence($sequenceGenerator)))->count(25)->create();
+        // Linking main system user to the tenant account.
+        $user = User::whereRoleId(1)->first();
+        Tenant::whereEmail('george@maxwell.com')->update(['user_id' => $user->id]);
+        $user->contact->emails()->create([
+            'address' => 'george@maxwell.com',
+            'default' => true
+        ]);
     }
 }

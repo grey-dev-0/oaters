@@ -15,6 +15,7 @@ class SapphireCore extends Migration
     {
         Schema::create('tenants', function(Blueprint $table){
             $table->increments('id');
+            $table->unsignedInteger('user_id')->nullable();
             $table->string('name');
             $table->string('email');
             $table->string('password', 100);

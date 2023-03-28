@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Ruby\Database\Seeders\PrivilegesTableSeeder;
 use Modules\Sapphire\Database\Seeders\RolesTableSeeder;
 use Modules\Sapphire\Database\Seeders\TenantsTableSeeder;
 use Modules\Sapphire\Database\Seeders\UsersTableSeeder;
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder{
         $this->call(ModuleSeeder::class);
         $this->call(TenantsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
+        $this->call(PrivilegesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
     }
 }

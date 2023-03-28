@@ -28,4 +28,8 @@ class Role extends Model{
      * @var string[] $translatedAttributes Attributes translated in the related localization table.
      */
     public $translatedAttributes = ['title'];
+
+    public function privileges(){
+        return $this->belongsToMany(Privilege::class, 's_role_privileges');
+    }
 }

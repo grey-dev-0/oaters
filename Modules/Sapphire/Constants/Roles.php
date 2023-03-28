@@ -43,7 +43,7 @@ final class Roles{
      */
     public static function options(){
         $roles = Role::whereIn('id', self::roles())->with(['translations' =>
-            fn($locale) => $locale->whereLoacle(\App::getLocale())])->get();
+            fn($locale) => $locale->whereLocale(\App::getLocale())])->get();
         return $roles->pluck('title', 'id')->toArray();
     }
 

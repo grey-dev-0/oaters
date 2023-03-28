@@ -24,6 +24,10 @@ class User extends Model{
         return \Modules\Sapphire\Database\factories\UsersFactory::new();
     }
 
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+
     public function contact(){
         return $this->hasOne(Contact::class);
     }

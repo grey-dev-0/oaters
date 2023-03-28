@@ -5,8 +5,7 @@ namespace Modules\Ruby\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
-{
+class RouteServiceProvider extends ServiceProvider{
     /**
      * The module namespace to assume when generating URLs to actions.
      *
@@ -21,8 +20,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot(){
         parent::boot();
     }
 
@@ -31,8 +29,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function map()
-    {
+    public function map(){
         $this->mapWebRoutes();
     }
 
@@ -43,10 +40,13 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapWebRoutes()
-    {
+    protected function mapWebRoutes(){
         Route::middleware('web')->prefix('rm')
             ->namespace("{$this->moduleNamespace}\\Manager")
             ->group(module_path('Ruby', '/Routes/manager.php'));
+
+        Route::middleware('web')->prefix('r')
+            ->namespace("{$this->moduleNamespace}\\Agent")
+            ->group(module_path('Ruby', '/Routes/agent.php'));
     }
 }

@@ -41,12 +41,8 @@ class RouteServiceProvider extends ServiceProvider{
      * @return void
      */
     protected function mapWebRoutes(){
-        Route::middleware('web')->prefix('rm')
-            ->namespace("{$this->moduleNamespace}\\Manager")
-            ->group(module_path('Ruby', '/Routes/manager.php'));
-
         Route::middleware('web')->prefix('r')
-            ->namespace("{$this->moduleNamespace}\\Agent")
-            ->group(module_path('Ruby', '/Routes/agent.php'));
+            ->namespace($this->moduleNamespace)
+            ->group(module_path('Ruby', '/Routes/routes.php'));
     }
 }

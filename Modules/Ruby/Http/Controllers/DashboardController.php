@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Ruby\Http\Controllers\Manager;
+namespace Modules\Ruby\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 

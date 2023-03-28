@@ -3,12 +3,13 @@
 namespace Modules\Sapphire\Entities;
 
 use App\Traits\UsesTenantDatabase;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Common\Entities\Contact;
+use Modules\Sapphire\Traits\Authorizable;
 
-class User extends Model{
-    use HasFactory, UsesTenantDatabase;
+class User extends Authenticatable{
+    use Authorizable, HasFactory, UsesTenantDatabase;
 
     /**
      * @inheritdoc

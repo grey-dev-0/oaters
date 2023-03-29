@@ -11,7 +11,7 @@ trait Authorizable{
      */
     private function privileges(){
         $cacheKey = config('database.connections.tenant.username').".role-{$this->role_id}";
-        return cache()->rememberForever($cacheKey, fn() => auth()->user()->role()->first()->privileges->pluck('name')->toArray());
+        return cache()->rememberForever($cacheKey, fn() => $this->role()->first()->privileges->pluck('name')->toArray());
     }
 
     /**

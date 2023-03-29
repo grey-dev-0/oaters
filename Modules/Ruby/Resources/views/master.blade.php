@@ -15,12 +15,12 @@
 <body class="bg-grey-8">
 <div id="app">
     <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-4">
-        <nav-item url="{{url('rm/personnel')}}">{{trans('ruby::words.personnel')}}</nav-item>
-        <nav-item url="{{url('rm/payroll')}}">{{trans('ruby::words.payroll')}}</nav-item>
-        <nav-item url="{{url('rm/notices')}}">{{trans('ruby::words.notices')}}</nav-item>
-        <nav-item url="{{url('rm/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item>
-        <nav-item url="{{url('rm/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item>
-        <nav-item url="{{url('rm/recruitment')}}">{{trans('ruby::words.recruitment')}}</nav-item>
+        @can('authorize', 'view-personnel') <nav-item url="{{url('r/personnel')}}">{{trans('ruby::words.personnel')}}</nav-item> @endcan
+        @can('authorize', 'view-payroll') <nav-item url="{{url('r/payroll')}}">{{trans('ruby::words.payroll')}}</nav-item> @endcan
+        @can('authorize', 'view-notices') <nav-item url="{{url('r/notices')}}">{{trans('ruby::words.notices')}}</nav-item> @endcan
+        @can('authorize', 'view-leaves') <nav-item url="{{url('r/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item> @endcan
+        @can('authorize', 'view-attendance') <nav-item url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item> @endcan
+        @can('authorize', 'view-recruitment') <nav-item url="{{url('r/recruitment')}}">{{trans('ruby::words.recruitment')}}</nav-item> @endcan
         <template #right>
             <nav-item>
                 <template #label>{{auth('admin')->user()->name}}</template>

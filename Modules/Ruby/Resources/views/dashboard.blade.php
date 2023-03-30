@@ -1,4 +1,4 @@
-@extends('ruby::manager.master')
+@extends('ruby::master')
 
 @section('title')
     <title>Ruby: Overview</title>

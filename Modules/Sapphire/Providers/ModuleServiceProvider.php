@@ -2,6 +2,7 @@
 
 namespace Modules\Sapphire\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -23,6 +24,7 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerBladeDirectives();
         $this->registerTranslations();
         $this->registerViews();
     }
@@ -36,6 +38,15 @@ class ModuleServiceProvider extends ServiceProvider
     {
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * Registers extra blade directive(s) required for authorizing actions within views.
+     *
+     * @return void
+     */
+    public function registerBladeDirectives(){
+        Blade::if('authorize', fn($privilege) => \Gate::allows('authorize', $privilege));
     }
 
     /**

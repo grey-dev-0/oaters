@@ -48,5 +48,13 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')->prefix('sa')
             ->namespace("{$this->moduleNamespace}\\Admin")
             ->group(module_path('Sapphire', '/Routes/admin.php'));
+
+        Route::middleware('web')->prefix('st')
+            ->namespace("{$this->moduleNamespace}\\Tenant")
+            ->group(module_path('Sapphire', '/Routes/tenant.php'));
+
+        Route::middleware('web')->prefix('s')
+            ->namespace("{$this->moduleNamespace}\\User")
+            ->group(module_path('Sapphire', '/Routes/user.php'));
     }
 }

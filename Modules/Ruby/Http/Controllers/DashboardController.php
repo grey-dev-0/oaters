@@ -6,6 +6,6 @@ use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller{
     public function getIndex(){
-        return view('ruby::manager.dashboard');
+        return view('ruby::dashboard');
     }
 }

@@ -15,15 +15,15 @@
 <body class="bg-grey-8">
 <div id="app">
     <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-4">
-        @can('authorize', 'view-personnel') <nav-item url="{{url('r/personnel')}}">{{trans('ruby::words.personnel')}}</nav-item> @endcan
-        @can('authorize', 'view-payroll') <nav-item url="{{url('r/payroll')}}">{{trans('ruby::words.payroll')}}</nav-item> @endcan
-        @can('authorize', 'view-notices') <nav-item url="{{url('r/notices')}}">{{trans('ruby::words.notices')}}</nav-item> @endcan
-        @can('authorize', 'view-leaves') <nav-item url="{{url('r/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item> @endcan
-        @can('authorize', 'view-attendance') <nav-item url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item> @endcan
-        @can('authorize', 'view-recruitment') <nav-item url="{{url('r/recruitment')}}">{{trans('ruby::words.recruitment')}}</nav-item> @endcan
+        @authorize('view-personnel') <nav-item url="{{url('r/personnel')}}">{{trans('ruby::words.personnel')}}</nav-item> @endauthorize
+        @authorize('view-payroll') <nav-item url="{{url('r/payroll')}}">{{trans('ruby::words.payroll')}}</nav-item> @endauthorize
+        @authorize('view-notices') <nav-item url="{{url('r/notices')}}">{{trans('ruby::words.notices')}}</nav-item> @endauthorize
+        @authorize('view-leaves') <nav-item url="{{url('r/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item> @endauthorize
+        @authorize('view-attendance') <nav-item url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item> @endauthorize
+        @authorize('view-recruitment') <nav-item url="{{url('r/recruitment')}}">{{trans('ruby::words.recruitment')}}</nav-item> @endauthorize
         <template #right>
             <nav-item>
-                <template #label>{{auth('admin')->user()->name}}</template>
+                <template #label>{{auth()->user()->contact->name}}</template>
                 <nav-item in-dropdown url="{{url('s/logout')}}">{{trans('sapphire::admin.login.logout')}}</nav-item>
             </nav-item>
         </template>

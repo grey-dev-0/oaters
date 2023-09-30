@@ -1,7 +1,7 @@
 import {createApp} from "vue";
 import Modal from "../../components/modal.vue";
 import Datatable from "../../components/datatable";
-let libraries = Object.assign({}, Datatable, {Modal});
+let libraries = Object.assign({}, Datatable, {Modal}), view;
 
 let app = createApp({
     data: function(){
@@ -61,7 +61,7 @@ import(
     common.load(app);
     for(let component in libraries)
         app.component(component, libraries[component]);
-    app.mount('#app');
+    view = app.mount('#app');
 });
 
 $('body').on('click', '#tenants-table .payments', function (){

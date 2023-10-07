@@ -15,12 +15,31 @@
 <body class="bg-grey-8">
 <div id="app">
     <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-4">
-        @authorize('view-personnel') <nav-item url="{{url('r/personnel')}}">{{trans('ruby::words.personnel')}}</nav-item> @endauthorize
-        @authorize('view-payroll') <nav-item url="{{url('r/payroll')}}">{{trans('ruby::words.payroll')}}</nav-item> @endauthorize
-        @authorize('view-notices') <nav-item url="{{url('r/notices')}}">{{trans('ruby::words.notices')}}</nav-item> @endauthorize
-        @authorize('view-leaves') <nav-item url="{{url('r/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item> @endauthorize
-        @authorize('view-attendance') <nav-item url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item> @endauthorize
-        @authorize('view-recruitment') <nav-item url="{{url('r/recruitment')}}">{{trans('ruby::words.recruitment')}}</nav-item> @endauthorize
+        <nav-item>
+            <template #label>{{trans('ruby::words.organization')}}</template>
+            <nav-item in-dropdown url="{{url('r/departments')}}">{{trans('ruby::words.departments')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/staff')}}">{{trans('ruby::words.staff')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/structure')}}">{{trans('ruby::words.structure')}}</nav-item>
+        </nav-item>
+        <nav-item>
+            <template #label>{{trans('ruby::words.personnel')}}</template>
+            <nav-item in-dropdown url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/notices')}}">{{trans('ruby::words.notices')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/visas')}}">{{trans('ruby::words.visas')}}</nav-item>
+        </nav-item>
+        <nav-item>
+            <template #label>{{trans('ruby::words.payroll')}}</template>
+            <nav-item in-dropdown url="{{url('r/components')}}">{{trans('ruby::words.components')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/salaries')}}">{{trans('ruby::words.salaries')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/payments')}}">{{trans('ruby::words.payments')}}</nav-item>
+        </nav-item>
+        <nav-item>
+            <template #label>{{trans('ruby::words.recruitment')}}</template>
+            <nav-item in-dropdown url="{{url('r/vacancies')}}">{{trans('ruby::words.vacancies')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/applicants')}}">{{trans('ruby::words.applicants')}}</nav-item>
+            <nav-item in-dropdown url="{{url('r/documents')}}">{{trans('ruby::words.documents')}}</nav-item>
+        </nav-item>
         <template #right>
             <nav-item>
                 <template #label>{{auth()->user()->contact->name}}</template>

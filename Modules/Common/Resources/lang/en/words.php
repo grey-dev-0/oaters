@@ -32,5 +32,12 @@ return [
     'type' => 'Type',
     'unpaid' => 'Unpaid',
     'updated_at' => 'Updated At',
-    'yes' => 'Yes'
+    'yes' => 'Yes',
+    'organization' => 'Organization',
+    'departments' => 'Departments',
+    'structure' => 'Structure',
+    'personnel' => 'Personnel',
+    'documents' => 'Documents',
+    'attachments' => 'Attachments',
+    'components' => 'Components'
 ];

@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider{
      * @return void
      */
     protected function mapWebRoutes(){
-        Route::middleware('web')->prefix('r')
+        Route::middleware('web')->prefix('r')->as('ruby::')
             ->namespace($this->moduleNamespace)
             ->group(module_path('Ruby', '/Routes/routes.php'));
     }

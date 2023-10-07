@@ -18,7 +18,7 @@ class Authenticate extends Middleware{
                 'a' => 'amethyst-login',
                 't' => 'topaz-login',
                 'e' => 'emerald-login',
-                'r', => 'ruby-login',
+                'r', => 'ruby::login',
                 'sa', 'st' => 'admin-login',
                 default => 'login'
             });

@@ -1,6 +1,6 @@
 <?php
 
-Route::get('login', 'ModuleController@getLogin')->name('ruby-login');
+Route::get('login', 'ModuleController@getLogin')->name('login');
 Route::post('login', 'ModuleController@postLogin');
 
 Route::group(['middleware' => ['auth', 'authorize:ruby']], function(){

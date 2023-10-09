@@ -40,13 +40,33 @@ class Department extends Model{
     }
 
     /**
+     * Return head(s) of the department whom are not supervised by any other contact within the department.
+     * Should be one head in most cases but, was left out for implementation simplicity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function head() {
+        return $this->managers()->wherePivot('lc_contacts.id', '!=', 'r_subordinates.contact_id')
+            ->wherePivot("{$this->getTable()}.id", '!=', 'r_subordinates.department_id');
+    }
+
+    /**
      * A relationship that is used to fetch all staff members of a department including managers.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function staff(){
         $this->appends[] = 'members';
-        return $this->hasMany(Subordinate::class)->with(['managers', 'contacts']);
+        return $this->subordinates()->with(['managers', 'contacts']);
+    }
+
+    /**
+     * Direct relationship with subordinates pivot table - to be used for quickly counting department members.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subordinates() {
+        return $this->hasMany(Subordinate::class);
     }
 
     public function applicants(){
@@ -54,6 +74,6 @@ class Department extends Model{
     }
 
     public function getMembersAttribute(){
-        return $this->staff->managers->merge($this->staff->contacts);
+        return $this->staff->managers->merge($this->staff->contacts)->unique('id')->values();
     }
 }

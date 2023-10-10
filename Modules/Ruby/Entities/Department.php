@@ -46,8 +46,9 @@ class Department extends Model{
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function head() {
-        return $this->managers()->wherePivot('lc_contacts.id', '!=', 'r_subordinates.contact_id')
-            ->wherePivot("{$this->getTable()}.id", '!=', 'r_subordinates.department_id');
+        return $this->managers()->whereNotExists(fn($query) => $query->selectRaw(1)->from('r_subordinates AS rs')
+            ->whereRaw('r_subordinates.department_id = rs.department_id AND lc_contacts.id = rs.contact_id'))
+            ->groupBy('pivot_manager_id');
     }
 
     /**

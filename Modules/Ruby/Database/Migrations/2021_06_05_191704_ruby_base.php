@@ -120,7 +120,7 @@ class RubyBase extends Migration
         Schema::connection('tenant')->create('r_vacancies', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('department_id');
-            $table->boolean('active')->default('false');
+            $table->boolean('active')->default(false);
             $table->foreign('department_id')->references('id')->on('r_departments')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

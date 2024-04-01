@@ -1,0 +1,3 @@
+#! /bin/bash
+
+docker exec -itw /home/projects/theultragrey/oaters lemp-php-1 bash

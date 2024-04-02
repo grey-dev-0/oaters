@@ -1,0 +1,9 @@
+{
+    "name": "Common",
+    "alias": "common",
+    "description": "",
+    "keywords": [],
+    "priority": 1,
+    "providers": [],
+    "files": []
+}

@@ -165,9 +165,10 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\DataTablesHelperServiceProvider::class,
+        App\Providers\ChartServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -182,7 +183,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'Chart' => App\Facades\Chart::class,
+        'DataTablesHelper' => App\Facades\DataTablesHelper::class,
     ])->toArray(),
 
 ];

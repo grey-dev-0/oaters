@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Amethyst\App\Providers;
+namespace Modules\Sapphire\App\Providers\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +11,7 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @var string
      */
-    protected $moduleNamespace = 'Modules\Ruby\Http\Controllers';
+    protected $moduleNamespace = 'Modules\Sapphire\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -41,8 +41,16 @@ class RouteServiceProvider extends ServiceProvider{
      * @return void
      */
     protected function mapWebRoutes(){
-        Route::middleware('web')->prefix('r')->as('ruby::')
-            ->namespace($this->moduleNamespace)
-            ->group(module_path('Ruby', '/routes/routes.php'));
+        Route::middleware('web')->prefix('sa')
+            ->namespace("{$this->moduleNamespace}\\Admin")
+            ->group(module_path('Sapphire', '/routes/admin.php'));
+
+        Route::middleware('web')->prefix('st')
+            ->namespace("{$this->moduleNamespace}\\Tenant")
+            ->group(module_path('Sapphire', '/routes/tenant.php'));
+
+        Route::middleware('web')->prefix('s')
+            ->namespace("{$this->moduleNamespace}\\User")
+            ->group(module_path('Sapphire', '/routes/user.php'));
     }
 }

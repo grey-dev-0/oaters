@@ -1,9 +1,11 @@
 {
     "name": "Common",
     "alias": "common",
-    "description": "",
+    "description": "Common functionality, entities and, views",
     "keywords": [],
     "priority": 1,
-    "providers": [],
+    "providers": [
+        "Modules\\Common\\App\\Providers\\ModuleServiceProvider"
+    ],
     "files": []
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Amethyst\App\Providers;
+namespace Modules\Common\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -8,12 +8,12 @@ class ModuleServiceProvider extends ServiceProvider{
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'Amethyst';
+    protected $moduleName = 'Common';
 
     /**
      * @var string $moduleNameLower
      */
-    protected $moduleNameLower = 'amethyst';
+    protected $moduleNameLower = 'common';
 
     /**
      * Boot the application events.
@@ -23,15 +23,6 @@ class ModuleServiceProvider extends ServiceProvider{
     public function boot(){
         $this->registerTranslations();
         $this->registerViews();
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register(){
-        $this->app->register(RouteServiceProvider::class);
     }
 
     /**

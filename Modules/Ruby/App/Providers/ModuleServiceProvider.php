@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Amethyst\App\Providers;
+namespace Modules\Ruby\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -8,12 +8,12 @@ class ModuleServiceProvider extends ServiceProvider{
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'Amethyst';
+    protected $moduleName = 'Ruby';
 
     /**
      * @var string $moduleNameLower
      */
-    protected $moduleNameLower = 'amethyst';
+    protected $moduleNameLower = 'ruby';
 
     /**
      * Boot the application events.

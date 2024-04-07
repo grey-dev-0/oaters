@@ -1,19 +1,20 @@
 <?php
 
-namespace Modules\Amethyst\App\Providers;
+namespace Modules\Sapphire\App\Providers\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider{
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'Amethyst';
+    protected $moduleName = 'Sapphire';
 
     /**
      * @var string $moduleNameLower
      */
-    protected $moduleNameLower = 'amethyst';
+    protected $moduleNameLower = 'sapphire';
 
     /**
      * Boot the application events.

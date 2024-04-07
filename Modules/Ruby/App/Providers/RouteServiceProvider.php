@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Amethyst\App\Providers;
+namespace Modules\Ruby\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +11,7 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @var string
      */
-    protected $moduleNamespace = 'Modules\Ruby\Http\Controllers';
+    protected $moduleNamespace = 'Modules\Ruby\App\Http\Controllers';
 
     /**
      * Called before routes are registered.

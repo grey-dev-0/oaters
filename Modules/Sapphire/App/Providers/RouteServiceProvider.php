@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sapphire\App\Providers\Providers;
+namespace Modules\Sapphire\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;

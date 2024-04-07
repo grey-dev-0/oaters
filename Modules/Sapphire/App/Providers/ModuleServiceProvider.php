@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sapphire\App\Providers\Providers;
+namespace Modules\Sapphire\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;

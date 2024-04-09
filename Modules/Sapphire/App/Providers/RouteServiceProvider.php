@@ -4,6 +4,8 @@ namespace Modules\Sapphire\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class RouteServiceProvider extends ServiceProvider{
     /**
@@ -11,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @var string
      */
-    protected $moduleNamespace = 'Modules\Sapphire\Http\Controllers';
+    protected $moduleNamespace = 'Modules\Sapphire\App\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -49,7 +51,11 @@ class RouteServiceProvider extends ServiceProvider{
             ->namespace("{$this->moduleNamespace}\\Tenant")
             ->group(module_path('Sapphire', '/routes/tenant.php'));
 
-        Route::middleware('web')->prefix('s')
+        Route::middleware([
+            'web',
+            InitializeTenancyBySubdomain::class,
+            PreventAccessFromCentralDomains::class,
+        ])->prefix('s')
             ->namespace("{$this->moduleNamespace}\\User")
             ->group(module_path('Sapphire', '/routes/user.php'));
     }

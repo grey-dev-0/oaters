@@ -4,6 +4,8 @@ namespace Modules\Amethyst\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class RouteServiceProvider extends ServiceProvider{
     /**
@@ -11,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @var string
      */
-    protected $moduleNamespace = 'Modules\Ruby\Http\Controllers';
+    protected $moduleNamespace = 'Modules\Amethyst\App\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -41,8 +43,12 @@ class RouteServiceProvider extends ServiceProvider{
      * @return void
      */
     protected function mapWebRoutes(){
-        Route::middleware('web')->prefix('r')->as('ruby::')
+        Route::middleware([
+            'web',
+            InitializeTenancyBySubdomain::class,
+            PreventAccessFromCentralDomains::class,
+        ])->prefix('r')->as('amethyst::')
             ->namespace($this->moduleNamespace)
-            ->group(module_path('Ruby', '/routes/routes.php'));
+            ->group(module_path('Amethyst', '/routes/routes.php'));
     }
 }

@@ -10,7 +10,7 @@ class UsersFactory extends Factory{
      *
      * @var string
      */
-    protected $model = \Modules\Sapphire\Entities\User::class;
+    protected $model = \Modules\Sapphire\App\Models\User::class;
 
     /**
      * Define the model's default state.

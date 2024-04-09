@@ -15,9 +15,7 @@ return new class extends Migration{
             $table->string('name');
             $table->string('email');
             $table->string('password', 100);
-            $table->string('subdomain')->unique()->nullable();
             $table->string('hash');
-            $table->boolean('main')->default(false);
             $table->mediumText('data')->nullable();
             $table->timestamps();
         });

@@ -3,8 +3,8 @@
 namespace Modules\Sapphire\Database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Sapphire\Entities\Module;
-use Modules\Sapphire\Entities\Tenant;
+use Modules\Sapphire\App\Models\Module;
+use Modules\Sapphire\App\Models\Tenant;
 
 class TenantsTableSeeder extends Seeder{
     /**

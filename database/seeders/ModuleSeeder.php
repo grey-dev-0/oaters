@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Sapphire\Entities\Module;
+use Modules\Sapphire\App\Models\Module;
 
 class ModuleSeeder extends Seeder{
     /**

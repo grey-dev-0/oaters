@@ -4,9 +4,9 @@ namespace Modules\Sapphire\Database\seeders;
 
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
-use Modules\Common\Entities\Contact;
-use Modules\Sapphire\Entities\Tenant;
-use Modules\Sapphire\Entities\User;
+use Modules\Common\App\Models\Contact;
+use Modules\Sapphire\App\Models\Tenant;
+use Modules\Sapphire\App\Models\User;
 
 class UsersTableSeeder extends Seeder{
     /**

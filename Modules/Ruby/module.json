@@ -3,7 +3,7 @@
     "alias": "ruby",
     "description": "",
     "keywords": [],
-    "priority": 0,
+    "priority": 8,
     "providers": [
         "Modules\\Ruby\\App\\Providers\\ModuleServiceProvider"
     ],

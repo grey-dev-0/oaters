@@ -169,6 +169,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\DataTablesHelperServiceProvider::class,
         App\Providers\ChartServiceProvider::class,
+        App\Providers\TenancyServiceProvider::class,
     ])->toArray(),
 
     /*

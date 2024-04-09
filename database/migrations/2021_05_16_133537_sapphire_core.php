@@ -18,6 +18,15 @@ return new class extends Migration{
             $table->string('subdomain')->unique()->nullable();
             $table->string('hash');
             $table->boolean('main')->default(false);
+            $table->mediumText('data')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('domains', function(Blueprint $table){
+            $table->increments('id');
+            $table->string('domain')->unique();
+            $table->unsignedBigInteger('tenant_id');
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -66,6 +75,7 @@ return new class extends Migration{
         Schema::dropIfExists('tenant_modules');
         Schema::dropIfExists('modules');
         Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('domains');
         Schema::dropIfExists('tenants');
     }
 };

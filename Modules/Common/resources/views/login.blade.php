@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="$locale">
+<html lang="{{app()->getLocale()}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{$title}}</title>
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset(mix('css/login.css'))}}" type="text/css">
-    <link rel="stylesheet" href="{{asset(mix('css/colors.css'))}}" type="text/css">
-    <script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/bootstrap.min.js')}}"></script>
+    @vite(['resources/scss/bootstrap.scss', 'resources/scss/login.scss', 'resources/js/login.js'])
 </head>
 <body class="bg-blue-grey-10">
 <div class="row">

@@ -13,6 +13,10 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "bootstrap": "^4.6.2",
+        "datatables.net": "^2.0.3",
+        "datatables.net-bs4": "^2.0.3",
+        "jquery": "^3.7.1",
         "mitt": "^3.0.1",
         "sass": "^1.74.1",
         "sass-loader": "^14.1.1",

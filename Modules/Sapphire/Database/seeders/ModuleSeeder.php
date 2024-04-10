@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Sapphire\Database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Sapphire\App\Models\Module;

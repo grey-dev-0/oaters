@@ -15,7 +15,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase{
     protected $hidden = ['password'];
 
     public static function getCustomColumns(): array{
-        return ['id', 'user_id', 'name', 'email', 'password', 'hash'];
+        return ['id', 'user_id', 'name', 'email', 'password', 'hash', 'created_at', 'updated_at'];
     }
 
     public function getIncrementing(){

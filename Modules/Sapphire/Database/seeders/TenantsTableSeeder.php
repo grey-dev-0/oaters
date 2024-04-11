@@ -21,16 +21,19 @@ class TenantsTableSeeder extends Seeder{
             'tenancy_create_database' => false
         ])->assignRole('master');
 
-        Tenant::create([
+        $tenant = Tenant::create([
             'name' => 'George Maxwell',
             'email' => 'george@maxwell.com',
             'password' => \Hash::make('test123'),
             'hash' => 'test321',
             'tenancy_db_name' => 'maxwell'
-        ])->assignRole('tenant')->tap(fn($tenant) => $tenant->domains()->create(['domain' => 'maxwell']))->subscriptions()->create([
+        ]);
+        $tenant->assignRole('tenant');
+        $tenant->subscriptions()->create([
             'price' => 55.55,
             'paid' => true,
             'expires_at' => now()->addYear()
         ])->modules()->attach(Module::pluck('id')->toArray());
+        $tenant->domains()->create(['domain' => 'maxwell']);
     }
 }

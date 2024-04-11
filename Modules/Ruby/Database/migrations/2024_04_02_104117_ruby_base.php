@@ -110,7 +110,7 @@ return new class extends Migration{
             $table->unsignedInteger('contact_id');
             $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('type', ['in', 'out']);
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('r_vacancies', function(Blueprint $table){

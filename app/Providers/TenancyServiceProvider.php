@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Console\Commands\MigrateTenants as MigrateTenantsCommand;
+use App\Jobs\MigrateTenants as MigrateTenantsJob;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -24,7 +26,7 @@ class TenancyServiceProvider extends ServiceProvider{
             Events\TenantCreated::class => [
                 JobPipeline::make([
                     Jobs\CreateDatabase::class,
-                    Jobs\MigrateDatabase::class,
+                    MigrateTenantsJob::class,
                     // Jobs\SeedDatabase::class,
 
                     // Your own jobs to prepare the tenant.
@@ -100,7 +102,9 @@ class TenancyServiceProvider extends ServiceProvider{
     }
 
     public function register(){
-        //
+        $this->app->singleton(MigrateTenantsCommand::class, function ($app) {
+            return new MigrateTenantsCommand($app['migrator'], $app['events']);
+        });
     }
 
     public function boot(){

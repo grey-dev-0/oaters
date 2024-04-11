@@ -38,7 +38,7 @@ return new class extends Migration{
             $table->foreign('purchase_id')->references('id')->on('o_purchases')->onUpdate('cascade')->onDelete('cascade');
             $table->text('event');
             $table->timestamp('time');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('o_product_plans', function(Blueprint $table){
@@ -93,7 +93,7 @@ return new class extends Migration{
             $table->foreign('plan_execution_id')->references('id')->on('o_plan_executions')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedTinyInteger('status');
             $table->text('note')->nullable();
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
     }
 

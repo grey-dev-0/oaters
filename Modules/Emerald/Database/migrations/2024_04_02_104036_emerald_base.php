@@ -47,7 +47,7 @@ return new class extends Migration{
             $table->increments('id');
             $table->unsignedInteger('attachment_id');
             $table->foreign('attachment_id')->references('id')->on('e_attachments')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('e_comments', function(Blueprint $table){

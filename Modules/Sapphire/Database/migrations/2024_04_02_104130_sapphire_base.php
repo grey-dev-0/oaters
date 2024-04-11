@@ -11,8 +11,6 @@ return new class extends Migration{
     public function up(): void{
         Schema::create('s_users', function(Blueprint  $table){
             $table->increments('id');
-            $table->unsignedInteger('role_id')->nullable();
-            $table->foreign('role_id')->references('id')->on('s_roles')->onUpdate('cascade')->onDelete('set null');
             $table->string('username');
             $table->string('password', 100);
             $table->string('image')->nullable();

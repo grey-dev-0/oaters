@@ -65,7 +65,7 @@ return new class extends Migration{
             $table->foreign('order_id')->references('id')->on('le_orders')->onUpdate('cascade')->onDelete('cascade');
             $table->text('event');
             $table->timestamp('time');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('le_transactions', function(Blueprint $table){
@@ -75,7 +75,7 @@ return new class extends Migration{
             $table->index(['transferable_type', 'transferable_id'], 'transferable_morph');
             $table->enum('type', ['debit', 'credit']);
             $table->float('amount');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
         });
     }
 

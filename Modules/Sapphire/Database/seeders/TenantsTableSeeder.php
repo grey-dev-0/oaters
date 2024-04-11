@@ -18,16 +18,16 @@ class TenantsTableSeeder extends Seeder{
             'email' => 'mo7y.66@gmail.com',
             'password' => \Hash::make('test123'),
             'hash' => sha1(\Str::random().time()),
-            'main' => true
-        ]);
+            'tenancy_create_database' => false
+        ])->assignRole('master');
 
         Tenant::create([
             'name' => 'George Maxwell',
             'email' => 'george@maxwell.com',
             'password' => \Hash::make('test123'),
             'hash' => 'test321',
-            'subdomain' => 'maxwell'
-        ])->subscriptions()->create([
+            'tenancy_db_name' => 'maxwell'
+        ])->assignRole('tenant')->tap(fn($tenant) => $tenant->domains()->create(['domain' => 'maxwell']))->subscriptions()->create([
             'price' => 55.55,
             'paid' => true,
             'expires_at' => now()->addYear()

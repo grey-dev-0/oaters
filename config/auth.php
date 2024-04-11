@@ -36,6 +36,11 @@ return [
     */
 
     'guards' => [
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'tenants'
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -62,13 +67,13 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => Modules\Sapphire\App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'tenants' => [
+            'driver' => 'eloquent',
+            'model' => Modules\Sapphire\App\Models\Tenant::class,
+        ],
     ],
 
     /*

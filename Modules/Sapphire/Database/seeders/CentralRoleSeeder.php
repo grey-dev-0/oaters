@@ -12,8 +12,8 @@ class CentralRoleSeeder extends Seeder{
     public function run(): void{
         app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
         $roles = [
-            ["name" => "master"],
-            ["name" => "tenant"]
+            ['name' => 'master', 'guard_name' => 'admin'],
+            ['name' => 'tenant', 'guard_name' => 'admin']
         ];
         foreach($roles as $role)
             Role::create($role);

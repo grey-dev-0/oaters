@@ -5,10 +5,9 @@ namespace Modules\Sapphire\App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Common\App\Models\Contact;
-use Modules\Sapphire\Traits\Authorizable;
 
 class User extends Authenticatable{
-    use Authorizable, HasFactory;
+    use HasFactory;
 
     /**
      * @inheritdoc

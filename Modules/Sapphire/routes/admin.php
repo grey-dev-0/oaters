@@ -1,9 +1,9 @@
 <?php
 
-Route::view('login', 'sapphire::login')->name('admin-login');
+Route::view('login', 'sapphire::login')->name('login');
 Route::post('login', 'ModuleController@postLogin');
 
-Route::group(['middleware' => ['auth:admin', 'can:manage-tenants']], function(){
+Route::group(['middleware' => ['auth:admin', 'role:master']], function(){
     Route::get('logout', 'ModuleController@getLogout');
     Route::view('tenants', 'sapphire::admin.tenants');
     Route::post('tenants', 'TenantController@postIndex');

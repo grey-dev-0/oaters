@@ -15,8 +15,9 @@
 </template>
 
 <script>
-var $ = window.$;
-var Chart = window.Chart;
+import {Chart} from 'chart.js';
+
+let $;
 var bootbox = window.bootbox;
 
 export default {
@@ -154,6 +155,7 @@ export default {
         }
     },
     mounted: function(){
+        $ = this.$root.jQuery();
         if(this.ranged)
             this.initRangePicker();
         this.load();

@@ -9,6 +9,12 @@ files.forEach(file => {
 });
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            moment: 'moment/moment',
+            vue: 'vue/dist/vue.esm-bundler.js'
+        }
+    },
     plugins: [
         laravel({
             input,

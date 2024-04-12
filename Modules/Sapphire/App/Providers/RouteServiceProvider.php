@@ -43,11 +43,11 @@ class RouteServiceProvider extends ServiceProvider{
      * @return void
      */
     protected function mapWebRoutes(){
-        Route::middleware('web')->prefix('sa')
+        Route::middleware('web')->prefix('sa')->as('admin::')
             ->namespace("{$this->moduleNamespace}\\Admin")
             ->group(module_path('Sapphire', '/routes/admin.php'));
 
-        Route::middleware('web')->prefix('st')
+        Route::middleware('web')->prefix('st')->as('tenant::')
             ->namespace("{$this->moduleNamespace}\\Tenant")
             ->group(module_path('Sapphire', '/routes/tenant.php'));
 
@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider{
             'web',
             InitializeTenancyBySubdomain::class,
             PreventAccessFromCentralDomains::class,
-        ])->prefix('s')
+        ])->prefix('s')->as('user::')
             ->namespace("{$this->moduleNamespace}\\User")
             ->group(module_path('Sapphire', '/routes/user.php'));
     }

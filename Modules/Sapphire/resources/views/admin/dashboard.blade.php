@@ -6,6 +6,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
+    @vite(['resources/scss/bootstrap.scss'])
 @endpush
 
 @section('content')
@@ -64,8 +65,5 @@
 @stop
 
 @push('scripts')
-    <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/chart.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset(mix('js/sapphire/dashboard.js'))}}"></script>
+    @vite(['resources/js/sapphire/dashboard.js'])
 @endpush

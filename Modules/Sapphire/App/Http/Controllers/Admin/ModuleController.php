@@ -6,8 +6,12 @@ use Illuminate\Routing\Controller;
 
 class ModuleController extends Controller{
     public function postLogin(){
-        if(auth('admin')->attempt(request()->only(['email', 'password']) + ['main' => true]))
-            return redirect()->intended('sa');
+        if(auth('admin')->attempt(request()->only(['email', 'password']))){
+            if(auth('admin')->user()->hasRole('master'))
+                return redirect()->intended('sa');
+            else
+                auth()->logout();
+        }
         return view('sapphire::login', ['fail' => true]);
     }
 

@@ -17,7 +17,9 @@ class Authenticate extends Middleware{
                 't' => 'topaz::login',
                 'e' => 'emerald::login',
                 'r', => 'ruby::login',
-                's' => 'admin::login',
+                'sa' => 'admin::login',
+                'st' => 'tenant::login',
+                's' => 'user::login',
                 default => 'login'
             });
         return null;

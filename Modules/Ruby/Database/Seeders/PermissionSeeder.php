@@ -38,7 +38,7 @@ class PermissionSeeder extends Seeder{
             'employee' => $permissions->whereIn('name', ['view-notices', 'view-leaves', 'view-attendance'])
         ];
         $roles->each(function($role) use($rolePermissions){
-            $role->permissions()->attach($rolePermissions[$role->name]);
+            $role->syncPermissions($rolePermissions[$role->name]);
         });
     }
 }

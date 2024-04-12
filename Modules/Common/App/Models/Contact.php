@@ -6,14 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Ruby\App\Models\Applicant;
 use Modules\Ruby\App\Models\Department;
+use Spatie\Permission\Traits\HasRoles;
 
 class Contact extends Model{
-    use HasFactory;
+    use HasFactory, HasRoles;
 
     /**
      * @inheritdoc
      */
     protected $table = 'lc_contacts';
+
+    /**
+     * @var string[] $guard_name Authentication guards supported.
+     */
+    protected array $guard_name = ['web', 'api'];
 
     /**
      * @inheritdoc

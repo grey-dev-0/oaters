@@ -5,9 +5,10 @@ namespace Modules\Sapphire\App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Common\App\Models\Contact;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable{
-    use HasFactory;
+    use HasFactory, HasRoles;
 
     /**
      * @inheritdoc
@@ -21,10 +22,6 @@ class User extends Authenticatable{
 
     protected static function newFactory(){
         return \Modules\Sapphire\Database\factories\UsersFactory::new();
-    }
-
-    public function role(){
-        return $this->belongsTo(Role::class);
     }
 
     public function contact(){

@@ -2,11 +2,11 @@
 
 namespace Modules\Sapphire\Database\seeders;
 
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Modules\Common\App\Models\Contact;
 use Modules\Sapphire\App\Models\Tenant;
 use Modules\Sapphire\App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UsersTableSeeder extends Seeder{
     /**
@@ -15,23 +15,26 @@ class UsersTableSeeder extends Seeder{
      * @return void
      */
     public function run(){
-        $sequenceGenerator = function($sequence){
-            $iteration = $sequence->index + 1;
-            $role_id = match(true){
-                $iteration <= 10 => $iteration,
-                $iteration <= 20 => $iteration - 10,
-                $iteration <= 25 => $iteration - 20
-            };
-            return compact('role_id');
-        };
-        User::factory()->state(new Sequence($sequenceGenerator))
-            ->has(Contact::factory()->state(new Sequence($sequenceGenerator)))->count(25)->create();
+        $roles = Role::orderBy('id')->get(['id', 'guard_name']);
+        User::factory()->has(Contact::factory())->count(25)->create()->load('contact')
+            ->each(function($user, $i) use($roles){
+                $i = $this->getRoleIndex($i);
+                $user->assignRole($roles[$i])->contact->assignRole($roles[$i]);
+            });
         // Linking main system user to the tenant account.
-        $user = User::whereRoleId(1)->first();
+        $user = User::role($roles[0]->id)->first();
         Tenant::whereEmail('george@maxwell.com')->update(['user_id' => $user->id]);
         $user->contact->emails()->create([
             'address' => 'george@maxwell.com',
             'default' => true
         ]);
+    }
+
+    private function getRoleIndex($i){
+        return match(true){
+            $i < 10 => $i,
+            $i < 20 => $i - 10,
+            $i < 25 => $i - 20
+        };
     }
 }

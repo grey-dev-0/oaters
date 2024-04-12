@@ -14,6 +14,7 @@ class TenantAppSeeder extends Seeder{
     public function run(): void{
         $this->call(RoleSeeder::class);
         $this->call(RubyPermissionSeeder::class);
-        $this->call(UsersTableSeeder::class);
+        if(!app()->isProduction())
+            $this->call(UsersTableSeeder::class);
     }
 }

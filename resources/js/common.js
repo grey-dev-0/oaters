@@ -1,5 +1,7 @@
+import 'bootstrap';
 import breadcrumb from "../components/breadcrumb";
 import navbar from "../components/navbar"
+import jQuery from "jquery";
 import {defineAsyncComponent} from "vue";
 
 function load(app){
@@ -19,4 +21,4 @@ function loadComponents(app, components){
         app.component(name, defineAsyncComponent(() => import(`../components/${components[name]}.vue`)));
 }
 
-export default {load, loadBundles, loadComponents};
+export default {load, loadBundles, loadComponents, jQuery};

@@ -82,7 +82,7 @@ class Chart{
      */
     public function line($data, $label, $borderColor, $backgroundColor){
         $this->type = self::MULTI_POINT;
-        $this->datasets[] = compact('data', 'label', 'borderColor', 'backgroundColor') + ['borderWidth' => 1];
+        $this->datasets[] = compact('data', 'label', 'borderColor', 'backgroundColor') + ['borderWidth' => 1, 'fill' => true];
         return $this;
     }
 

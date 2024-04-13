@@ -14,7 +14,7 @@
         <counter class="col-md-3 p-0" title="{{trans('sapphire::admin.tenants.title')}}" value="{{$counters['tenants']}}" extra-title="{{trans('common::words.this_month')}}" extra-value="{{$counters['tenants_month']}}" color="green-2" white-text></counter>
         <counter class="col-md-3 p-0" title="{{trans('sapphire::admin.payments.title')}}" value="{{$counters['purchases']}}" extra-title="{{trans('common::words.this_month')}}" extra-value="{{$counters['purchases_month']}}" color="blue-2" white-text></counter>
         <counter class="col-md-3 p-0" title="{{trans('sapphire::admin.subscriptions.title')}}" value="{{$counters['subscriptions']}}" color="cyan-2" white-text></counter>
-        <chart type="doughnut" id="subscriptions-chart" class="col-md-3 p-0" color="purple-3" center-header title="{{trans('sapphire::admin.subscriptions.title')}}" url="{{url('sa/charts/subscriptions-pie')}}"></chart>
+        <chart type="doughnut" id="subscriptions-chart" class="col-md-3 p-0" color="purple-3" style="max-height:300px" center-header title="{{trans('sapphire::admin.subscriptions.title')}}" url="{{url('sa/charts/subscriptions-pie')}}"></chart>
     </div>
     <div class="row mb-3">
         <div class="col-md-6">

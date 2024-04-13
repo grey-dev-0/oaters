@@ -9,13 +9,13 @@
             <h1 class="text-center chart-loader"><i class="fas fa-spin fa-spinner fa-pulse"></i></h1>
         </div>
         <div v-else :class="bodyClass">
-            <canvas :id="id" :class="(loading)? 'd-none' : ''"></canvas>
+            <canvas :id="id" :class="(type == 'pie' || type == 'doughnut')? 'm-auto' : ''"></canvas>
         </div>
     </div>
 </template>
 
 <script>
-import {Chart} from 'chart.js';
+import Chart from 'chart.js/auto';
 
 let $;
 var bootbox = window.bootbox;
@@ -112,19 +112,18 @@ export default {
             });
         },
         load: function(){
-            var chart = this;
             $.ajax({
                 url: this.url,
                 type: 'POST',
                 data: {
                     range: $('#' + this.id + '-range').val()
                 },
-                success: function(response){
-                    chart.datasets = response.datasets;
-                    chart.labels = response.labels;
-                    chart.loading = false;
-                    chart.$nextTick(function(){
-                        chart.draw();
+                success: response => {
+                    this.datasets = response.datasets;
+                    this.labels = response.labels;
+                    this.loading = false;
+                    this.$nextTick(() => {
+                        this.draw();
                     });
                 },
                 error: function(xhr){

@@ -3,9 +3,9 @@ import {createApp} from "vue";
 import 'daterangepicker';
 import 'daterangepicker/daterangepicker.css';
 import moment from "moment";
-import jQuery from "jquery";
 import vueTable from '../../components/table';
 
+let $  = common.jQuery;
 const app = createApp({
     data: function(){
         return {
@@ -17,7 +17,7 @@ const app = createApp({
     },
     methods: {
         jQuery(){
-            return jQuery;
+            return $;
         }
     },
     computed: {
@@ -26,7 +26,7 @@ const app = createApp({
         }
     },
     beforeMount: function(){
-        jQuery.ajaxSettings.headers = {'X-CSRF-TOKEN': jQuery('[name="csrf-token"]').attr('content')};
+        $.ajaxSettings.headers = {'X-CSRF-TOKEN': $('[name="csrf-token"]').attr('content')};
         this.chartRange.start = moment().subtract(1, 'M');
         this.chartRange.end = moment();
     }

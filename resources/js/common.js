@@ -4,6 +4,8 @@ import navbar from "../components/navbar"
 import jQuery from "jquery";
 import {defineAsyncComponent} from "vue";
 
+jQuery.ajaxSettings.headers = {'X-CSRF-TOKEN': jQuery('[name="csrf-token"]').attr('content')};
+
 function load(app){
     breadcrumb.load(app);
     navbar.load(app);

@@ -26,7 +26,6 @@ const app = createApp({
         }
     },
     beforeMount: function(){
-        $.ajaxSettings.headers = {'X-CSRF-TOKEN': $('[name="csrf-token"]').attr('content')};
         this.chartRange.start = moment().subtract(1, 'M');
         this.chartRange.end = moment();
     }

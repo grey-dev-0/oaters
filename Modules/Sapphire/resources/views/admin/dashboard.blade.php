@@ -4,11 +4,6 @@
     <title>OATERS: System Overview</title>
 @stop
 
-@push('styles')
-    <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
-    @vite(['resources/scss/bootstrap.scss'])
-@endpush
-
 @section('content')
     <div class="row card-deck mb-3">
         <counter class="col-md-3 p-0" title="{{trans('sapphire::admin.tenants.title')}}" value="{{$counters['tenants']}}" extra-title="{{trans('common::words.this_month')}}" extra-value="{{$counters['tenants_month']}}" color="green-2" white-text></counter>

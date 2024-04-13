@@ -7,32 +7,31 @@
         </select>
         <input autocomplete="off" type="text" class="form-control" v-else :id="cssId" v-model="input" @keydown.prevent.enter @keyup="debouncedFilter(name, input)" :placeholder="label">
     </div>
-    <div class="w-100 clearfix" v-if="sort % $parent.cols == 0"></div>
-    <template v-if="sort == $parent.count">
+    <div class="w-100 clearfix" v-if="sort % $parent.$parent.cols == 0"></div>
+    <template v-if="sort == $parent.$parent.count">
         <div class="mb-0 mb-sm-1 col-12 col-sm" v-for="n in clearCells" :key="n"></div>
         <div class="mb-1 col-12 col-sm">
-            <template v-if="$parent.count != $parent.cols">
+            <template v-if="$parent.$parent.count != $parent.$parent.cols">
                 <label><br/></label><br/>
             </template>
-            <div @click="$parent.clear" class="btn btn-outline-info btn-block"><i class="fa fas fa-filter mr-1" style="margin-top:-5px"></i> Clear Filters</div>
+            <div @click="$parent.$parent.clear" class="btn btn-outline-info btn-block"><i class="fa fas fa-filter mr-1" style="margin-top:-5px"></i> Clear Filters</div>
         </div>
     </template>
 </template>
 
 <script>
-let $ = window.$;
-let _ = window._;
-let select2Options = {};
+import {debounce as _debounce} from 'lodash';
+let $, select2Options = {};
 
 export default {
     name: 'DtFilter',
     mounted: function(){
         if(this.default)
-            this.$parent.defaults[this.name] = this.input = this.default;
+            this.$parent.$parent.defaults[this.name] = this.input = this.default;
         this.$nextTick(function(){
             var component = this;
-            this.$parent.filters[this.name] = this.input;
-            this.sort = Object.keys(this.$parent.filters).length;
+            this.$parent.$parent.filters[this.name] = this.input;
+            this.sort = Object.keys(this.$parent.$parent.filters).length;
             if(this.type == 'select2'){
                 var select = $('#' + this.cssId);
                 if(this.multiple)
@@ -61,7 +60,7 @@ export default {
             }
 
             this.$root.emitter.on('clear', function(e){
-                if(component.$parent.datatableRef != e.ref)
+                if(component.$parent.$parent.datatableRef != e.ref)
                     return;
                 component.clear();
             });
@@ -103,18 +102,18 @@ export default {
             return this.name.replace('.', '-') + '-filter-' + this.type;
         },
         clearCells: function(){
-            var count = this.$parent.count + 1,
-                setColumns = this.$parent.cols;
+            var count = this.$parent.$parent.count + 1,
+                setColumns = this.$parent.$parent.cols;
             var remainder = count % setColumns;
             return (count != setColumns && remainder != 0)? setColumns - remainder : 0;
         }
     },
     methods: {
-        debouncedFilter: _.debounce(function(field, value){
+        debouncedFilter: _debounce(function(field, value){
             this.filter(field, value);
         }, 200),
         filter: function(field, value){
-            this.$parent.filter(field, value);
+            this.$parent.$parent.filter(field, value);
         },
         clear: function(){
             var element = $('#' + this.cssId), value = this.input = this.default || '';
@@ -122,8 +121,11 @@ export default {
                 element.val(value);
             if(this.type == 'select2')
                 element.select2('destroy').select2(select2Options);
-            this.$parent.filters[this.name] = '';
+            this.$parent.$parent.filters[this.name] = '';
         }
+    },
+    created(){
+        $ = this.$root.jQuery();
     }
 }
 </script>

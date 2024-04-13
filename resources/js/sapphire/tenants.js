@@ -2,6 +2,7 @@ import {createApp} from "vue";
 import common from "../common.js";
 import Datatable from "../../components/datatable";
 
+let $ = common.jQuery;
 let app = createApp({
     data: function(){
         return {
@@ -13,6 +14,9 @@ let app = createApp({
         };
     },
     methods: {
+        jQuery(){
+            return $;
+        },
         renderAmount: function(amount){
             return '$' + amount;
         },

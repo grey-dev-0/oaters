@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import emitter from 'mitt';
-
 export default {
     name: 'VueDatafilter',
     data: function(){
@@ -40,8 +38,6 @@ export default {
         }
     },
     mounted: function(){
-        if(!this.$root.emitter)
-            this.$root.emitter = emitter();
         this.$root.emitter.on('initialized', (e) => {
             if(e.ref == this.datatableRef)
                 this.setDefaults();

@@ -9,8 +9,9 @@ use Modules\Sapphire\App\Models\Tenant;
 
 class TenantController extends Controller{
     public function postIndex(){
-        $response = \DataTables::of(Tenant::selectRaw('tenants.*, s.id AS subscription_id, s.expires_at')
-            ->leftJoin('subscriptions AS s', 's.tenant_id', 'tenants.id')->orderBy('s.id', 'desc')->groupBy('s.id'))
+        $response = \DataTables::of(Tenant::selectRaw('tenants.*, s.id AS subscription_id, domain, s.expires_at')
+            ->leftJoin('subscriptions AS s', 's.tenant_id', 'tenants.id')->leftJoin('domains AS d', 'd.tenant_id', 'tenants.id')
+            ->orderBy('s.id', 'desc')->groupBy('s.id'))
             ->filter(function($query){
                 \DataTablesHelper::filterByDate($query, ['tenants.created_at', 'expires_at']);
             });

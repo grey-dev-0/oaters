@@ -18,7 +18,7 @@
                 <vue-datafilter :cols="5" datatable-ref="tenantsTable">
                     <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
                     <dt-filter name="email" type="text" label="{{trans('common::words.email')}}"></dt-filter>
-                    <dt-filter name="subdomain" type="text" label="{{trans('common::words.subdomain')}}"></dt-filter>
+                    <dt-filter name="d.domain" type="text" label="{{trans('common::words.subdomain')}}"></dt-filter>
                     <dt-filter name="tenants.created_at" type="date" label="{{trans('common::words.joined_at')}}" :options="{opens: 'left'}"></dt-filter>
                     <dt-filter name="expires_at" type="date" label="{{trans('common::words.expires_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>
@@ -26,7 +26,7 @@
                 <vue-datatable datatable-id="tenants-table" ref="tenantsTable" :ajax-complete="onDatatableDraw">
                     <dt-column name="name" data="name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="email" data="email">{{trans('common::words.email')}}</dt-column>
-                    <dt-column name="subdomain" data="subdomain">{{trans('common::words.subdomain')}}</dt-column>
+                    <dt-column name="d.domain" data="domain">{{trans('common::words.subdomain')}}</dt-column>
                     <dt-column name="tenants.created_at" data="created_at" :searchable="false">{{trans('common::words.joined_at')}}</dt-column>
                     <dt-column name="expires_at" data="expires_at" :searchable="false">{{trans('common::words.expires_at')}}</dt-column>
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">

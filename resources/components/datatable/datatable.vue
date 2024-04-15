@@ -39,6 +39,10 @@ export default {
                 return [[0, 'asc']];
             }
         },
+        dom: {
+            type: String,
+            default: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 text-right"f>>t<"d-flex justify-content-between mx-0 row mt-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>'
+        },
         ajaxComplete: {
             default: null
         },
@@ -69,6 +73,8 @@ export default {
                 columns: this.columns,
                 autoWidth: false,
                 responsive: true,
+                scrollX: true,
+                dom: this.dom,
                 lengthMenu: [25, 50, 100, 200],
                 pageLength: 25,
                 processing: true,
@@ -91,7 +97,7 @@ export default {
 </script>
 
 <style lang="scss">
-.dataTables_wrapper{
+.dt-container{
     margin: 16px 0 16px;
 
     td{
@@ -105,6 +111,14 @@ export default {
 
     .nowrap{
         white-space: nowrap;
+    }
+
+    .dt-info{
+        float: left;
+    }
+
+    .dt-paging{
+        float: right;
     }
 }
 </style>

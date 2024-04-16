@@ -11,7 +11,7 @@
 
 <script>
 import emitter from 'mitt';
-var $ = window.$;
+let $;
 
 export default {
     name: "VueForm",
@@ -59,6 +59,9 @@ export default {
             $('#' + this.id)[0].reset();
             this.emitter.emit('init');
         }
+    },
+    created(){
+        $ = this.$root.jQuery();
     },
     mounted: function(){
         this.emitter = emitter();

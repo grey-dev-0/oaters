@@ -20,7 +20,7 @@
 </template>
 
 <script>
-var $ = window.$;
+let $;
 
 export default {
     name: "Modal",
@@ -68,6 +68,9 @@ export default {
                 reset();
             $('#' + this.id).modal('show');
         }
+    },
+    created(){
+        $ = this.$root.jQuery();
     },
     mounted(){
         if(this.zIndex)

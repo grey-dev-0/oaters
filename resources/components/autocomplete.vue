@@ -13,8 +13,7 @@
 </template>
 
 <script>
-let $ = window.$;
-let _ = window._;
+let $, _ = window._;
 
 export default {
     name: "Autocomplete",
@@ -118,6 +117,9 @@ export default {
                 }, 250);
             }
         }
+    },
+    created(){
+        $ = this.$root.jQuery();
     },
     mounted(){
         if(this.$parent.$options.name != 'VueField')

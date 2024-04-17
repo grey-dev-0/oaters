@@ -3,7 +3,6 @@
 namespace Modules\Ruby\App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Modules\Sapphire\Constants\Roles;
 
 class ModuleController extends Controller{
     public function getLogin($extraData = []){
@@ -14,8 +13,7 @@ class ModuleController extends Controller{
     }
 
     public function postLogin(){
-        if(auth()->attempt(request()->only(['username', 'password'])) && Roles::inSystemRoles(auth()->user()->role_id)
-            && auth()->user()->accesses('ruby'))
+        if(auth()->attempt(request()->only(['username', 'password'])) && auth()->user()->can('ruby'))
             return redirect()->intended('r');
         if(!empty(auth()->user()))
             auth()->logout();

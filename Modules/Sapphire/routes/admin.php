@@ -4,12 +4,12 @@ Route::view('login', 'sapphire::login')->name('login');
 Route::post('login', 'ModuleController@postLogin');
 
 Route::group(['middleware' => ['auth:admin', 'role:master']], function(){
-    Route::get('logout', 'ModuleController@getLogout');
-    Route::view('tenants', 'sapphire::admin.tenants');
+    Route::get('logout', 'ModuleController@getLogout')->name('logout');
+    Route::view('tenants', 'sapphire::admin.tenants')->name('tenants');
     Route::post('tenants', 'TenantController@postIndex');
-    Route::get('subscriptions', 'TenantController@getSubscriptions');
+    Route::get('subscriptions', 'TenantController@getSubscriptions')->name('subscriptions');
     Route::post('subscriptions', 'TenantController@postSubscriptions');
-    Route::view('payments', 'sapphire::admin.payments');
+    Route::view('payments', 'sapphire::admin.payments')->name('payments');
     Route::post('payments', 'PurchaseController@postIndex');
     Route::group(['prefix' => 'subscriptions'], function(){
         Route::get('{subscription}/modules', 'TenantController@getModules');

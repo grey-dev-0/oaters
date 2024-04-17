@@ -4,11 +4,6 @@
     <title>OATERS: Payments</title>
 @stop
 
-@push('styles')
-    <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
-@endpush
-
 @section('content')
     <div class="row">
         <breadcrumb>
@@ -42,10 +37,5 @@
             'unpaid' => trans('common::words.unpaid')
         ]);
     </script>
-    <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/jquery.dataTables.bs4.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/lodash.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset(mix('js/sapphire/payments.js'))}}"></script>
+    @vite(['resources/js/sapphire/payments.js'])
 @endpush

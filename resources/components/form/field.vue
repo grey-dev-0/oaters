@@ -1,5 +1,5 @@
 <template>
-    <template v-if="$parent.vertical">
+    <template v-if="$parent.$parent.vertical">
         <!-- TODO Supporting vertical form mode -->
     </template>
     <template v-else>
@@ -24,7 +24,11 @@
 
 <script>
 import Autocomplete from "../autocomplete.vue";
+import select2 from 'select2';
+import 'select2/dist/css/select2.min.css';
+import 'select2-theme-bootstrap4/dist/select2-bootstrap.min.css';
 let $;
+select2();
 
 export default {
     name: "VueField",
@@ -63,12 +67,12 @@ export default {
     },
     computed: {
         labelClass: function(){
-            return 'control-label col-12 col-sm-' + this.$parent.small + ' col-md-' + this.$parent.medium + ' col-lg-' +
-                this.$parent.large;
+            return 'control-label col-12 col-sm-' + this.$parent.$parent.small + ' col-md-' + this.$parent.$parent.medium + ' col-lg-' +
+                this.$parent.$parent.large;
         },
         inputClass: function(){
-            return 'control-label col-12 col-sm-' + (12 - this.$parent.small) + ' col-md-' + (12 - this.$parent.medium)
-                + ' col-lg-' + (12 - this.$parent.large);
+            return 'control-label col-12 col-sm-' + (12 - this.$parent.$parent.small) + ' col-md-' + (12 - this.$parent.$parent.medium)
+                + ' col-lg-' + (12 - this.$parent.$parent.large);
         },
         inputType: function(){
             switch(this.type){
@@ -96,7 +100,7 @@ export default {
     },
     methods: {
         onChange: function(){
-            this.$parent.setField(this.name, this.value);
+            this.$parent.$parent.setField(this.name, this.value);
         },
         onAutocompleteChange: function(name, value){
             this.value = value;
@@ -113,7 +117,7 @@ export default {
             if(this.type == 'select2' && element.hasClass('select2-hidden-accessible'))
                 element.select2('destroy');
             if([3, 4].indexOf(this.inputType) != -1 && this.name !== undefined)
-                this.$parent.emitter.emit('destroy', this.name);
+                this.$parent.$parent.emitter.emit('destroy', this.name);
         },
         initDatePicker: function(){
 
@@ -121,10 +125,11 @@ export default {
         initSelect: function(){
             var field = this;
             $('#' + this.id).off().select2({
+                theme: 'bootstrap',
                 placeholder: this.placeholder,
                 width: '100%'
             }).on('change', function(){
-                field.$parent.setField(field.name, $(this).val());
+                field.$parent.$parent.setField(field.name, $(this).val());
             });
         }
     },
@@ -135,13 +140,13 @@ export default {
         this.placeholder = $(this.$refs.label).children().first().text().trim();
         this.$nextTick(function(){
             var field = this;
-            this.$parent.emitter.on('init', function(){
+            this.$parent.$parent.emitter.on('init', function(){
                 field.destroy();
                 field.construct();
                 field.value = field.default;
                 field.onChange();
                 if(field.inputType == 3)
-                    field.$parent.emitter.emit('init:sub', field.name);
+                    field.$parent.$parent.emitter.emit('init:sub', field.name);
             });
         });
     }

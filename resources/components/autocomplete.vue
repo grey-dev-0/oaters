@@ -111,7 +111,7 @@ export default {
         close(delayed){
             if(!delayed)
                 this.suggestions = [];
-            else {
+            else{
                 var component = this;
                 setTimeout(function(){
                     component.suggestions = [];
@@ -131,10 +131,10 @@ export default {
             this.query = this.selectedTitle;
         var component = this;
         this.$nextTick(function(){
-          this.$parent.$parent.emitter.on('destroy', function(fieldName){
-            if(component.name == fieldName)
-              component.clear();
-          });
+            this.$parent.$parent.$parent.emitter.on('destroy', function(fieldName){
+                if(component.name == fieldName)
+                    component.clear();
+            });
         });
         if(!this.multiple)
             return;
@@ -168,6 +168,7 @@ export default {
 <style lang="scss">
 .autocomplete-group{
     position: relative;
+
     .autocomplete-clear{
         display: block;
         position: absolute;
@@ -177,6 +178,7 @@ export default {
         font-size: 1.5em;
         line-height: 1;
     }
+
     .autocomplete-dropdown{
         li{
             cursor: pointer;

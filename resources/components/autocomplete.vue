@@ -13,7 +13,8 @@
 </template>
 
 <script>
-let $, _ = window._;
+import {debounce as _debounce} from "lodash";
+let $;
 
 export default {
     name: "Autocomplete",
@@ -68,7 +69,7 @@ export default {
         }
     },
     methods: {
-        search: _.debounce(function(e){
+        search: _debounce(function(e){
             var keyCode = e.keyCode || e.which;
             if(keyCode == 27)
                 return;

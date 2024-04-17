@@ -14,6 +14,9 @@ let app = createApp({
         }
     },
     methods: {
+        jQuery(){
+            return common.jQuery;
+        },
         renderModules: function(modules){
             let rendered = [];
             modules.forEach((module) => {

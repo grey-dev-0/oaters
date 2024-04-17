@@ -4,12 +4,6 @@
     <title>OATERS: Subscriptions</title>
 @stop
 
-@push('styles')
-    <link rel="stylesheet" href="{{asset('css/jquery.dataTables.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('css/daterangepicker.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
-@endpush
-
 @section('content')
     <div class="row">
         <breadcrumb>
@@ -65,11 +59,5 @@
         @endphp
         locale.common = @json($locale);
     </script>
-    <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/jquery.dataTables.bs4.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/lodash.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/moment.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/daterangepicker.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/select2.full.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset(mix('js/sapphire/subscriptions.js'))}}"></script>
+    @vite(['resources/js/sapphire/subscriptions.js'])
 @endpush

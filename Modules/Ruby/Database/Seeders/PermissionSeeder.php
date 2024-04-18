@@ -28,14 +28,14 @@ class PermissionSeeder extends Seeder{
 
         // Authorizing corresponding roles to their relevant permissions.
         $rolePermissions = [
-            'general-manager' => $permissions->where('name', '!=', 'ruby'),
-            'financial-manager' => $permissions->whereNotIn('name', ['ruby', 'view-recruitment']),
-            'hr-manager' => $permissions->where('name', '!=', 'ruby'),
-            'director' => $permissions->whereIn('name', ['view-personnel', 'view-notices', 'view-leaves', 'view-attendance']),
-            'team-lead' => $permissions->whereIn('name', ['view-personnel', 'view-notices', 'view-leaves', 'view-attendance']),
-            'accountant' =>  $permissions->whereNotIn('name', ['ruby', 'view-recruitment']),
-            'hr-assistant' => $permissions->where('name', '!=', 'ruby'),
-            'employee' => $permissions->whereIn('name', ['view-notices', 'view-leaves', 'view-attendance'])
+            'general-manager' => $permissions,
+            'financial-manager' => $permissions->where('name', '!=', 'view-recruitment'),
+            'hr-manager' => $permissions,
+            'director' => $permissions->whereIn('name', ['ruby', 'view-personnel', 'view-notices', 'view-leaves', 'view-attendance']),
+            'team-lead' => $permissions->whereIn('name', ['ruby', 'view-personnel', 'view-notices', 'view-leaves', 'view-attendance']),
+            'accountant' =>  $permissions->where('name', '!=', 'view-recruitment'),
+            'hr-assistant' => $permissions,
+            'employee' => $permissions->whereIn('name', ['ruby', 'view-notices', 'view-leaves', 'view-attendance'])
         ];
         $roles->each(function($role) use($rolePermissions){
             $role->syncPermissions($rolePermissions[$role->name]);

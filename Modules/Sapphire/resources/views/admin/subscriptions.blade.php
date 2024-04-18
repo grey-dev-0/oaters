@@ -16,7 +16,7 @@
         <div class="col">
             <card title="{{trans('sapphire::admin.subscriptions.title')}}" color="cyan-2">
                 <template #toolbar>
-                    <div class="btn btn-sm btn-success" title="{{trans('sapphire::admin.subscriptions.create')}}" @click="addSubscription"><i class="fa fas fa-plus"></i></div>
+                    <div class="btn btn-sm btn-success" title="{{trans('sapphire::admin.subscriptions.create')}}" @click="addSubscription"><i class="fa fas fa-plus align-middle"></i></div>
                 </template>
                 <!--<vue-datafilter :cols="5">
                     <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>

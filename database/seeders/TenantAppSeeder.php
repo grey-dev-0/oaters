@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Ruby\Database\Seeders\DepartmentSeeder;
 use Modules\Ruby\Database\Seeders\PermissionSeeder as RubyPermissionSeeder;
 use Modules\Sapphire\Database\seeders\RoleSeeder;
 use Modules\Sapphire\Database\seeders\UsersTableSeeder;
@@ -14,7 +15,9 @@ class TenantAppSeeder extends Seeder{
     public function run(): void{
         $this->call(RoleSeeder::class);
         $this->call(RubyPermissionSeeder::class);
-        if(!app()->isProduction())
+        if(!app()->isProduction()){
+            $this->call(DepartmentSeeder::class);
             $this->call(UsersTableSeeder::class);
+        }
     }
 }

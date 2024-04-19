@@ -14,7 +14,7 @@
 
 <script>
 import 'datatables.net';
-import 'datatables.net-bs4';
+import DataTable from 'datatables.net-bs4';
 import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 import emitter from "mitt";
 let $;
@@ -92,6 +92,8 @@ export default {
     created(){
         $ = this.$root.jQuery();
         this.$root.emitter = emitter();
+        DataTable.type('date', 'className', '');
+        DataTable.type('numeric', 'className', '');
     }
 };
 </script>

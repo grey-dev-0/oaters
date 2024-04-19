@@ -20,16 +20,16 @@
                 </template>
 
                 <vue-datafilter :cols="4" datatable-ref="departmentsTable">
-                    <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
+                    <dt-filter name="translations.name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
                     <dt-filter name="head.name" type="text" label="{{trans('ruby::departments.head')}}"></dt-filter>
                     <dt-filter name="created_at" type="date" label="{{trans('common::words.created_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>
 
                 <vue-datatable datatable-id="departments-table" ref="departmentsTable" :ajax-complete="onDatatableDraw">
-                    <dt-column name="translations.name" data="name">{{trans('common::words.name')}}</dt-column>
-                    <dt-column name="head.name" data="head.0.name">{{trans('ruby::departments.head')}}</dt-column>
+                    <dt-column name="translations.name" data="translations.0.name">{{trans('common::words.name')}}</dt-column>
+                    <dt-column name="head.name" data="head">{{trans('ruby::departments.head')}}</dt-column>
                     <dt-column name="subordinates_count" data="subordinates_count" :searchable="false">{{trans('common::words.members')}}</dt-column>
-                    <dt-column name="applicants_count" data="applicants_count" :searchable="false">{{trans('ruby::departments.pending_applicants')}}</dt-column>
+                    <dt-column name="vacancies_count" data="vacancies_count" :searchable="false">{{trans('ruby::words.vacancies')}}</dt-column>
                     <dt-column name="created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
                         {{trans('common::words.actions')}}

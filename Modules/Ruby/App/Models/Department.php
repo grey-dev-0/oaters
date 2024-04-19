@@ -73,6 +73,10 @@ class Department extends Model{
         return $this->morphToMany(Applicant::class, 'applicable');
     }
 
+    public function vacancies(){
+        return $this->hasMany(Vacancy::class);
+    }
+
     public function getMembersAttribute(){
         return $this->staff->managers->merge($this->staff->contacts)->unique('id')->values();
     }

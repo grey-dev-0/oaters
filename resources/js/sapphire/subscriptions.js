@@ -3,6 +3,7 @@ import common from "../common.js";
 import Datatable from "../../components/datatable";
 import Form from "../../components/form";
 
+let $ = common.jQuery, bootbox = common.bootbox;
 let app = createApp({
     data: function(){
         return {
@@ -15,7 +16,7 @@ let app = createApp({
     },
     methods: {
         jQuery(){
-            return common.jQuery;
+            return $;
         },
         renderModules: function(modules){
             let rendered = [];
@@ -57,3 +58,13 @@ common.load(app);
 common.loadBundles(app, bundles);
 common.loadComponents(app, components);
 app.mount('#app');
+
+$('body').on('click', '#subscriptions-table .delete', () => {
+    bootbox.confirm({
+        message: 'Are you sure?',
+        centerVertical: true,
+        callback: answer => {
+            console.log('The answer is ', answer);
+        }
+    });
+});

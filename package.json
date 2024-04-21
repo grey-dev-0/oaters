@@ -13,6 +13,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "bootbox": "^5.5.3",
         "bootstrap": "^4.6.2",
         "chart.js": "^4.4.2",
         "datatables.net": "^2.0.3",

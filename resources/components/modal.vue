@@ -34,6 +34,10 @@ export default {
             type: Boolean,
             default: false
         },
+        centered: {
+            type: Boolean,
+            default: false
+        },
         color: {
             type: String,
             default: 'grey-10'
@@ -53,6 +57,8 @@ export default {
             var theClass = 'modal-dialog';
             if(this.size)
                 theClass += ' modal-' + this.size;
+            if(this.centered)
+                theClass += ' modal-dialog-centered';
             return theClass;
         },
         bodyClass: function(){

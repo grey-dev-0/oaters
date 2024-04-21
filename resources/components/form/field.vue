@@ -68,11 +68,11 @@ export default {
     },
     computed: {
         labelClass: function(){
-            return 'control-label col-12 col-sm-' + this.labelSize.small + ' col-md-' + this.labelSize.medium + ' col-lg-' +
-                this.labelSize.large;
+            return 'col-12 col-sm-' + this.labelSize.small + ' col-md-' + this.labelSize.medium + ' col-lg-' +
+                this.labelSize.large + (this.inputType != 3? ' col-form-label' : '');
         },
         inputClass: function(){
-            return 'control-label col-12 col-sm-' + (12 - this.labelSize.small) + ' col-md-' + (12 - this.labelSize.medium)
+            return 'col-12 col-sm-' + (12 - this.labelSize.small) + ' col-md-' + (12 - this.labelSize.medium)
                 + ' col-lg-' + (12 - this.labelSize.large);
         },
         inputType: function(){
@@ -147,7 +147,7 @@ export default {
         $ = this.$root.jQuery();
     },
     mounted: function(){
-        this.placeholder = $(this.$refs.label).children().first().text().trim();
+        this.placeholder = $(this.$refs.label).text().trim();
         this.$nextTick(function(){
             this.emitter.on('init', () => {
                 this.destroy();

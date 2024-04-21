@@ -11,12 +11,17 @@ class Subordinate extends Model{
     /**
      * @inheritdoc
      */
+    public $incrementing = false;
+
+    /**
+     * @inheritdoc
+     */
     protected $table = 'r_subordinates';
 
     /**
      * @inheritdoc
      */
-    protected $fillable = [];
+    protected $guarded = ['id'];
 
     /**
      * @inheritdoc

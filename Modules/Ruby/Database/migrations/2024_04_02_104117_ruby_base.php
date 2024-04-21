@@ -96,12 +96,13 @@ return new class extends Migration{
         });
 
         Schema::create('r_subordinates', function(Blueprint $table){
-            $table->unsignedInteger('manager_id');
-            $table->unsignedInteger('contact_id')->unique();
+            $table->string('id', 18)->primary()->default(DB::raw('uuid_short()'));
+            $table->unsignedInteger('manager_id')->nullable();
+            $table->unsignedInteger('contact_id')->nullable();
             $table->unsignedInteger('department_id');
-            $table->primary(['manager_id', 'contact_id']);
-            $table->foreign('manager_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
+            $table->unique(['manager_id', 'contact_id']);
+            $table->foreign('manager_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('department_id')->references('id')->on('r_departments')->onUpdate('cascade')->onDelete('cascade');
         });
 

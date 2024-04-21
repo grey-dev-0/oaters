@@ -7,7 +7,7 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
     Route::get('logout', 'ModuleController@getLogout')->name('logout');
 
     Route::prefix('departments')->as('departments.')->group(function(){
-        Route::view('/', 'ruby::departments.index')->name('index');
+        Route::view('/', 'ruby::departments')->name('index');
         Route::post('/', 'DepartmentController@postIndex');
     });
 

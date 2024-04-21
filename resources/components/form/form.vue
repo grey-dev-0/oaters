@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import {computed} from 'vue';
 import emitter from 'mitt';
 let $;
 
@@ -46,6 +47,20 @@ export default {
             emitter: null
         };
     },
+    provide: function(){
+        return {
+            labelSize: computed(() => ({
+                small: this.small,
+                medium: this.medium,
+                large: this.large
+            })),
+            formOrientation: computed(() => ({
+                vertical: this.vertical
+            })),
+            emitter: computed(() => this.emitter),
+            setField: this.setField
+        };
+    },
     computed: {
         encoding: function(){
             return this.hasFiles? 'multipart/form-data' : 'application/x-www-form-urlencoded'
@@ -63,9 +78,9 @@ export default {
     created(){
         $ = this.$root.jQuery();
     },
-    mounted: function(){
+    mounted(){
         this.emitter = emitter();
-        if(this.$parent.$options.name != 'Modal')
+        if(this.$parent.$parent.$options.name != 'Modal')
             this.emitter.emit('init');
     }
 }

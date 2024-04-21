@@ -8,6 +8,7 @@
 <script>
 export default {
     name: "Radio",
+    inject: ['setValue', 'setField', 'emitter'],
     props: {
         id: {
             type: String,
@@ -26,27 +27,25 @@ export default {
     },
     methods: {
         onChange: function(){
-            if(this.$parent.$options.name != 'VueField')
+            if(this.$parent.$parent.$options.name != 'VueField')
                 return;
-            this.$parent.value = this.value;
-            this.$parent.$parent.setField(this.name, this.value);
+            this.setValue(this.value);
         }
     },
     mounted: function(){
-        if(this.$parent.$options.name != 'VueField')
+        if(this.$parent.$parent.$options.name != 'VueField')
             return;
-        var radio = this;
         this.$nextTick(function(){
-            this.$parent.$parent.emitter.on('init:sub', function(fieldName){
-                radio.$nextTick(function(){
-                    if(radio.name == fieldName)
-                        radio.checked = radio.$parent.value;
+            this.emitter.on('init:sub', fieldName => {
+                this.$nextTick(function(){
+                    if(this.name == fieldName)
+                        this.checked = this.$parent.$parent.value;
                 });
             });
 
-            this.$parent.$parent.emitter.on('destroy', function(fieldName){
-                if(radio.name == fieldName)
-                    radio.checked = undefined;
+            this.emitter.on('destroy', fieldName => {
+                if(this.name == fieldName)
+                    this.checked = undefined;
             });
         });
     }

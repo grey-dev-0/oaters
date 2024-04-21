@@ -8,6 +8,7 @@
 <script>
 export default {
     name: "Checkbox",
+    inject: ['setValue', 'setField'],
     props: {
         id: {
             type: String,
@@ -21,8 +22,8 @@ export default {
     },
     methods: {
         onChange: function(){
-            this.$parent.value = this.value;
-            this.$parent.$parent.setField(this.name, this.value);
+            this.setValue(this.value);
+            this.setField(this.name, this.value);
         }
     }
 }

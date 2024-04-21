@@ -1,5 +1,5 @@
 <template>
-    <template v-if="$parent.$parent.vertical">
+    <template v-if="formOrientation.vertical">
         <!-- TODO Supporting vertical form mode -->
     </template>
     <template v-else>
@@ -35,6 +35,7 @@ export default {
     components:{
         Autocomplete
     },
+    inject: ['labelSize', 'formOrientation', 'setField', 'emitter'],
     props: {
         id: String,
         name: String,
@@ -67,12 +68,12 @@ export default {
     },
     computed: {
         labelClass: function(){
-            return 'control-label col-12 col-sm-' + this.$parent.$parent.small + ' col-md-' + this.$parent.$parent.medium + ' col-lg-' +
-                this.$parent.$parent.large;
+            return 'control-label col-12 col-sm-' + this.labelSize.small + ' col-md-' + this.labelSize.medium + ' col-lg-' +
+                this.labelSize.large;
         },
         inputClass: function(){
-            return 'control-label col-12 col-sm-' + (12 - this.$parent.$parent.small) + ' col-md-' + (12 - this.$parent.$parent.medium)
-                + ' col-lg-' + (12 - this.$parent.$parent.large);
+            return 'control-label col-12 col-sm-' + (12 - this.labelSize.small) + ' col-md-' + (12 - this.labelSize.medium)
+                + ' col-lg-' + (12 - this.labelSize.large);
         },
         inputType: function(){
             switch(this.type){
@@ -98,9 +99,18 @@ export default {
             return (this.type == 'daterange')? 'text' : this.type;
         }
     },
+    provide(){
+        return {
+            setValue: this.setValue
+        };
+    },
     methods: {
+        setValue(value){
+            this.value = value;
+            this.$nextTick(this.onChange);
+        },
         onChange: function(){
-            this.$parent.$parent.setField(this.name, this.value);
+            this.setField(this.name, this.value);
         },
         onAutocompleteChange: function(name, value){
             this.value = value;
@@ -117,19 +127,19 @@ export default {
             if(this.type == 'select2' && element.hasClass('select2-hidden-accessible'))
                 element.select2('destroy');
             if([3, 4].indexOf(this.inputType) != -1 && this.name !== undefined)
-                this.$parent.$parent.emitter.emit('destroy', this.name);
+                this.emitter.emit('destroy', this.name);
         },
         initDatePicker: function(){
 
         },
         initSelect: function(){
-            var field = this;
+            let field = this;
             $('#' + this.id).off().select2({
                 theme: 'bootstrap',
                 placeholder: this.placeholder,
                 width: '100%'
             }).on('change', function(){
-                field.$parent.$parent.setField(field.name, $(this).val());
+                field.setField(field.name, $(this).val());
             });
         }
     },
@@ -139,14 +149,13 @@ export default {
     mounted: function(){
         this.placeholder = $(this.$refs.label).children().first().text().trim();
         this.$nextTick(function(){
-            var field = this;
-            this.$parent.$parent.emitter.on('init', function(){
-                field.destroy();
-                field.construct();
-                field.value = field.default;
-                field.onChange();
-                if(field.inputType == 3)
-                    field.$parent.$parent.emitter.emit('init:sub', field.name);
+            this.emitter.on('init', () => {
+                this.destroy();
+                this.construct();
+                this.value = this.default;
+                this.onChange();
+                if(this.inputType == 3)
+                    this.emitter.emit('init:sub', this.name);
             });
         });
     }

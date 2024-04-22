@@ -16,7 +16,7 @@
         <div class="col">
             <card title="{{trans('common::words.departments')}}" color="indigo-3">
                 <template #toolbar>
-                    <div class="btn btn-sm btn-success" title="{{trans('ruby::departments.new')}}"><i class="fa fas fa-plus align-middle"></i><span class="d-none d-sm-inline-block ml-2">{{trans('ruby::departments.new')}}</span></div>
+                    <div class="btn btn-sm btn-success" title="{{trans('ruby::departments.new')}}" @click="addDepartment"><i class="fa fas fa-plus align-middle"></i><span class="d-none d-sm-inline-block ml-2">{{trans('ruby::departments.new')}}</span></div>
                 </template>
 
                 <vue-datafilter :cols="4" datatable-ref="departmentsTable">
@@ -25,7 +25,7 @@
                     <dt-filter name="created_at" type="date" label="{{trans('common::words.created_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>
 
-                <vue-datatable datatable-id="departments-table" ref="departmentsTable" :ajax-complete="onDatatableDraw">
+                <vue-datatable datatable-id="departments-table" ref="departmentsTable">
                     <dt-column name="translations.name" data="translations.0.name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="head.name" data="head">{{trans('ruby::departments.head')}}</dt-column>
                     <dt-column name="subordinates_count" data="subordinates_count" :searchable="false">{{trans('common::words.members')}}</dt-column>
@@ -41,6 +41,9 @@
             </card>
         </div>
     </div>
+
+    <x-ruby::modals.department-form ref="createDepartment" id="add-department" color="green-2" title="{{trans('ruby::departments.new')}}"/>
+    <x-ruby::modals.department-form ref="updateDepartment" id="edit-department" color="blue-3" title="{{trans('ruby::departments.edit')}}" :edit="true"/>
 @stop
 
 @push('scripts')

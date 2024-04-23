@@ -40,11 +40,16 @@ export default {
     },
     methods: {
         renderActions(row){
-            var actions = [], elements = $(this.$refs.actions).children(), idKey;
-            elements.each(function(){
-                var element = $(this).clone();
-                idKey = element.attr('data-id');
-                element.attr('data-id', row[idKey || 'id'] || '');
+            let actions = [], elements = $(this.$refs.actions).children(), parameters, attribute, href;
+            elements.each(function(index, element){
+                element = $(element).clone();
+                href = element.attr('href');
+                parameters = row.actions;
+                if(href)
+                    element.attr('href', parameters.url);
+                else
+                    for(attribute in parameters)
+                        element.data(attribute, parameters[attribute]);
                 actions.push($('<div/>').append(element).html());
             });
             return actions.join(' ');
@@ -54,9 +59,9 @@ export default {
         $ = this.$root.jQuery();
     },
     mounted(){
-        var column = {};
-        var props = ['data', 'render', 'name', 'searchable', 'orderable', 'visible', 'defaultContent', 'className', 'width'];
-        for(var i in props)
+        let column = {},
+            props = ['data', 'render', 'name', 'searchable', 'orderable', 'visible', 'defaultContent', 'className', 'width'];
+        for(let i in props)
             if(this.$props[props[i]] !== undefined)
                 column[props[i]] = this.$props[props[i]];
         if(!!this.$slots.actions)

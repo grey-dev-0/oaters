@@ -21,10 +21,16 @@ let app = createApp({
         jQuery(){
             return $;
         },
+        bootbox(){
+            return common.bootbox;
+        },
         addDepartment: function(){
             this.$refs.createDepartment.show(() => {
                 this.$refs.createDepartmentForm.reset();
             });
+        },
+        submit(modal){
+            this.$refs[modal + 'Form'].submit().then(() => this.$refs[modal].hide());
         }
     },
     computed: {

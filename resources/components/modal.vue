@@ -69,10 +69,13 @@ export default {
         }
     },
     methods: {
-        show: function(reset){
+        show(reset){
             if(reset !== undefined)
                 reset();
             $('#' + this.id).modal('show');
+        },
+        hide(){
+            $('#' + this.id).modal('hide');
         }
     },
     created(){

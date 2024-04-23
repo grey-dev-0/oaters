@@ -17,7 +17,10 @@ let $;
 export default {
     name: "VueForm",
     props: {
-        id: String,
+        id: {
+            type: String,
+            required: true
+        },
         action: String,
         vertical: {
             type: Boolean,
@@ -73,6 +76,29 @@ export default {
         reset: function(){
             $('#' + this.id)[0].reset();
             this.emitter.emit('init');
+        },
+        submit(){
+            let form = $('#' + this.id);
+            if(!this.ajax)
+                form.submit();
+            else{
+                let request = {
+                    url: this.action || window.location.href,
+                    type: 'POST',
+                    error: (xhr) => {
+                        this.$root.bootbox().alert('Something went wrong!');
+                        console.error(xhr.responseText);
+                    }
+                };
+                request = Object.assign(request, this.encoding != 'multipart/form-data'? {
+                    data: form.serialize()
+                } : {
+                    contentType: false,
+                    processData: false,
+                    data: new FormData(form[0])
+                });
+                return $.ajax(request);
+            }
         }
     },
     created(){

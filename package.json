@@ -1,32 +1,39 @@
 {
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "dev": "NODE_ENV=development vite build -m development",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "@vitejs/plugin-vue": "^5.0.4",
-        "axios": "^1.6.4",
-        "glob": "^10.3.12",
-        "laravel-vite-plugin": "^1.0.0",
-        "vite": "^5.0.0"
-    },
-    "dependencies": {
-        "bootbox": "^5.5.3",
-        "bootstrap": "^4.6.2",
-        "chart.js": "^4.4.2",
-        "datatables.net": "^2.0.3",
-        "datatables.net-bs4": "^2.0.3",
-        "daterangepicker": "^3.1.0",
-        "jquery": "^3.7.1",
-        "lodash": "^4.17.21",
-        "mitt": "^3.0.1",
-        "moment": "^2.30.1",
-        "sass": "^1.74.1",
-        "sass-loader": "^14.1.1",
-        "select2": "^4.0.13",
-        "select2-theme-bootstrap4": "^1.0.2",
-        "vue": "^3.4.21"
-    }
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=development vite build -m development",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@nx/eslint": "18.3.3",
+    "@nx/eslint-plugin": "18.3.3",
+    "@nx/js": "18.3.3",
+    "@nx/vite": "18.3.3",
+    "@nx/vue": "18.3.3",
+    "@nx/web": "18.3.3",
+    "@nx/workspace": "18.3.3",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "axios": "^1.6.4",
+    "glob": "^10.3.12",
+    "laravel-vite-plugin": "^1.0.0",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "bootbox": "^5.5.3",
+    "bootstrap": "^4.6.2",
+    "chart.js": "^4.4.2",
+    "datatables.net": "^2.0.3",
+    "datatables.net-bs4": "^2.0.3",
+    "daterangepicker": "^3.1.0",
+    "jquery": "^3.7.1",
+    "lodash": "^4.17.21",
+    "mitt": "^3.0.1",
+    "moment": "^2.30.1",
+    "sass": "^1.74.1",
+    "sass-loader": "^14.1.1",
+    "select2": "^4.0.13",
+    "select2-theme-bootstrap4": "^1.0.2",
+    "vue": "^3.4.21"
+  }
 }

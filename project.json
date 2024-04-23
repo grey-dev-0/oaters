@@ -1,0 +1,17 @@
+{
+  "name": "oaters",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": ".",
+  "targets": {
+    "build": {
+      "cache": true,
+      "inputs": [
+        "default"
+      ],
+      "outputs": [
+        "{projectRoot}/public/build"
+      ]
+    }
+  }
+}

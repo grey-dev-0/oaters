@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./public/build",
+    "types": ["vite/client"]
+  },
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.vue",
+    "src/**/*.test.vue"
+  ],
+  "include": ["resources/js/**/*.js", "resources/js/*.js", "resources/components/**/*.vue", "resources/components/*.vue"]
+}

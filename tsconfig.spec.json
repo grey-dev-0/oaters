@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./public/build",
+    "types": [
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node",
+      "vitest"
+    ]
+  },
+  "include": [
+    "vite.config.js",
+    "resources/js/**/*.js",
+    "resources/components/**/*.js",
+    "resources/components/**/*.vue"
+  ]
+}

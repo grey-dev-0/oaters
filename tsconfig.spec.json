@@ -14,6 +14,7 @@
     "vite.config.js",
     "resources/js/**/*.js",
     "resources/components/**/*.js",
+    "resources/components/*.vue",
     "resources/components/**/*.vue"
   ]
 }

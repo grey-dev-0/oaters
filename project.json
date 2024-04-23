@@ -4,7 +4,16 @@
   "projectType": "application",
   "sourceRoot": ".",
   "targets": {
-    "build": {
+    "production": {
+      "cache": true,
+      "inputs": [
+        "default"
+      ],
+      "outputs": [
+        "{projectRoot}/public/build"
+      ]
+    },
+    "development": {
       "cache": true,
       "inputs": [
         "default"

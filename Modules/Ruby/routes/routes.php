@@ -9,6 +9,8 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
     Route::prefix('departments')->as('departments.')->group(function(){
         Route::view('/', 'ruby::departments')->name('index');
         Route::post('/', 'DepartmentController@postIndex');
+        Route::post('create', 'DepartmentController@postCreateOrUpdate')->name('create');
+        Route::post('update', 'DepartmentController@postCreateOrUpdate')->name('update');
     });
 
     Route::prefix('contacts')->as('contacts.')->group(function(){

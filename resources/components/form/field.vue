@@ -9,14 +9,14 @@
             </label>
             <div :class="inputClass">
                 <input v-if="inputType == 1" :id="id" :class="(type != 'file')? 'form-control' : ''" :name="name" :type="textType" v-model="value" :autocomplete="!autocomplete? 'off' : 'on'" :placeholder="placeholder" @change="onChange">
-                <select v-else-if="inputType == 2" :id="id" class="form-control" :name="name" v-model="value" :multiple="multiple" @change="onChange">
+                <select v-else-if="inputType == 2" :id="id" class="form-control" :name="name + (multiple? '[]' : '')" v-model="value" :multiple="multiple" @change="onChange">
                     <option value="">-- {{placeholder}} --</option>
                     <slot name="options"></slot>
                 </select>
                 <template v-else-if="inputType == 3">
                     <slot name="options"></slot>
                 </template>
-                <autocomplete v-else :name="name" :id="id" :url="url" :placeholder="placeholder" @change="onAutocompleteChange"></autocomplete>
+                <autocomplete v-else :name="name" :id="id" :url="url" :placeholder="placeholder" :limit="limit" @change="onAutocompleteChange"></autocomplete>
             </div>
         </div>
     </template>
@@ -55,6 +55,7 @@ export default {
             default: false
         },
         url: String,
+        limit: Number,
         default: {
             type: [String, Number, Boolean],
             default: undefined
@@ -133,12 +134,37 @@ export default {
 
         },
         initSelect: function(){
-            let field = this;
-            $('#' + this.id).off().select2({
+            let field = this, options = {
                 theme: 'bootstrap',
                 placeholder: this.placeholder,
-                width: '100%'
-            }).on('change', function(){
+                width: '100%',
+                allowClear: true
+            };
+            if(this.url)
+                options.ajax = {
+                    url: this.url,
+                    type: 'POST',
+                    data(parameters){
+                        return {
+                            query: parameters.term,
+                            page: parameters.page,
+                            limit: field.limit || 5
+                        }
+                    },
+                    processResults: response => {
+                        let results = [];
+                        response = response.suggestions;
+                        for(let key in response)
+                            results.push({
+                                id: key,
+                                text: response[key]
+                            });
+                        return {
+                            results
+                        };
+                    }
+                };
+            $('#' + this.id).off().select2(options).on('change', function(){
                 field.setField(field.name, $(this).val());
             });
         }

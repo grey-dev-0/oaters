@@ -94,7 +94,9 @@ export default {
         $ = this.$root.jQuery();
         this.$root.emitter = emitter();
         DataTable.type('date', 'className', '');
-        DataTable.type('numeric', 'className', '');
+        DataTable.type('num', 'className', '');
+        DataTable.type('num-fmt', 'className', '');
+        DataTable.type('html-num', 'className', '');
     }
 };
 </script>

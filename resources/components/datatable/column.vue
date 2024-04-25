@@ -40,19 +40,16 @@ export default {
     },
     methods: {
         renderActions(row){
-            let actions = [], elements = $(this.$refs.actions).children(), parameters, attribute, href;
+            let actions = $('<div/>'), elements = $(this.$refs.actions).children(), idKey;
             elements.each(function(index, element){
                 element = $(element).clone();
-                href = element.attr('href');
-                parameters = row.actions;
-                if(href)
-                    element.attr('href', parameters.url);
-                else
-                    for(attribute in parameters)
-                        element.data(attribute, parameters[attribute]);
-                actions.push($('<div/>').append(element).html());
+                idKey = element.attr('data-id');
+                element.attr('data-id', row[idKey || 'id'] || '');
+                actions.append(element).append(' ');
             });
-            return actions.join(' ');
+            if(this.$parent.renderActions)
+                this.$parent.renderActions(row, actions.children());
+            return actions.html();
         }
     },
     created(){

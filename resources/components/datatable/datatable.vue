@@ -51,7 +51,8 @@ export default {
             default: function(){
                 return {};
             }
-        }
+        },
+        renderActions: Function
     },
     data: function(){
         return {

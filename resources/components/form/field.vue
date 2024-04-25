@@ -55,11 +55,7 @@ export default {
             default: false
         },
         url: String,
-        limit: Number,
-        default: {
-            type: [String, Number, Boolean],
-            default: undefined
-        }
+        limit: Number
     },
     data: function(){
         return {
@@ -117,11 +113,12 @@ export default {
             this.value = value;
             this.$nextTick(this.onChange);
         },
-        construct: function(){
+        construct: function(defaultValue){
             switch(this.type){
-                case 'daterange': return this.initDatePicker();
-                case 'select2': return this.initSelect();
+                case 'daterange': return this.initDatePicker(defaultValue);
+                case 'select2': return this.initSelect(defaultValue);
             }
+            this.$nextTick(() => this.value = defaultValue);
         },
         destroy: function(){
             var element = $('#' + this.id);
@@ -130,17 +127,17 @@ export default {
             if([3, 4].indexOf(this.inputType) != -1 && this.name !== undefined)
                 this.emitter.emit('destroy', this.name);
         },
-        initDatePicker: function(){
+        initDatePicker: function(defaultValue){
 
         },
-        initSelect: function(){
-            let field = this, options = {
+        initSelect: function(defaultValue){
+            let field = this, element = $('#' + this.id), options = {
                 theme: 'bootstrap',
                 placeholder: this.placeholder,
                 width: '100%',
                 allowClear: true
             };
-            if(this.url)
+            if(this.url){
                 options.ajax = {
                     url: this.url,
                     type: 'POST',
@@ -164,9 +161,18 @@ export default {
                         };
                     }
                 };
-            $('#' + this.id).off().select2(options).on('change', function(){
-                field.setField(field.name, $(this).val());
+                if(defaultValue){
+                    element.empty();
+                    for(let key in defaultValue)
+                        element.append($('<option/>').attr('value', key).attr('selected', true).text(defaultValue[key]));
+                }
+            }
+            element.off().select2(options).on('change', function(){
+                let value = $(this).val();
+                field.value = value;
+                field.setField(field.name, value);
             });
+            this.$nextTick(() => element.trigger('change'));
         }
     },
     created(){
@@ -175,10 +181,9 @@ export default {
     mounted: function(){
         this.placeholder = $(this.$refs.label).text().trim();
         this.$nextTick(function(){
-            this.emitter.on('init', () => {
+            this.emitter.on('init', (e) => {
                 this.destroy();
-                this.construct();
-                this.value = this.default;
+                this.construct(e.defaults? e.defaults[this.name] : undefined);
                 this.onChange();
                 if(this.inputType == 3)
                     this.emitter.emit('init:sub', this.name);

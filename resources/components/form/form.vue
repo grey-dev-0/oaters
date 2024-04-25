@@ -73,9 +73,9 @@ export default {
         setField: function(field, value){
             this.fields[field] = value;
         },
-        reset: function(){
+        reset: function(defaults){
             $('#' + this.id)[0].reset();
-            this.emitter.emit('init');
+            this.emitter.emit('init', {defaults});
         },
         submit(){
             let form = $('#' + this.id);

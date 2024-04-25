@@ -34,7 +34,7 @@
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
                         {{trans('common::words.actions')}}
                         <template #actions>
-                            <!-- TODO: Department Actions -->
+                            <span class="text-teal-4 edit" role="button"><i class="far fa-lg fa-edit"></i></span>
                         </template>
                     </dt-column>
                 </vue-datatable>

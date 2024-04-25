@@ -13,11 +13,11 @@ class DepartmentRequest extends FormRequest{
         $rules = [
             'en.name' => ['required', 'min:3', 'max:255'],
             'ar.name' => ['required', 'min:3', 'max:255'],
-            'manager_id' => ['exists:lc_contacts,id'],
-            'contact_id.*' => ['exists:lc_contacts,id']
+            'manager_id' => ['nullable', 'exists:lc_contacts,id'],
+            'contact_id.*' => ['nullable', 'exists:lc_contacts,id']
         ];
         if($this->route()->getName() == 'ruby::departments.update')
-            $rules += ['id' => ['required']];
+            $rules += ['id' => ['required', 'exists:r_departments.id']];
         return $rules;
     }
 
@@ -39,7 +39,7 @@ class DepartmentRequest extends FormRequest{
                 ->tap(fn($dept) => $dept->update($this->except(['manager_id', 'contact_id']))) :
             Department::create($this->except(['manager_id', 'contact_id']));
         if(!$this->id)
-            $department->employees()->attach($this->contact_id, $this->only('manager_id'));
+            $department->employees()->attach($this->contact_id?: [null], $this->only('manager_id'));
         return response()->json(['success' => true]);
     }
 }

@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
         Route::post('/', 'DepartmentController@postIndex');
         Route::post('create', 'DepartmentController@postCreateOrUpdate')->name('create');
         Route::post('update', 'DepartmentController@postCreateOrUpdate')->name('update');
+        Route::get('{department}', 'DepartmentController@getDepartment')->where('department', '[0-9]+')->name('department');
     });
 
     Route::prefix('contacts')->as('contacts.')->group(function(){

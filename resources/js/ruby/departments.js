@@ -44,12 +44,22 @@ let app = createApp({
             view.openDepartment.id = $(this).data('id');
             view.openDepartment.name = view.dataTable.row($(this).closest('tr')).data().name;
             view.$nextTick(() => view.$refs.updateDepartment.show(() => {
-                view.$refs.updateDepartmentForm.reset({
-                    'en[name]': view.openDepartment.name,
-                    contact_id: {
-                        1: 'Test A',
-                        2: 'Test B'
-                    }
+                $.get(window.baseUrl + '/departments/' + view.openDepartment.id).then(response => {
+                    view.$refs.updateDepartmentForm.reset({
+                        'en[name]': response.name,
+                        'ar[name]': response.name_ar,
+                        manager_id: {
+                            id: response.head[0] && response.head[0].id,
+                            text: response.head[0] && response.head[0].name
+                        },
+                        contact_id: (() => {
+                            let employees = {};
+                            response.employees.forEach(employee => {
+                                employees[employee.id] = employee.name;
+                            });
+                            return employees;
+                        })()
+                    });
                 });
             }));
         });

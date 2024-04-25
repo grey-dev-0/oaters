@@ -118,7 +118,10 @@ export default {
                 case 'daterange': return this.initDatePicker(defaultValue);
                 case 'select2': return this.initSelect(defaultValue);
             }
-            this.$nextTick(() => this.value = defaultValue);
+            this.$nextTick(() => {
+                this.value = defaultValue
+                this.setField(this.name, defaultValue);
+            });
         },
         destroy: function(){
             var element = $('#' + this.id);
@@ -184,7 +187,6 @@ export default {
             this.emitter.on('init', (e) => {
                 this.destroy();
                 this.construct(e.defaults? e.defaults[this.name] : undefined);
-                this.onChange();
                 if(this.inputType == 3)
                     this.emitter.emit('init:sub', this.name);
             });

@@ -19,4 +19,9 @@ class DepartmentController extends Controller{
     public function postCreateOrUpdate(DepartmentRequest $request){
         return $request->handle();
     }
+
+    public function getDepartment(Department $department){
+        return response()->json($department->load(['head', 'employees', 'translations'])->setHidden(['translations'])
+            ->setAttribute('name_ar', $department->translations->where('locale', 'ar')->first()->name));
+    }
 }

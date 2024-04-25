@@ -21,7 +21,8 @@ class DepartmentController extends Controller{
     }
 
     public function getDepartment(Department $department){
-        return response()->json($department->load(['head', 'employees', 'translations'])->setHidden(['translations'])
+        return response()->json($department->load(['head.emails' => fn($emails) => $emails->whereDefault(true),
+            'employees', 'translations'])->setHidden(['translations'])
             ->setAttribute('name_ar', $department->translations->where('locale', 'ar')->first()->name));
     }
 }

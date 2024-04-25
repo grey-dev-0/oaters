@@ -45,12 +45,18 @@ let app = createApp({
             view.openDepartment.name = view.dataTable.row($(this).closest('tr')).data().name;
             view.$nextTick(() => view.$refs.updateDepartment.show(() => {
                 $.get(window.baseUrl + '/departments/' + view.openDepartment.id).then(response => {
+                    let text;
+                    if(response.head[0]){
+                        text = response.head[0].name + ' - ';
+                        if(response.head[0].emails[0])
+                            text += response.head[0].emails[0].address;
+                    }
                     view.$refs.updateDepartmentForm.reset({
                         'en[name]': response.name,
                         'ar[name]': response.name_ar,
                         manager_id: {
                             id: response.head[0] && response.head[0].id,
-                            text: response.head[0] && response.head[0].name
+                            text
                         },
                         contact_id: (() => {
                             let employees = {};

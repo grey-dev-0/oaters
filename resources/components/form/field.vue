@@ -16,7 +16,7 @@
                 <template v-else-if="inputType == 3">
                     <slot name="options"></slot>
                 </template>
-                <autocomplete v-else :name="name" :id="id" :url="url" :placeholder="placeholder" :limit="limit" @change="onAutocompleteChange"></autocomplete>
+                <autocomplete v-else ref="autocomplete" :name="name" :id="id" :url="url" :placeholder="placeholder" :limit="limit" @change="onAutocompleteChange"></autocomplete>
             </div>
         </div>
     </template>
@@ -117,6 +117,13 @@ export default {
             switch(this.type){
                 case 'daterange': return this.initDatePicker(defaultValue);
                 case 'select2': return this.initSelect(defaultValue);
+                case 'autocomplete': return this.$nextTick(() => {
+                    let value = defaultValue && defaultValue.id || undefined;
+                    this.value = value
+                    this.setField(this.name, value);
+                    if(value)
+                        this.$refs.autocomplete.select(value, defaultValue.text);
+                });
             }
             this.$nextTick(() => {
                 this.value = defaultValue

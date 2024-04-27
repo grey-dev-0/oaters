@@ -11,6 +11,10 @@ let app = createApp({
         return {
             emitter: null,
             locale: window.locale,
+            toast: {
+                color: 'primary',
+                content: null
+            },
             openDepartment: {
                 id: 0,
                 name: null
@@ -30,7 +34,15 @@ let app = createApp({
             });
         },
         submit(modal){
-            this.$refs[modal + 'Form'].submit().then(() => this.$refs[modal].hide());
+            this.$refs[modal + 'Form'].submit().then(response => {
+                this.$refs[modal].hide();
+                this.toast = {
+                    color: 'success',
+                    content: response.message
+                };
+                this.dataTable.draw();
+                this.$nextTick(() => this.$refs.toast.show());
+            });
         }
     },
     computed: {

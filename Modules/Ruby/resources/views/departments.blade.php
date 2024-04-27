@@ -14,6 +14,8 @@
 
     <div class="row">
         <div class="col">
+            <alert id="toast" ref="toast" :color="toast.color" :content="toast.content"></alert>
+
             <card title="{{trans('common::words.departments')}}" color="indigo-3">
                 <template #toolbar>
                     <div class="btn btn-sm btn-success" title="{{trans('ruby::departments.new')}}" @click="addDepartment"><i class="fa fas fa-plus align-middle"></i><span class="d-none d-sm-inline-block ml-2">{{trans('ruby::departments.new')}}</span></div>

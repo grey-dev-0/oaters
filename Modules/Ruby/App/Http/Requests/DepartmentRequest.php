@@ -18,7 +18,7 @@ class DepartmentRequest extends FormRequest{
             'contact_id.*' => ['nullable', 'exists:lc_contacts,id']
         ];
         if($this->route()->getName() == 'ruby::departments.update')
-            $rules += ['id' => ['required', 'exists:r_departments.id']];
+            $rules += ['id' => ['required', 'exists:r_departments,id']];
         return $rules;
     }
 
@@ -35,16 +35,18 @@ class DepartmentRequest extends FormRequest{
      * @return \Illuminate\Http\JsonResponse
      */
     public function handle(){
-        $department = $this->id?
-            Department::find($this->id)
-                ->tap(fn($dept) => $dept->update($this->except(['manager_id', 'contact_id']))) :
+        if($this->id){
+            $department = Department::find($this->id);
+            $department->update($this->except(['manager_id', 'contact_id']));
+        } else
             Department::create($this->except(['manager_id', 'contact_id']));
         if(!$this->id){
             if($this->manager_id || !empty($this->contact_id))
                 $department->employees()->attach($this->contact_id ?: [null], $this->only('manager_id'));
         } elseif($department->head->first()?->id != $this->manager_id)
             $this->restructureHead($department, $this->manager_id, $this->contact_id);
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'message' => trans('ruby::departments.'.($this->id?
+            'updated' : 'created'))]);
     }
 
     /**

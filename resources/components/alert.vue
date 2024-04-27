@@ -1,5 +1,5 @@
 <template>
-    <div v-if="shown" :id="id" :class="'alert alert-'+color+' mb-2 fade show'" role="alert">
+    <div v-if="shown" :id="id" :class="'alert alert-'+color+' mb-2 fade'" role="alert">
         <div v-if="!$slots.default" v-html="content"></div>
         <slot v-else></slot>
         <span role="button" class="close" @click="hide">&times;</span>
@@ -29,8 +29,10 @@ export default {
     },
     methods: {
         show(){
-            $('#' + this.id).addClass('show');
             this.shown = true;
+            setTimeout(() => {
+                $('#' + this.id).addClass('show');
+            }, 25);
         },
         hide(){
             $('#' + this.id).removeClass('show');

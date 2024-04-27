@@ -4,6 +4,7 @@ namespace Modules\Ruby\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Ruby\App\Models\Department;
+use Modules\Ruby\App\Models\Subordinate;
 
 class DepartmentRequest extends FormRequest{
     /**
@@ -38,8 +39,43 @@ class DepartmentRequest extends FormRequest{
             Department::find($this->id)
                 ->tap(fn($dept) => $dept->update($this->except(['manager_id', 'contact_id']))) :
             Department::create($this->except(['manager_id', 'contact_id']));
-        if(!$this->id)
-            $department->employees()->attach($this->contact_id?: [null], $this->only('manager_id'));
+        if(!$this->id){
+            if($this->manager_id || !empty($this->contact_id))
+                $department->employees()->attach($this->contact_id ?: [null], $this->only('manager_id'));
+        } elseif($department->head->first()?->id != $this->manager_id)
+            $this->restructureHead($department, $this->manager_id, $this->contact_id);
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Restructures the management head of a department while maintaining the rest of its hierarchy.
+     *
+     * @param Department $department The department in question.
+     * @param int $managerId The ID of the new head of department.
+     * @param int[] $subordinateIds The IDs of direct subordinates of the new head.
+     * @return void
+     */
+    private function restructureHead($department, $managerId, $subordinateIds){
+        $currentHead = $department->head->first();
+        $currentSubordinates = $currentHead?->subordinates()->wherePivot('department_id', $department->id)->get()?? collect();
+        if($currentSubordinates->isNotEmpty()){
+            $currentSubManagers = Subordinate::whereDepartmentId($this->id)
+                ->whereIn('manager_id', $currentSubordinates->pluck('id'))->pluck('manager_id')->toArray();
+            $currentNonManagers = $currentSubordinates->whereNotIn('id', $currentSubManagers);
+            $maintainedSubordinates = $currentSubordinates->pluck('id')->intersect($subordinateIds)->values()->toArray();
+            $maintainedSubordinates = array_values(array_unique(array_merge($currentSubManagers, $maintainedSubordinates)));
+            $newSubordinates = array_values(array_diff($subordinateIds, $maintainedSubordinates));
+            $removedSubordinates = $currentNonManagers->pluck('id')->diff($subordinateIds)->values()->toArray();
+            Subordinate::whereDepartmentId($this->id)->whereManagerId($currentHead?->id)
+                ->whereIn('contact_id', $maintainedSubordinates)->update(['manager_id' => $managerId]);
+            if(!empty($newSubordinates))
+                $department->employees()->attach($newSubordinates, ['manager_id' => $managerId]);
+            if(!empty($removedSubordinates))
+                $department->employees()->detach($removedSubordinates);
+        } else{
+            $department->employees()->detach();
+            if($managerId || !empty($subordinateIds))
+                $department->employees()->attach($subordinateIds ?: [null], ['manager_id' => $managerId]);
+        }
     }
 }

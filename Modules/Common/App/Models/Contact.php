@@ -53,15 +53,15 @@ class Contact extends Model{
 
     public function departments(){
         $this->appends[] = 'department';
-        return $this->belongsToMany(Department::class, 'r_subordinates', 'client_id', 'department_id');
+        return $this->belongsToMany(Department::class, 'r_subordinates', 'contact_id', 'department_id');
     }
 
     public function superiors(){
-        return $this->belongsToMany(self::class, 'r_subordinates', 'client_id', 'manager_id');
+        return $this->belongsToMany(self::class, 'r_subordinates', 'contact_id', 'manager_id');
     }
 
     public function subordinates(){
-        return $this->belongsToMany(self::class, 'r_subordinates', 'manager_id', 'client_id');
+        return $this->belongsToMany(self::class, 'r_subordinates', 'manager_id', 'contact_id');
     }
 
     public function applicant(){

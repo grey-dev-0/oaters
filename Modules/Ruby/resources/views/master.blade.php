@@ -13,7 +13,7 @@
     </script>
 </head>
 <body class="bg-grey-8">
-<div id="app">
+<div id="app" v-cloak>
     <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-4">
         <nav-item @if(Route::is(['ruby::departments.*', 'ruby::staff.*', 'ruby::structure.*'])) active @endif>
             <template #label>{{trans('common::words.organization')}}</template>
@@ -55,6 +55,7 @@
         </div>
     </div>
 </div>
+<x-common::loader color="red"/>
 
 @stack('scripts')
 </body>

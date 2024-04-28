@@ -13,7 +13,7 @@
     </script>
 </head>
 <body class="bg-grey-8">
-<div id="app">
+<div id="app" v-cloak>
     <navbar brand="OATERS" home="{{url('sa')}}" scheme="dark" bg-color="blue-2">
         <nav-item @if(\Route::is('admin::tenants')) active @endif url="{{url('sa/tenants')}}">{{trans('sapphire::admin.tenants.title')}}</nav-item>
         <nav-item @if(\Route::is('admin::subscriptions')) active @endif url="{{url('sa/subscriptions')}}">{{trans('sapphire::admin.subscriptions.title')}}</nav-item>
@@ -33,6 +33,7 @@
         </div>
     </div>
 </div>
+<x-common::loader color="blue"/>
 
 @stack('scripts')
 </body>

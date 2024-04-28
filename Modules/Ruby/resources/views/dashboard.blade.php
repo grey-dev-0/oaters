@@ -5,7 +5,9 @@
 @stop
 
 @section('content')
-
+    <card style="min-height:50vh" title="WIP">
+        <v-loader></v-loader>
+    </card>
 @stop
 
 @push('scripts')

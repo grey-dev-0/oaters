@@ -1,6 +1,6 @@
 @props(['color'])
 
-<div class="loader">
+<div id="loader">
     <div class="sk-cube-grid">
         <div class="sk-cube sk-cube1"></div>
         <div class="sk-cube sk-cube2"></div>
@@ -15,8 +15,11 @@
 </div>
 
 <style>
-    .loader{
+    [v-cloak], #loader{
         display: none;
+    }
+
+    #loader, #v-loader{
         position: absolute;
         margin: auto;
         height: 125px;
@@ -26,7 +29,7 @@
         left: 0;
     }
 
-    [v-cloak] + .loader{
+    [v-cloak] + #loader{
         display: block;
     }
 

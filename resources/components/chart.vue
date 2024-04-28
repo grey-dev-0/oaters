@@ -17,9 +17,7 @@
 <script>
 import Chart from 'chart.js/auto';
 
-let $;
-var bootbox = window.bootbox;
-
+let $, bootbox;
 export default {
     name: "Chart",
     props: {
@@ -155,6 +153,7 @@ export default {
     },
     mounted: function(){
         $ = this.$root.jQuery();
+        bootbox = this.$root.bootbox();
         if(this.ranged)
             this.initRangePicker();
         this.load();

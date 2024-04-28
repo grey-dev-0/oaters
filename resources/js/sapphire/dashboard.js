@@ -18,6 +18,9 @@ const app = createApp({
     methods: {
         jQuery(){
             return $;
+        },
+        bootbox(){
+            return common.bootbox;
         }
     },
     computed: {

@@ -29,18 +29,18 @@ export default {
         if(this.default)
             this.$parent.$parent.defaults[this.name] = this.input = this.default;
         this.$nextTick(function(){
-            var component = this;
+            let component = this;
             this.$parent.$parent.filters[this.name] = this.input;
             this.sort = Object.keys(this.$parent.$parent.filters).length;
             if(this.type == 'select2'){
-                var select = $('#' + this.cssId);
+                let select = $('#' + this.cssId);
                 if(this.multiple)
                     select2Options.placeholder = this.label || '';
                 select.select2(select2Options).on('change', function(){
                     component.filter(component.name, select.val())
                 });
             } else if(this.type == 'date'){
-                var opens = (this.options !== undefined)? (this.options.opens || 'right') : 'right';
+                let opens = (this.options !== undefined)? (this.options.opens || 'right') : 'right';
                 $('#' + this.cssId).daterangepicker({
                     showDropdowns: true,
                     autoUpdateInput: false,
@@ -49,8 +49,8 @@ export default {
                         cancelLabel: 'Clear'
                     }
                 }).on('apply.daterangepicker', function(e, picker){
-                    var startDate = picker.startDate.format('YYYY-MM-DD');
-                    var endDate = picker.endDate.format('YYYY-MM-DD');
+                    let startDate = picker.startDate.format('YYYY-MM-DD');
+                    let endDate = picker.endDate.format('YYYY-MM-DD');
                     $(this).val((startDate == endDate)? startDate : (startDate + ' to ' + endDate));
                     component.filter(component.name, $(this).val())
                 }).on('cancel.daterangepicker', function(){
@@ -102,9 +102,9 @@ export default {
             return this.name.replace('.', '-') + '-filter-' + this.type;
         },
         clearCells: function(){
-            var count = this.$parent.$parent.count + 1,
+            let count = this.$parent.$parent.count + 1,
                 setColumns = this.$parent.$parent.cols;
-            var remainder = count % setColumns;
+            let remainder = count % setColumns;
             return (count != setColumns && remainder != 0)? setColumns - remainder : 0;
         }
     },
@@ -116,7 +116,7 @@ export default {
             this.$parent.$parent.filter(field, value);
         },
         clear: function(){
-            var element = $('#' + this.cssId), value = this.input = this.default || '';
+            let element = $('#' + this.cssId), value = this.input = this.default || '';
             if(this.type == 'date' || this.type == 'select2')
                 element.val(value);
             if(this.type == 'select2')

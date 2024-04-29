@@ -43,6 +43,10 @@ export default {
     },
     created(){
         $ = this.$root.jQuery();
+    },
+    mounted(){
+        if(!!this.$slots.default)
+            this.show();
     }
 };
 </script>

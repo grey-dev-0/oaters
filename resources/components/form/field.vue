@@ -46,10 +46,11 @@ export default {
         type: {
             default: 'text',
             validator: function(value){
-                var supportedTypes = ['text', 'number', 'password', 'email', 'tel', 'daterange', 'file', 'select', 'select2', 'checkbox', 'radio', 'autocomplete'];
+                let supportedTypes = ['text', 'number', 'password', 'email', 'tel', 'daterange', 'file', 'select', 'select2', 'checkbox', 'radio', 'autocomplete'];
                 return supportedTypes.indexOf(value) != -1;
             }
         },
+        ranged: Boolean,
         multiple: {
             type: Boolean,
             default: false
@@ -125,20 +126,35 @@ export default {
                         this.$refs.autocomplete.select(value, defaultValue.text);
                 });
             }
-            this.$nextTick(() => {
-                this.value = defaultValue
-                this.setField(this.name, defaultValue);
-            });
+            this.setValue(defaultValue);
         },
         destroy: function(){
-            var element = $('#' + this.id);
+            let element = $('#' + this.id);
             if(this.type == 'select2' && element.hasClass('select2-hidden-accessible'))
                 element.select2('destroy');
             if([3, 4].indexOf(this.inputType) != -1 && this.name !== undefined)
                 this.emitter.emit('destroy', this.name);
         },
         initDatePicker: function(defaultValue){
-
+            this.setValue(defaultValue);
+            let field = this;
+            $('#' + this.id).daterangepicker({
+                showDropdowns: true,
+                autoUpdateInput: false,
+                singleDatePicker: !this.ranged,
+                opens: 'right',
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            }).on('apply.daterangepicker', function(e, picker){
+                let startDate = picker.startDate.format('YYYY-MM-DD');
+                let endDate = picker.endDate.format('YYYY-MM-DD');
+                $(this).val((startDate == endDate)? startDate : (startDate + ' to ' + endDate));
+                field.setValue($(this).val());
+            }).on('cancel.daterangepicker', function(){
+                $(this).val('');
+                field.setValue($(this).val());
+            });
         },
         initSelect: function(defaultValue){
             let field = this, element = $('#' + this.id), options = {

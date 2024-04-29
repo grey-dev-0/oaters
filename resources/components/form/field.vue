@@ -17,6 +17,9 @@
                     <slot name="options"></slot>
                 </template>
                 <autocomplete v-else ref="autocomplete" :name="name" :id="id" :url="url" :placeholder="placeholder" :limit="limit" @change="onAutocompleteChange"></autocomplete>
+                <small class="text-danger d-block" v-if="validation[name]">
+                    <span class="d-block" v-for="error in validation[name]">{{error}}</span>
+                </small>
             </div>
         </div>
     </template>
@@ -35,7 +38,7 @@ export default {
     components:{
         Autocomplete
     },
-    inject: ['labelSize', 'formOrientation', 'setField', 'emitter'],
+    inject: ['labelSize', 'formOrientation', 'setField', 'validation', 'emitter'],
     props: {
         id: String,
         name: String,

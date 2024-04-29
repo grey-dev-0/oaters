@@ -50,6 +50,7 @@ export default {
         return {
             loading: false,
             fields: {},
+            validation: {},
             hasFiles: false,
             emitter: null
         };
@@ -65,6 +66,7 @@ export default {
                 vertical: this.vertical
             })),
             emitter: computed(() => this.emitter),
+            validation: computed(() => this.validation),
             setField: this.setField
         };
     },
@@ -78,6 +80,7 @@ export default {
             this.fields[field] = value;
         },
         reset: function(defaults){
+            this.validation = {};
             $('#' + this.id)[0].reset();
             this.emitter.emit('init', {defaults});
             this.loading = false;
@@ -91,8 +94,25 @@ export default {
                     url: this.action || window.location.href,
                     type: 'POST',
                     error: (xhr) => {
-                        this.$root.bootbox().alert('Something went wrong!');
-                        console.error(xhr.responseText);
+                        if(xhr.status != 422){
+                            this.$root.bootbox().alert('Something went wrong!');
+                            console.error(xhr.responseText);
+                        } else{
+                            let errors = xhr.responseJSON.errors, validation = {}, splitKey, error;
+                            for(let key in errors){
+                                splitKey = key.split('.');
+                                error = errors[key];
+                                if(splitKey.length > 1)
+                                    splitKey.forEach((part, index) => {
+                                        if(index == 0)
+                                            key = part;
+                                        else
+                                            key += `[${part}]`;
+                                    });
+                                validation[key] = error;
+                            }
+                            this.validation = validation;
+                        }
                     }
                 };
                 request = Object.assign(request, this.encoding != 'multipart/form-data'? {

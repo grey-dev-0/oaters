@@ -1,11 +1,14 @@
 <template>
     <form :id="id" :action="action" method="post" :enctype="encoding">
-        <div class="row" v-if="vertical">
-            <slot></slot>
+        <v-loader v-if="loading"></v-loader>
+        <div :class="loading? 'invisible' : ''">
+            <div class="row" v-if="vertical">
+                <slot></slot>
+            </div>
+            <template v-else>
+                <slot></slot>
+            </template>
         </div>
-        <template v-else>
-            <slot></slot>
-        </template>
     </form>
 </template>
 
@@ -45,6 +48,7 @@ export default {
     },
     data: function(){
         return {
+            loading: false,
             fields: {},
             hasFiles: false,
             emitter: null
@@ -76,6 +80,7 @@ export default {
         reset: function(defaults){
             $('#' + this.id)[0].reset();
             this.emitter.emit('init', {defaults});
+            this.loading = false;
         },
         submit(){
             let form = $('#' + this.id);

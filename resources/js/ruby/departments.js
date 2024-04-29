@@ -56,6 +56,7 @@ let app = createApp({
             view.openDepartment.id = $(this).data('id');
             view.openDepartment.name = view.dataTable.row($(this).closest('tr')).data().name;
             view.$nextTick(() => view.$refs.updateDepartment.show(() => {
+                view.$refs.updateDepartmentForm.loading = true;
                 $.get(window.baseUrl + '/departments/' + view.openDepartment.id).then(response => {
                     let text;
                     if(response.head[0]){

@@ -1,6 +1,6 @@
 <template>
     <div class="autocomplete-group" v-if="!multiple">
-        <input type="text" class="form-control autocomplete-input" :id="id + '-input'" :placeholder="placeholder" v-model="query" @keyup="search" @focus="search" @keyup.esc="close()" @focusout="close(true)" autocomplete="off" :required="required">
+        <input type="text" :class="'form-control autocomplete-input' + (validation[name] && validation[name].length? ' border-danger' : '')" :id="id + '-input'" :placeholder="placeholder" v-model="query" @keyup="search" @focus="search" @keyup.esc="close()" @focusout="close(true)" autocomplete="off" :required="required">
         <input type="hidden" class="autocomplete-value" :id="id + '-value'" :name="name || null" v-model="selection" :required="required">
         <span v-if="!!selection" class="autocomplete-clear text-muted" @click="clear">&times;</span>
         <ul :class="dropdownClass" :id="id + '-selection'">
@@ -52,6 +52,11 @@ export default {
         selectedId: String,
         selectedTitle: String
     },
+    inject: {
+        validation: {
+            default: () => []
+        }
+    },
     data: function(){
         return {
             show: false,
@@ -62,7 +67,7 @@ export default {
     },
     computed: {
         dropdownClass: function(){
-            var classes = ['dropdown-menu', 'autocomplete-dropdown'];
+            let classes = ['dropdown-menu', 'autocomplete-dropdown'];
             if(this.show && !Array.isArray(this.suggestions) && Object.values(this.suggestions).length)
                 classes.push('show');
             return classes.join(' ');
@@ -70,19 +75,21 @@ export default {
     },
     methods: {
         search: _debounce(function(e){
-            var keyCode = e.keyCode || e.which;
+            if(this.validation[this.name])
+                this.validation[this.name] = [];
+            let keyCode = e.keyCode || e.which;
             if(keyCode == 27)
                 return;
-            var request = {limit: this.limit};
+            let request = {limit: this.limit};
             request[this.queryKey] = this.query;
-            var component = this;
+            let component = this;
             $.ajax({
                 url: this.url,
                 type: 'POST',
                 data: request,
                 success: function(response){
-                    var results = response[component.resultsKey];
-                    var suggestions = component.suggestions = [];
+                    let results = response[component.resultsKey];
+                    let suggestions = component.suggestions = [];
                     if(Array.isArray(results))
                         results.forEach(function(result){
                             suggestions[result] = result;
@@ -112,7 +119,7 @@ export default {
             if(!delayed)
                 this.suggestions = [];
             else{
-                var component = this;
+                let component = this;
                 setTimeout(function(){
                     component.suggestions = [];
                 }, 250);
@@ -129,7 +136,7 @@ export default {
             this.selection = this.selectedId;
         if(this.selectedTitle !== undefined)
             this.query = this.selectedTitle;
-        var component = this;
+        let component = this;
         this.$nextTick(function(){
             this.$parent.$parent.$parent.emitter.on('destroy', function(fieldName){
                 if(component.name == fieldName)
@@ -138,7 +145,7 @@ export default {
         });
         if(!this.multiple)
             return;
-        var input = $('#' + this.id);
+        let input = $('#' + this.id);
         input.select2({
             placeholder: this.placeholder,
             ajax: {
@@ -146,13 +153,13 @@ export default {
                 type: 'POST',
                 delay: 200,
                 data(parameters){
-                    var request = {limit: component.limit};
+                    let request = {limit: component.limit};
                     request[component.queryKey] = parameters.term;
                     return request;
                 },
                 processResults(response){
-                    var results = response[component.resultsKey], processed = [];
-                    for(var i in results)
+                    let results = response[component.resultsKey], processed = [];
+                    for(let i in results)
                         processed.push({id: i, text: results[i]});
                     return {results: processed};
                 }

@@ -8,8 +8,8 @@
                 <slot></slot>
             </label>
             <div :class="inputClass">
-                <input v-if="inputType == 1" :id="id" :class="(type != 'file')? 'form-control' : ''" :name="name" :type="textType" v-model="value" :autocomplete="!autocomplete? 'off' : 'on'" :placeholder="placeholder" @change="onChange">
-                <select v-else-if="inputType == 2" :id="id" class="form-control" :name="name + (multiple? '[]' : '')" v-model="value" :multiple="multiple" @change="onChange">
+                <input v-if="inputType == 1" :id="id" :class="elementClass" :name="name" :type="textType" v-model="value" :autocomplete="!autocomplete? 'off' : 'on'" :placeholder="placeholder" @focus="onFocus" @change="onChange">
+                <select v-else-if="inputType == 2" :id="id" :class="elementClass" :name="name + (multiple? '[]' : '')" v-model="value" :multiple="multiple" @focus="onFocus" @change="onChange">
                     <option value="">-- {{placeholder}} --</option>
                     <slot name="options"></slot>
                 </select>
@@ -17,7 +17,7 @@
                     <slot name="options"></slot>
                 </template>
                 <autocomplete v-else ref="autocomplete" :name="name" :id="id" :url="url" :placeholder="placeholder" :limit="limit" @change="onAutocompleteChange"></autocomplete>
-                <small class="text-danger d-block" v-if="validation[name]">
+                <small class="text-danger d-block" v-if="validation[name] && validation[name].length">
                     <span class="d-block" v-for="error in validation[name]">{{error}}</span>
                 </small>
             </div>
@@ -68,15 +68,19 @@ export default {
         };
     },
     computed: {
-        labelClass: function(){
+        labelClass(){
             return 'col-12 col-sm-' + this.labelSize.small + ' col-md-' + this.labelSize.medium + ' col-lg-' +
                 this.labelSize.large + (this.inputType != 3? ' col-form-label' : '');
         },
-        inputClass: function(){
+        inputClass(){
             return 'col-12 col-sm-' + (12 - this.labelSize.small) + ' col-md-' + (12 - this.labelSize.medium)
                 + ' col-lg-' + (12 - this.labelSize.large);
         },
-        inputType: function(){
+        elementClass(){
+            let validation = this.validation[this.name] && this.validation[this.name].length || false;
+            return this.type == 'file'? '' : ('form-control' + (validation? ' border-danger' : ''));
+        },
+        inputType(){
             switch(this.type){
                 case 'text':
                 case 'number':
@@ -96,7 +100,7 @@ export default {
                     return 4;
             }
         },
-        textType: function(){
+        textType(){
             return (this.type == 'daterange')? 'text' : this.type;
         }
     },
@@ -112,6 +116,10 @@ export default {
         },
         onChange: function(){
             this.setField(this.name, this.value);
+        },
+        onFocus(){
+            if(this.validation[this.name])
+                this.validation[this.name] = [];
         },
         onAutocompleteChange: function(name, value){
             this.value = value;

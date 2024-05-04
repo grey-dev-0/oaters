@@ -10,7 +10,7 @@
             <div :class="inputClass">
                 <input v-if="inputType == 1" :id="id" :class="elementClass" :name="name" :type="textType" v-model="value" :autocomplete="!autocomplete? 'off' : 'on'" :placeholder="placeholder" @focus="onFocus" @change="onChange">
                 <select v-else-if="inputType == 2" :id="id" :class="elementClass" :name="name + (multiple? '[]' : '')" v-model="value" :multiple="multiple" @focus="onFocus" @change="onChange">
-                    <option value="">-- {{placeholder}} --</option>
+                    <option v-if="!multiple" value="">-- {{placeholder}} --</option>
                     <slot name="options"></slot>
                 </select>
                 <template v-else-if="inputType == 3">
@@ -193,23 +193,23 @@ export default {
                                 id: key,
                                 text: response[key]
                             });
-                        return {
-                            results
-                        };
+                        return {results};
                     }
                 };
-                if(defaultValue){
-                    element.empty();
-                    for(let key in defaultValue)
-                        element.append($('<option/>').attr('value', key).attr('selected', true).text(defaultValue[key]));
-                }
+                element.empty();
             }
             element.off().select2(options).on('change', function(){
-                let value = $(this).val();
-                field.value = value;
-                field.setField(field.name, value);
+                field.setValue($(this).val());
             });
-            this.$nextTick(() => element.trigger('change'));
+            if(defaultValue){
+                let values = [];
+                for(let key in defaultValue){
+                    values.push(key + '');
+                    if(this.url)
+                        element.append($('<option/>').attr('value', key).text(defaultValue[key]));
+                }
+                element.val(values).trigger('change');
+            }
         }
     },
     created(){

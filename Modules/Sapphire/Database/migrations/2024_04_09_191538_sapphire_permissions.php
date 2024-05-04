@@ -49,6 +49,14 @@ return new class extends Migration
             }
         });
 
+        Schema::create(Str::singular($tableNames['roles']).'_locales', function(Blueprint $table) use($tableNames){
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('id')->on($tableNames['roles'])->onUpdate('cascade')->onDelete('cascade');
+            $table->string('title');
+            $table->string('locale', 2);
+        });
+
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $pivotPermission, $teams) {
             $table->unsignedBigInteger($pivotPermission);
 

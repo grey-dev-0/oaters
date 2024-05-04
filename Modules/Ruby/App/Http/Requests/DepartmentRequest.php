@@ -39,7 +39,7 @@ class DepartmentRequest extends FormRequest{
             $department = Department::find($this->id);
             $department->update($this->except(['manager_id', 'contact_id']));
         } else
-            Department::create($this->except(['manager_id', 'contact_id']));
+            $department = Department::create($this->except(['manager_id', 'contact_id']));
         if(!$this->id){
             if($this->manager_id || !empty($this->contact_id))
                 $department->employees()->attach($this->contact_id ?: [null], $this->only('manager_id'));

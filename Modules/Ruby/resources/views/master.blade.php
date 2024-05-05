@@ -15,10 +15,10 @@
 <body class="bg-grey-8">
 <div id="app" v-cloak>
     <navbar brand="Ruby" home="{{url('r')}}" scheme="dark" bg-color="red-4">
-        <nav-item @if(Route::is(['ruby::departments.*', 'ruby::staff.*', 'ruby::structure.*'])) active @endif>
+        <nav-item @if(Route::is(['ruby::departments.*', 'ruby::contacts.*', 'ruby::structure.*'])) active @endif>
             <template #label>{{trans('common::words.organization')}}</template>
             <nav-item @if(Route::is('ruby::departments.index')) active @endif in-dropdown url="{{url('r/departments')}}">{{trans('common::words.departments')}}</nav-item>
-            <nav-item @if(Route::is('ruby::staff.index')) active @endif in-dropdown url="{{url('r/staff')}}">{{trans('ruby::words.staff')}}</nav-item>
+            <nav-item @if(Route::is('ruby::contacts.index')) active @endif in-dropdown url="{{url('r/contacts')}}">{{trans('ruby::words.staff')}}</nav-item>
             <nav-item @if(Route::is('ruby::structure.index')) active @endif in-dropdown url="{{url('r/structure')}}">{{trans('common::words.structure')}}</nav-item>
         </nav-item>
         <nav-item>

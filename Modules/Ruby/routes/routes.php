@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
     });
 
     Route::prefix('contacts')->as('contacts.')->group(function(){
-        Route::view('/', 'ruby::contacts')->name('index');
+        Route::get('/', 'ContactController@getIndex')->name('index');
         Route::post('search', 'ContactController@postSearch')->name('search');
     });
 

@@ -1,19 +1,37 @@
 import {createApp} from "vue";
 import common from "../common.js";
-import Timeline from "../../components/timeline/index.js";
+import Datatable from "../../components/datatable/index.js";
+import select2 from 'select2';
+import 'select2/dist/css/select2.min.css';
+import 'select2-theme-bootstrap4/dist/select2-bootstrap.min.css';
+import 'daterangepicker';
+import 'daterangepicker/daterangepicker.css';
+select2();
 
-let app = createApp({
+let $ = common.jQuery, app = createApp({
     data(){
         return {
-            test: 'success'
+            roles, departments,
+            toast: {
+                color: 'primary',
+                content: null
+            }
         };
     },
     methods: {
-        change(){
-            this.test = 'danger';
+        jQuery(){
+            return $;
+        },
+        bootbox(){
+            return common.bootbox;
+        },
+    },
+    computed: {
+        dataTable: function(){
+            return this.$refs.contactsTable.dataTable;
         }
     }
-}), bundles = [Timeline];
+}), bundles = [Datatable];
 
 common.load(app);
 common.loadBundles(app, bundles);

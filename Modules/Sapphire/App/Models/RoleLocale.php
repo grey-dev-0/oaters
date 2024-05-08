@@ -19,4 +19,8 @@ class RoleLocale extends Model{
      * @inheritdoc
      */
     protected $guarded = [];
+
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
 }

@@ -21,7 +21,7 @@
 
 <script>
 import {debounce as _debounce} from 'lodash';
-let $, select2Options = {};
+let $, select2Options = {width: '100%'};
 
 export default {
     name: 'DtFilter',
@@ -99,7 +99,7 @@ export default {
     },
     computed: {
         cssId: function(){
-            return this.name.replace('.', '-') + '-filter-' + this.type;
+            return this.name.replace(/\./g, '-') + '-filter-' + this.type;
         },
         clearCells: function(){
             let count = this.$parent.$parent.count + 1,

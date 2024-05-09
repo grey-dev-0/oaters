@@ -20,4 +20,8 @@ class ContactController extends Controller{
         $departments = DepartmentLocale::whereLocale($locale)->pluck('name', 'department_id');
         return view('ruby::contacts', compact('roles', 'departments'));
     }
+
+    public function postIndex(){
+        return \DataTables::of(Contact::activeRecruit()->withRoles()->withDefaultInfo()->select(['id', 'name', 'job']))->make();
+    }
 }

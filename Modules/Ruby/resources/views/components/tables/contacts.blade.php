@@ -5,6 +5,7 @@
     <dt-column name="emails.address" data="emails.0.address" :searchable="false">{{trans('common::words.email')}}</dt-column>
     <dt-column name="phones.number" data="phones.0.number" :searchable="false">{{trans('common::words.phone')}}</dt-column>
     <dt-column name="roles.translations.title" data="roles.0.title" :searchable="false">{{trans('common::words.role')}}</dt-column>
+    <dt-column name="job" data="job">{{trans('ruby::contacts.job')}}</dt-column>
     @if(!$inModal)
         <dt-column name="departments.translations.name" :data="renderDepartments" :searchable="false" :orderable="false">{{trans('common::words.departments')}}</dt-column>
         <dt-column name="managed_departments.translations.name" :data="null" :searchable="false" :orderable="false" :visible="false"></dt-column>

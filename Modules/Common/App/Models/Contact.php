@@ -46,7 +46,6 @@ class Contact extends Model{
         return $this->hasMany(Email::class);
     }
 
-
     public function managed_departments(){
         return $this->belongsToMany(Department::class, 'r_subordinates', 'manager_id', 'department_id');
     }
@@ -70,5 +69,42 @@ class Contact extends Model{
 
     public function getDepartmentAttribute(){
         return $this->departments->first();
+    }
+
+    /**
+     * Attaches localized roles of fetched contacts.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string[] $roleColumns Columns to select from the main roles table.
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithRoles($query, $roleColumns = ['id']){
+        return $query->with([
+            'roles:'.implode(',', $roleColumns),
+            'roles.translations' => fn($locales) => $locales->whereLocale(app()->getLocale())
+        ]);
+    }
+
+    /**
+     * Attaches default phone and email to fetched contacts.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithDefaultInfo($query){
+        return $query->with([
+            'phones' => fn($phones) => $phones->select(['id', 'contact_id', 'number'])->whereDefault(true),
+            'emails' => fn($emails) => $emails->select(['id', 'contact_id', 'address'])->whereDefault(true)
+        ]);
+    }
+
+    /**
+     * Gets only actively hired contacts.
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActiveRecruit($query){
+        return $query->whereHas('applicant', fn($applicant) => $applicant->whereNotNull('recruited_at'));
     }
 }

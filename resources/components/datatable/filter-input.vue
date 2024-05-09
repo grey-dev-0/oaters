@@ -21,7 +21,7 @@
 
 <script>
 import {debounce as _debounce} from 'lodash';
-let $, select2Options = {width: '100%'};
+let $, select2Options = {theme: 'bootstrap', width: '100%', allowClear: true};
 
 export default {
     name: 'DtFilter',

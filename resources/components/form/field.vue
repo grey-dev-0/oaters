@@ -27,11 +27,7 @@
 
 <script>
 import Autocomplete from "../autocomplete.vue";
-import select2 from 'select2';
-import 'select2/dist/css/select2.min.css';
-import 'select2-theme-bootstrap4/dist/select2-bootstrap.min.css';
 let $;
-select2();
 
 export default {
     name: "VueField",

@@ -35,7 +35,7 @@ class Contact extends Model{
      * @inheritDoc
      */
     protected static function newFactory(){
-        return \Modules\Common\Database\factories\ContactsFactory::new();
+        return \Modules\Common\Database\Factories\ContactsFactory::new();
     }
 
     public function phones(){

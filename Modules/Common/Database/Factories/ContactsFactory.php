@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Common\Database\factories;
+namespace Modules\Common\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Sapphire\App\Models\User;

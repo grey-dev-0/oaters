@@ -3,11 +3,10 @@
 namespace Modules\Ruby\App\Models;
 
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Degree extends Model{
-    use HasFactory, Translatable;
+    use Translatable;
 
     /**
      * @inheritdoc
@@ -22,7 +21,7 @@ class Degree extends Model{
     /**
      * @inheritdoc
      */
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     /**
      * @var string[] $translatedAttributes Attributes translated in the related localization table.

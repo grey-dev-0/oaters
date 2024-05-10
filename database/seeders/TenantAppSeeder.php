@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Modules\Common\Database\Seeders\ContactSeeder;
 use Modules\Common\Database\Seeders\CountrySeeder;
+use Modules\Ruby\Database\Seeders\DegreeSeeder;
 use Modules\Ruby\Database\Seeders\DepartmentSeeder;
 use Modules\Ruby\Database\Seeders\PermissionSeeder as RubyPermissionSeeder;
 use Modules\Sapphire\Database\seeders\RoleSeeder;
@@ -16,6 +17,7 @@ class TenantAppSeeder extends Seeder{
      */
     public function run(): void{
         $this->call(CountrySeeder::class);
+        $this->call(DegreeSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(RubyPermissionSeeder::class);
         if(!app()->isProduction()){

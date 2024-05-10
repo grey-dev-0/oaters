@@ -23,7 +23,14 @@ class Applicant extends Model{
     /**
      * @inheritdoc
      */
-    protected $guarded = [];
+    protected $guarded = ['id'];
+
+    /**
+     * @inheritdoc
+     */
+    protected static function newFactory(){
+        return \Modules\Ruby\Database\Factories\ApplicantsFactory::new();
+    }
 
     public function documents(){
         return $this->hasMany(Document::class);

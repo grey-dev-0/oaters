@@ -2,17 +2,21 @@
 
 namespace Modules\Common\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CountryLocale extends Model
-{
-    use HasFactory;
+class CountryLocale extends Model{
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = false;
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Common\Database\factories\CountryLocaleFactory::new();
-    }
+    /**
+     * @inheritdoc
+     */
+    protected $table = 'lc_country_locales';
+
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = ['id'];
 }

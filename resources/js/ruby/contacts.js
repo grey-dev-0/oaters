@@ -25,6 +25,14 @@ let $ = common.jQuery, app = createApp({
         bootbox(){
             return common.bootbox;
         },
+        renderDepartments(row){
+            let departments = [], i;
+            for(i in row.departments)
+                departments.push(`<p class="m-0 text-primary">${row.departments[i].name}</p>`);
+            for(i in row.managed_departments)
+                departments.push(`<p class="m-0 text-info">${row.managed_departments[i].name}</p>`);
+            return departments.length? departments.join('') : `<small class="text-muted">${window.locale.common.unassigned}</small>`;
+        }
     },
     computed: {
         dataTable: function(){

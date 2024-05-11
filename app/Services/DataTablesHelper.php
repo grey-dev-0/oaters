@@ -44,14 +44,27 @@ class DataTablesHelper{
      */
     public function formatTimestampColumns(&$datatable, $columns, $format = 'd/m/Y h:i:s A', $timezone = null){
         foreach($columns as $column)
-            $datatable->editColumn($column, function($tenant) use($column, $format, $timezone){
-                if(empty($tenant->$column))
+            $datatable->editColumn($column, function($model) use($column, $format, $timezone){
+                if(count($segments = explode('.', $column)) <= 1){
+                    if(empty($model->$column))
+                        return null;
+                    else{
+                        $datetime = new Carbon($model->$column);
+                        if(!is_null($timezone))
+                            $datetime->setTimezone($timezone);
+                        return $datetime->format($format);
+                    }
+                } else{
+                    $value = $model;
+                    foreach($segments as $segment)
+                        $value = $value?->$segment;
+                    if(!empty($value)){
+                        $value = new Carbon($value);
+                        if(!is_null($timezone))
+                            $value->setTimezone($timezone);
+                        return $value->format($format);
+                    }
                     return null;
-                else{
-                    $datetime = new Carbon($tenant->$column);
-                    if(!is_null($timezone))
-                        $datetime->setTimezone($timezone);
-                    return $datetime->format($format);
                 }
             });
     }

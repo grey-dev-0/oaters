@@ -45,5 +45,6 @@ return [
     'personnel' => 'Personnel',
     'documents' => 'Documents',
     'attachments' => 'Attachments',
-    'components' => 'Components'
+    'components' => 'Components',
+    'unassigned' => 'Unassigned'
 ];

@@ -28,6 +28,11 @@ class Applicant extends Model{
     /**
      * @inheritdoc
      */
+    protected $casts = ['recruited_at' => 'datetime'];
+
+    /**
+     * @inheritdoc
+     */
     protected static function newFactory(){
         return \Modules\Ruby\Database\Factories\ApplicantsFactory::new();
     }

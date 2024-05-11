@@ -27,11 +27,6 @@ class Contact extends Model{
     protected $guarded = [];
 
     /**
-     * @inheritdoc
-     */
-    protected $hidden = ['departments'];
-
-    /**
      * @inheritDoc
      */
     protected static function newFactory(){
@@ -47,7 +42,8 @@ class Contact extends Model{
     }
 
     public function managed_departments(){
-        return $this->belongsToMany(Department::class, 'r_subordinates', 'manager_id', 'department_id');
+        return $this->belongsToMany(Department::class, 'r_subordinates', 'manager_id', 'department_id')
+            ->groupBy('department_id');
     }
 
     public function departments(){
@@ -106,5 +102,19 @@ class Contact extends Model{
      */
     public function scopeActiveRecruit($query){
         return $query->whereHas('applicant', fn($applicant) => $applicant->whereNotNull('recruited_at'));
+    }
+
+    /**
+     * Gets all departments related to the contact.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithDepartments($query){
+        $locale = app()->getLocale();
+        return $query->with([
+            'departments.translations' => fn($locales) => $locales->whereLocale($locale),
+            'managed_departments.translations' => fn($locales) => $locales->whereLocale($locale)
+        ]);
     }
 }

@@ -22,6 +22,9 @@ class ContactController extends Controller{
     }
 
     public function postIndex(){
-        return \DataTables::of(Contact::activeRecruit()->withRoles()->withDefaultInfo()->select(['id', 'name', 'job']))->make();
+        return tap(\DataTables::of(Contact::activeRecruit()->withRoles()->withDefaultInfo()->withDepartments()->with('applicant:id,recruited_at')->select(['lc_contacts.id', 'name', 'job'])), fn($dataTable) => \DataTablesHelper::formatTimestampColumns($dataTable, ['applicant.recruited_at']))->orderColumn('roles', function($query, $direction){
+            $query->leftJoin('s_model_has_roles AS mr', fn($join) => $join->on('lc_contacts.id', 'mr.model_id')
+                ->where('model_type', Contact::class))->leftJoin('s_role_locales AS rl', 'mr.role_id', 'rl.role_id')->orderBy('rl.title', $direction);
+        })->make();
     }
 }

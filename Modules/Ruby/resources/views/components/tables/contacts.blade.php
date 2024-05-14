@@ -14,9 +14,9 @@
         <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
             {{trans('common::words.actions')}}
             <template #actions>
-                <span class="text-primary profile" role="button"><i class="fas fa-lg fa-address-card"></i></span>
-                <span class="text-success edit" role="button"><i class="far fa-lg fa-edit"></i></span>
-                <span class="text-danger delete" role="button"><i class="fas fa-lg fa-trash-can"></i></span>
+                <span class="text-primary profile mr-1" role="button" title="{{trans('common::words.profile')}}"><i class="fas fa-lg fa-address-card"></i></span>
+                <span class="text-success edit mr-1" role="button" title="{{trans('common::words.edit')}}"><i class="far fa-lg fa-edit"></i></span>
+                <span class="text-danger delete" role="button" title="{{trans('common::words.delete')}}"><i class="fas fa-lg fa-trash-can"></i></span>
             </template>
         </dt-column>
     @endif

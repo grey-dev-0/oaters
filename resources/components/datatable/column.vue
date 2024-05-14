@@ -45,7 +45,9 @@ export default {
                 element = $(element).clone();
                 idKey = element.attr('data-id');
                 element.attr('data-id', row[idKey || 'id'] || '');
-                actions.append(element).append(' ');
+                actions.append(element);
+                if(index != elements.length - 1)
+                    actions.append('<span class="d-inline-block px-1"></span>');
             });
             if(this.$parent.renderActions)
                 this.$parent.renderActions(row, actions.children());

@@ -5,8 +5,14 @@ namespace Modules\Ruby\App\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Modules\Ruby\App\Http\Requests\DepartmentRequest;
 use Modules\Ruby\App\Models\Department;
+use Modules\Sapphire\App\Models\RoleLocale;
 
 class DepartmentController extends Controller{
+    public function getIndex(){
+        $roles = RoleLocale::whereLocale(app()->getLocale())->whereHas('role', fn($role) => $role->whereIn('name', ['general-manager', 'financial-manager', 'hr-manager', 'director', 'team-lead', 'accountant', 'hr-assistant', 'employee']))->pluck('title', 'role_id');
+        return view('ruby::departments', compact('roles'));
+    }
+
     public function postIndex(){
         return tap(\DataTables::of(Department::with(['translations' => fn($locales) => $locales->select('department_id', 'name', 'locale')->whereLocale(app()->getLocale()), 'head'])->withCount(['subordinates', 'vacancies' => fn($vacancies) => $vacancies->whereActive(true)])->groupBy('r_departments.id'))
             ->editColumn('head', fn($department) => $department->head->first()->name?? '-')->filter(function($query){

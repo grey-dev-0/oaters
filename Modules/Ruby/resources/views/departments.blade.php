@@ -36,7 +36,8 @@
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
                         {{trans('common::words.actions')}}
                         <template #actions>
-                            <span class="text-teal-4 edit" role="button" title="{{trans('common::words.edit')}}"><i class="far fa-lg fa-edit"></i></span>
+                            <span class="text-primary contacts mr-1" role="button" title="{{trans('ruby::words.staff')}}"><i class="fas fa-lg fa-user-group"></i></span>
+                            <span class="text-success edit" role="button" title="{{trans('common::words.edit')}}"><i class="far fa-lg fa-edit"></i></span>
                         </template>
                     </dt-column>
                 </vue-datatable>
@@ -46,6 +47,7 @@
 
     <x-ruby::modals.department-form ref="createDepartment" id="add-department" color="green-2" title="{{trans('ruby::departments.new')}}"/>
     <x-ruby::modals.department-form ref="updateDepartment" id="edit-department" color="blue-3" title="{{trans('ruby::departments.edit')}}" :edit="true"/>
+    <x-ruby::modals.department-contacts/>
 @stop
 
 @push('scripts')
@@ -55,6 +57,7 @@
             'modules' => trans('ruby::common.modules')
         ];
         @endphp
+        let roles = @json($roles);
         locale.common = @json($locale);
     </script>
     @vite(['resources/js/ruby/departments.js'])

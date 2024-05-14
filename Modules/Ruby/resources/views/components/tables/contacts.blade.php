@@ -1,6 +1,6 @@
 @props(['inModal' => false])
 
-<vue-datatable datatable-id="contacts-table" ref="contactsTable" @if($inModal) deferred @endif>
+<vue-datatable datatable-id="contacts-table" ref="contactsTable" @if($inModal) deferred url="{{route('ruby::contacts.index')}}" :ajax-data="{department: openDepartment.id}" @endif>
     <dt-column name="name" data="name">{{trans('common::words.name')}}</dt-column>
     <dt-column name="emails.address" data="emails.0.address">{{trans('common::words.email')}}</dt-column>
     <dt-column name="phones.number" data="phones.0.number">{{trans('common::words.phone')}}</dt-column>

@@ -1,7 +1,7 @@
 @extends('ruby::master')
 
 @section('title')
-    <title>OATERS: Staff</title>
+    <title>OATERS: {{trans('ruby::words.staff')}}</title>
 @stop
 
 @section('content')

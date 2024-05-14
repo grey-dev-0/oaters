@@ -13,6 +13,7 @@ let $ = common.jQuery;
 let app = createApp({
     data: function(){
         return {
+            roles,
             emitter: null,
             locale: window.locale,
             toast: {
@@ -85,6 +86,10 @@ let app = createApp({
                     });
                 });
             }));
+        }).on('click', '.contacts', function(){
+            view.openDepartment.id = $(this).data('id');
+            view.openDepartment.name = view.dataTable.row($(this).closest('tr')).data().name;
+            view.$nextTick(() => view.$refs.contactsModal.show(() => view.$refs.contactsTable.init()));
         });
     }
 }), bundles = [Datatable, Form], components = {Modal: 'modal'};

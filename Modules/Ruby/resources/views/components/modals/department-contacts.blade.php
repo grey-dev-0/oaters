@@ -1,4 +1,4 @@
-<modal id="contacts-modal" ref="contactsModal" static no-padding centered size="xl" color="teal-2">
+<modal id="contacts-modal" ref="contactsModal" static no-padding centered size="xxl" color="teal-2">
     <template #header>{{trans('ruby::words.staff')}} - @{{ openDepartment.name }}</template>
     <vue-datafilter :cols="4" datatable-ref="contactsTable">
         <dt-filter name="name" type="text" label="{{trans('common::words.name')}}"></dt-filter>

@@ -96,4 +96,8 @@ export default {
 .modal .close{
     cursor: pointer;
 }
+
+.modal-xxl{
+    max-width: 85%;
+}
 </style>

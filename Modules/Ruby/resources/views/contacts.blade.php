@@ -35,6 +35,8 @@
             </card>
         </div>
     </div>
+
+    <x-ruby::modals.profile/>
 @endsection
 
 @push('scripts')

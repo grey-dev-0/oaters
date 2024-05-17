@@ -15,6 +15,11 @@ let $ = common.jQuery, app = createApp({
             toast: {
                 color: 'primary',
                 content: null
+            },
+            openContact:{
+                id: null,
+                name: null,
+                image: null
             }
         };
     },
@@ -39,8 +44,9 @@ let $ = common.jQuery, app = createApp({
             return this.$refs.contactsTable.dataTable;
         }
     }
-}), bundles = [Datatable];
+}), bundles = [Datatable], components = {Modal: 'modal'};
 
 common.load(app);
 common.loadBundles(app, bundles);
+common.loadComponents(app, components);
 app.mount('#app');

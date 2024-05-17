@@ -11,16 +11,24 @@ class DataTablesHelper{
      */
     public function filterByDate(&$query, $attributes){
         $columns = $this->getColumns();
+        $filter = function($query, $column, $value){
+            if(count($value) == 1)
+                $query->whereDate($column, (new Carbon($value[0]))->toDateString());
+            else{
+                $query->whereBetween($column, [
+                    (new Carbon($value[0]))->toDateString(),
+                    (new Carbon($value[1]))->addDay()->toDateString()
+                ]);
+            }
+        };
         foreach($attributes as $key)
             if(!empty($value = request("columns.{$columns[$key]}.search.value"))){
                 $value = explode(' to ', $value);
-                if(count($value) == 1)
-                    $query->whereDate($key, (new Carbon($value[0]))->toDateString());
+                if(count($segments = explode('.', $key)) <= 1)
+                    $filter($query, $key, $value);
                 else{
-                    $query->whereBetween($key, [
-                        (new Carbon($value[0]))->toDateString(),
-                        (new Carbon($value[1]))->addDay()->toDateString()
-                    ]);
+                    $key = array_pop($segments);
+                    $query->whereHas(implode('.', $segments), fn($related) => $filter($related, $key, $value));
                 }
             }
     }

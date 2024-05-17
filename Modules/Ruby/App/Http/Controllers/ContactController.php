@@ -23,6 +23,7 @@ class ContactController extends Controller{
 
     public function postIndex(){
         return tap(\DataTables::of(Contact::activeRecruit()->withRoles()->withDefaultInfo()->withDepartments()->with('applicant:id,recruited_at')->select(['lc_contacts.id', 'name', 'job'])), fn($dataTable) => \DataTablesHelper::formatTimestampColumns($dataTable, ['applicant.recruited_at']))->filter(function($query){
+            \DataTablesHelper::filterByDate($query, ['applicant.recruited_at']);
             $columns = \DataTablesHelper::getColumns();
             if(!empty($departments = isset($columns['departments'])? request("columns.{$columns['departments']}.search.value") : [request('department')]))
                 $query->where(fn($q) => $q->whereHas('departments', fn($depts) => $depts->whereIn('r_departments.id', $departments))

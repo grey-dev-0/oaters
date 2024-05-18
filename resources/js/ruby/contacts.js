@@ -16,10 +16,9 @@ let $ = common.jQuery, app = createApp({
                 color: 'primary',
                 content: null
             },
-            openContact:{
+            openContact: {
                 id: null,
-                name: null,
-                image: null
+                name: null
             }
         };
     },
@@ -40,9 +39,16 @@ let $ = common.jQuery, app = createApp({
         }
     },
     computed: {
-        dataTable: function(){
+        dataTable(){
             return this.$refs.contactsTable.dataTable;
         }
+    },
+    mounted(){
+        let view = this;
+        $('body').on('click', '.profile', function(){
+            view.openContact = view.dataTable.row($(this).closest('tr')).data();
+            view.$nextTick(view.$refs.profileModal.show);
+        });
     }
 }), bundles = [Datatable], components = {Modal: 'modal'};
 

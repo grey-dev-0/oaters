@@ -19,10 +19,8 @@
             </p>
         </div>
         <div class="col-12 col-sm-6 col-md-8">
-            <p>
-                <strong class="d-block">{{trans('ruby::contacts.job')}}</strong>
-                @{{openContact.job}}
-            </p>
+            <h5 class="m-0 font-weight-bolder">{{trans('ruby::contacts.job')}}</h5>
+            <p>@{{openContact.job}}</p>
         </div>
     </div>
 </modal>

@@ -2,6 +2,8 @@
 return [
     'actions' => 'Actions',
     'active' => 'Active',
+    'address' => 'Address',
+    'addresses' => 'Address(s)',
     'amount' => 'Amount',
     'arabic' => 'Arabic',
     'created_at' => 'Created At',
@@ -19,6 +21,7 @@ return [
     'inactive' => 'Inactive',
     'joined_at' => 'Joined At',
     'members' => 'Members',
+    'months' => 'Month(s)',
     'name' => 'Name',
     'na' => 'N/A',
     'no' => 'No',

@@ -18,7 +18,18 @@ class Document extends Model{
      */
     protected $guarded = [];
 
+    /**
+     * @inheritdoc
+     */
+    protected static function newFactory(){
+        return \Modules\Ruby\Database\Factories\DocumentsFactory::new();
+    }
+
     public function applicant(){
         return $this->belongsTo(Applicant::class);
+    }
+
+    public function getFilenameAttribute($filename){
+        return \Storage::disk('local')->path("r_documents/$filename");
     }
 }

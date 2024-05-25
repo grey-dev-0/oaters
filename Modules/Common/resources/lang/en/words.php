@@ -11,6 +11,7 @@ return [
     'delete' => 'Delete',
     'discount' => 'Discount',
     'discount_type' => 'Discount Type',
+    'documents' => 'Documents',
     'edit' => 'Edit',
     'email' => 'Email',
     'end' => 'End',
@@ -51,7 +52,6 @@ return [
     'departments' => 'Departments',
     'structure' => 'Structure',
     'personnel' => 'Personnel',
-    'documents' => 'Documents',
     'attachments' => 'Attachments',
     'components' => 'Components',
     'unassigned' => 'Unassigned'

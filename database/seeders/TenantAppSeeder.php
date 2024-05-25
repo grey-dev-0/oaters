@@ -11,6 +11,7 @@ use Modules\Common\Database\Seeders\PhoneSeeder;
 use Modules\Ruby\Database\Seeders\ApplicantSeeder;
 use Modules\Ruby\Database\Seeders\DegreeSeeder;
 use Modules\Ruby\Database\Seeders\DepartmentSeeder;
+use Modules\Ruby\Database\Seeders\DocumentSeeder;
 use Modules\Ruby\Database\Seeders\LeaveSeeder;
 use Modules\Ruby\Database\Seeders\PermissionSeeder as RubyPermissionSeeder;
 use Modules\Sapphire\Database\seeders\RoleSeeder;
@@ -33,6 +34,7 @@ class TenantAppSeeder extends Seeder{
             $this->call(AddressSeeder::class);
             $this->call(DepartmentSeeder::class);
             $this->call(ApplicantSeeder::class);
+            $this->call(DocumentSeeder::class);
             $this->call(LeaveSeeder::class);
         }
     }

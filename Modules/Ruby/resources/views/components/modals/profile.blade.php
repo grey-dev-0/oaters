@@ -56,7 +56,7 @@
             </template>
             <template v-if="openContact.leaves && openContact.leaves.length">
                 <h5 class="font-weight-bolder">{{trans('ruby::contacts.recent_leaves')}}</h5>
-                <timeline>
+                <timeline class="mb-2">
                     <template v-for="leave in openContact.leaves">
                         <timeline-entry color="success">
                             <strong>@{{leave.ends_at}}</strong> @{{locale.leaves.types[leave.type]}} ({{trans('common::words.end')}})
@@ -70,6 +70,14 @@
                     </template>
                 </timeline>
             </template>
+            <list v-if="openContact.applicant && openContact.applicant.documents && openContact.applicant.documents.length">
+                <list-item collapse-target="#documents"><strong>{{trans('common::words.documents')}}</strong></list-item>
+                <list id="documents" collapse>
+                    <list-item v-for="document in openContact.applicant.documents">
+                        @{{document.title}}
+                    </list-item>
+                </list>
+            </list>
         </div>
     </div>
 </modal>

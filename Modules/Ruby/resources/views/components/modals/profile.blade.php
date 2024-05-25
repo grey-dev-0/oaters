@@ -19,6 +19,16 @@
                 <strong v-if="openContact.emails.length == 1 || email.default">@{{email.address}}</strong>
                 <template v-else>@{{email.address}}</template>
             </p>
+            <p v-if="openContact.managed_departments" v-for="(department, i) in openContact.managed_departments" :class="'text-truncate' + (openContact.managed_departments && i != openContact.managed_departments.length - 1? ' mb-0' : '')" :title="department.name">
+                <i class="fas fa-briefcase fa-fw mr-1" v-if="i == 0"></i>
+                <i class="fa fa-fw mr-1" v-else></i>
+                @{{department.name}}
+            </p>
+            <p v-if="openContact.departments" v-for="(department, i) in openContact.departments" :class="'text-truncate' + (openContact.departments && i != openContact.departments.length - 1? ' mb-0' : '')" :title="department.name">
+                <i class="fas fa-house-chimney-user fa-fw mr-1" v-if="i == 0"></i>
+                <i class="fa fa-fw mr-1" v-else></i>
+                @{{department.name}}
+            </p>
         </div>
         <div class="col-12 col-sm-6 col-md-8">
             <h5 class="m-0 font-weight-bolder">{{trans('ruby::contacts.job')}}</h5>

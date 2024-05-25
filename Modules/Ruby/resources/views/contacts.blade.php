@@ -42,10 +42,13 @@
 @push('scripts')
     <script>
         @php
-            $locale = \Arr::only(trans('common::words'), 'unassigned');
+            $locale = [
+                'common' => \Arr::only(trans('common::words'), 'unassigned'),
+                'leaves' => \Arr::only(trans('ruby::leaves'), 'types')
+            ];
         @endphp
         let roles = @json($roles), departments = @json($departments);
-        locale.common = @json($locale);
+        locale = @json($locale);
     </script>
     @vite('resources/js/ruby/contacts.js')
 @endpush

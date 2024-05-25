@@ -50,6 +50,7 @@ export default {
             type: Boolean,
             default: false
         },
+        onClose: Function,
         zIndex: Number
     },
     computed: {
@@ -82,11 +83,16 @@ export default {
         $ = this.$root.jQuery();
     },
     mounted(){
+        let body = $('body');
         if(this.zIndex)
-            $('body').on('show.bs.modal', '#' + this.id, () => {
+            body.on('show.bs.modal', '#' + this.id, () => {
                 setTimeout(() => {
                     $('.modal-backdrop.show:last-of-type').css('z-index', 1050 + this.zIndex * 10 - 1);
                 }, 100);
+            });
+        if(this.onClose)
+            body.on('hidden.bs.modal', '#' + this.id, () => {
+                this.onClose();
             });
     }
 }

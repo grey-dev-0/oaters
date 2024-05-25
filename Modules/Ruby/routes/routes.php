@@ -17,6 +17,7 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
     Route::prefix('contacts')->as('contacts.')->group(function(){
         Route::get('/', 'ContactController@getIndex')->name('index');
         Route::post('/', 'ContactController@postIndex');
+        Route::get('{contact}', 'ContactController@getContact')->where('contact', '[0-9]+')->name('contact');
         Route::post('search', 'ContactController@postSearch')->name('search');
     });
 

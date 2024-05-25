@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Ruby\App\Models\Applicant;
 use Modules\Ruby\App\Models\Department;
+use Modules\Ruby\App\Models\Leave;
 use Spatie\Permission\Traits\HasRoles;
 
 class Contact extends Model{
@@ -41,6 +42,10 @@ class Contact extends Model{
         return $this->hasMany(Email::class);
     }
 
+    public function addresses(){
+        return $this->hasMany(Address::class);
+    }
+
     public function managed_departments(){
         return $this->belongsToMany(Department::class, 'r_subordinates', 'manager_id', 'department_id')
             ->groupBy('department_id');
@@ -61,6 +66,10 @@ class Contact extends Model{
 
     public function applicant(){
         return $this->hasOne(Applicant::class, 'id');
+    }
+
+    public function leaves(){
+        return $this->hasMany(Leave::class);
     }
 
     public function getDepartmentAttribute(){
@@ -91,6 +100,32 @@ class Contact extends Model{
         return $query->with([
             'phones' => fn($phones) => $phones->select(['id', 'contact_id', 'number'])->whereDefault(true),
             'emails' => fn($emails) => $emails->select(['id', 'contact_id', 'address'])->whereDefault(true)
+        ]);
+    }
+
+    /**
+     * Attaches all phones, emails and, addresses to fetched contacts.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithAllInfo($query){
+        return $query->with(['phones', 'emails', 'addresses.country:id',
+            'addresses.country.translations' => fn($locales) => $locales->whereLocale(app()->getLocale())]);
+    }
+
+    /**
+     * Attaches all recruitment related details to fetched contacts.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithRecruitmentDetails($query){
+        return $query->with([
+            'applicant:id,country_id,degree_id,degree_date,tenure,recruited_at', 'applicant.nationality:id',
+            'applicant.nationality.translations' => fn($locales) => $locales->whereLocale(app()->getLocale()),
+            'applicant.degree.translations' => fn($locales) => $locales->whereLocale(app()->getLocale()),
+            'applicant.documents'
         ]);
     }
 

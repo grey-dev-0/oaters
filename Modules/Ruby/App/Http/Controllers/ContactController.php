@@ -35,4 +35,13 @@ class ContactController extends Controller{
                 ->where('model_type', Contact::class))->leftJoin('s_role_locales AS rl', 'mr.role_id', 'rl.role_id')->orderBy('rl.title', $direction);
         })->make();
     }
+
+    public function getContact($contact){
+        $contact = Contact::withRoles()->withAllInfo()->withDepartments()->withRecruitmentDetails()
+            ->with(['leaves' => fn($leaves) => $leaves->select(['contact_id', 'type', 'starts_at', 'ends_at'])
+                ->whereStatus(1)->take(5)->orderBy('id', 'desc')])->find($contact);
+        $contact->applicant?->setAttribute('recruited_at_formatted',
+            $contact->applicant->recruited_at->format('d/m/Y h:i:s A'));
+        return response()->json($contact);
+    }
 }

@@ -1,6 +1,7 @@
 import {createApp} from "vue";
 import common from "../common.js";
-import Datatable from "../../components/datatable/index.js";
+import Datatable from "../../components/datatable";
+import Timeline from '../../components/timeline';
 import select2 from 'select2';
 import 'select2/dist/css/select2.min.css';
 import 'select2-theme-bootstrap4/dist/select2-bootstrap.min.css';
@@ -11,7 +12,7 @@ select2();
 let $ = common.jQuery, app = createApp({
     data(){
         return {
-            roles, departments,
+            roles, departments, locale,
             toast: {
                 color: 'primary',
                 content: null
@@ -36,21 +37,38 @@ let $ = common.jQuery, app = createApp({
             for(i in row.managed_departments)
                 departments.push(`<p class="m-0 text-info">${row.managed_departments[i].name}</p>`);
             return departments.length? departments.join('') : `<small class="text-muted">${window.locale.common.unassigned}</small>`;
+        },
+        closeContact(){
+            this.openContact.addresses = undefined;
         }
     },
     computed: {
         dataTable(){
             return this.$refs.contactsTable.dataTable;
+        },
+        tenureYears(){
+            return this.openContact.applicant && this.openContact.applicant.tenure
+                && parseInt(this.openContact.applicant.tenure / 12.0) || 0;
+        },
+        tenureMonths(){
+            return this.openContact.applicant && this.openContact.applicant.tenure
+                && (this.openContact.applicant.tenure % 12) || 0;
         }
     },
     mounted(){
         let view = this;
         $('body').on('click', '.profile', function(){
             view.openContact = view.dataTable.row($(this).closest('tr')).data();
-            view.$nextTick(view.$refs.profileModal.show);
+            view.$nextTick(() => {
+                view.$refs.profileModal.show(() => {
+                    $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
+                        view.openContact = response;
+                    });
+                });
+            });
         });
     }
-}), bundles = [Datatable], components = {Modal: 'modal'};
+}), bundles = [Datatable, Timeline], components = {Modal: 'modal'};
 
 common.load(app);
 common.loadBundles(app, bundles);

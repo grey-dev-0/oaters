@@ -1,5 +1,5 @@
 <template>
-    <li :class="style" :date-toggle="collapseTarget? 'collapse' : false" :data-target="collapseTarget || false">
+    <li :id="id" :class="style" :data-toggle="collapseTarget? 'collapse' : null" :data-target="collapseTarget || null" :role="collapseTarget? 'button' : null">
         <slot></slot>
     </li>
 </template>
@@ -8,13 +8,17 @@
 export default {
     name: 'ListItem',
     props: {
-        collapseTarget: String
+        id: String,
+        collapseTarget: String,
+        collapse: Boolean,
     },
     computed: {
         style(){
             let theClass ='list-group-item';
             if(this.collapseTarget)
                 theClass += ' cursor-pointer';
+            if(this.collapse)
+                theClass += ' collapse p-0';
             return theClass;
         }
     }

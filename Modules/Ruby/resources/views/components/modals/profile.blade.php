@@ -72,11 +72,13 @@
             </template>
             <list v-if="openContact.applicant && openContact.applicant.documents && openContact.applicant.documents.length">
                 <list-item collapse-target="#documents"><strong>{{trans('common::words.documents')}}</strong></list-item>
-                <list id="documents" collapse>
-                    <list-item v-for="document in openContact.applicant.documents">
-                        @{{document.title}}
-                    </list-item>
-                </list>
+                <list-item id="documents" collapse>
+                    <list>
+                        <list-item v-for="document in openContact.applicant.documents">
+                            @{{document.title}}
+                        </list-item>
+                    </list>
+                </list-item>
             </list>
         </div>
     </div>

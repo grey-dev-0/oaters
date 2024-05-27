@@ -21,21 +21,21 @@ export default {
 <style lang="scss">
 .v-list-group{
     .list-group-item[data-toggle="collapse"]{
-        &:has(+ .collapse){
+        &:has(+ .collapse, +.collapsing)::after{
             text-rendering: auto;
             -webkit-font-smoothing: antialiased;
-            line-height: 1.5;
+            padding-top: 2px;
         }
 
         &:has(+ .collapse:not(.show))::after{
-            display: inline-block;
+            display: block;
             float: right;
             font: var(--fa-font-solid);
             content: '\f102';
         }
 
-        &:has(+ .collapse.show)::after{
-            display: inline-block;
+        &:has(+ .collapse.show, + .collapsing)::after{
+            display: block;
             float: right;
             font: var(--fa-font-solid);
             content: '\f103';

@@ -1,4 +1,4 @@
-<modal id="profile-modal" ref="profileModal" color="primary" size="lg" :on-close="closeContact">
+<modal id="profile-modal" ref="profileModal" color="primary" size="lg" :on-close="closeContact" scrollable>
     <template #header>Profile - @{{openContact.name}}</template>
     <v-loader v-if="!openContact.addresses"></v-loader>
     <div :class="'row' + (openContact.addresses? '' : ' invisible')">

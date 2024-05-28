@@ -30,14 +30,8 @@ export default {
             required: true
         },
         size: String,
-        'static': {
-            type: Boolean,
-            default: false
-        },
-        centered: {
-            type: Boolean,
-            default: false
-        },
+        'static': Boolean,
+        centered: Boolean,
         color: {
             type: String,
             default: 'grey-10'
@@ -46,10 +40,8 @@ export default {
             type: String,
             default: 'h3'
         },
-        noPadding: {
-            type: Boolean,
-            default: false
-        },
+        noPadding: Boolean,
+        scrollable: Boolean,
         onClose: Function,
         zIndex: Number
     },
@@ -60,6 +52,8 @@ export default {
                 theClass += ' modal-' + this.size;
             if(this.centered)
                 theClass += ' modal-dialog-centered';
+            if(this.scrollable)
+                theClass += ' modal-dialog-scrollable';
             return theClass;
         },
         bodyClass: function(){

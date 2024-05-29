@@ -21,5 +21,9 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
         Route::post('search', 'ContactController@postSearch')->name('search');
     });
 
+    Route::prefix('documents')->as('documents.')->group(function(){
+        Route::get('download/{filename}', 'DocumentController@getDocument')->name('download');
+    });
+
     Route::get('/', 'DashboardController@getIndex');
 });

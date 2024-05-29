@@ -12,6 +12,7 @@ return [
     'discount' => 'Discount',
     'discount_type' => 'Discount Type',
     'documents' => 'Documents',
+    'download' => 'Download',
     'edit' => 'Edit',
     'email' => 'Email',
     'end' => 'End',

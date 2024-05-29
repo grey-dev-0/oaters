@@ -29,7 +29,7 @@ class Document extends Model{
         return $this->belongsTo(Applicant::class);
     }
 
-    public function getFilenameAttribute($filename){
-        return \Storage::disk('local')->path("r_documents/$filename");
+    public function getDownloadUrlAttribute(){
+        return route('ruby::documents.download', $this->filename);
     }
 }

@@ -76,6 +76,7 @@
                     <list>
                         <list-item v-for="document in openContact.applicant.documents">
                             @{{document.title}}
+                            <a :href="document.download_url" target="_blank" class="btn btn-sm btn-outline-primary float-right" title="{{trans('common::words.download')}}"><i class="fa fas fa-download mr-2"></i>{{trans('common::words.download')}}</a>
                         </list-item>
                     </list>
                 </list-item>

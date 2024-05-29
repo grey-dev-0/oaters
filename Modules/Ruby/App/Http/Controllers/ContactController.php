@@ -42,6 +42,7 @@ class ContactController extends Controller{
                 ->whereStatus(1)->take(5)->orderBy('id', 'desc')])->find($contact);
         $contact->applicant?->setAttribute('recruited_at_formatted',
             $contact->applicant->recruited_at->format('d/m/Y h:i:s A'));
+        $contact->applicant?->documents->each(fn($document) => $document->setAppends(['download_url']));
         return response()->json($contact);
     }
 }

@@ -2,6 +2,7 @@ import {createApp} from "vue";
 import common from "../common.js";
 import Datatable from "../../components/datatable";
 import List from "../../components/list";
+import Tab from '../../components/tab';
 import Timeline from '../../components/timeline';
 import select2 from 'select2';
 import 'select2/dist/css/select2.min.css';
@@ -69,7 +70,7 @@ let $ = common.jQuery, app = createApp({
             });
         });
     }
-}), bundles = [Datatable, Timeline, List], components = {Modal: 'modal'};
+}), bundles = [Datatable, Timeline, List, Tab], components = {Modal: 'modal'};
 
 common.load(app);
 common.loadBundles(app, bundles);

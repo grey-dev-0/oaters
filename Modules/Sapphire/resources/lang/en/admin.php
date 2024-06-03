@@ -8,6 +8,7 @@ return [
     'login'=> [
         'username' => 'Username',
         'password' => 'Password',
+        'password_confirm' => 'Confirm Password',
         'invalid_credentials' => 'Wrong username and / or password submitted!',
         'login' => 'Login',
         'logout' => 'Logout'

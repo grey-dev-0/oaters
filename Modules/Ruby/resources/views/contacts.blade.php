@@ -37,6 +37,7 @@
     </div>
 
     <x-ruby::modals.profile/>
+    <x-ruby::modals.contact-form id="create-contact" ref="createContact" :title="trans('ruby::contacts.new')" color="green-1"/>
 @endsection
 
 @push('scripts')

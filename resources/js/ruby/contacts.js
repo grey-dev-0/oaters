@@ -1,6 +1,7 @@
 import {createApp} from "vue";
 import common from "../common.js";
 import Datatable from "../../components/datatable";
+import Form from "../../components/form";
 import List from "../../components/list";
 import Tab from '../../components/tab';
 import Timeline from '../../components/timeline';
@@ -70,7 +71,7 @@ let $ = common.jQuery, app = createApp({
             });
         });
     }
-}), bundles = [Datatable, Timeline, List, Tab], components = {Modal: 'modal'};
+}), bundles = [Datatable, Form, Timeline, List, Tab], components = {Modal: 'modal'};
 
 common.load(app);
 common.loadBundles(app, bundles);

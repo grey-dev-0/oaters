@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs mb-3" role="tablist">
             <slot name="navigation"></slot>
         </ul>
         <div class="tab-content">
@@ -17,8 +17,10 @@ export default {
     props: {
         activeTab: String
     },
-    provides: {
-        activeTab: computed(() => this.activeTab)
+    provide(){
+        return {
+            activeTab: computed(() => this.activeTab)
+        };
     }
 };
 </script>

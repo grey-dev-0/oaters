@@ -27,9 +27,6 @@ let app = createApp({
         };
     },
     methods: {
-        bootbox(){
-            return common.bootbox;
-        },
         renderDepartments(row){
             let departments = [], i;
             for(i in row.departments)

@@ -1,9 +1,8 @@
 import {createApp} from "vue";
-import common from "../common.js";
+import common, {jQuery as $, bootbox} from "../common.js";
 import Datatable from "../../components/datatable";
 import Form from "../../components/form";
 
-let bootbox = common.bootbox;
 let app = createApp({
     data: function(){
         return {

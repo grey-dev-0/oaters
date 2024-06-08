@@ -26,9 +26,6 @@ let app = createApp({
         };
     },
     methods: {
-        bootbox(){
-            return common.bootbox;
-        },
         addDepartment: function(){
             this.$refs.createDepartment.show(() => {
                 this.$refs.createDepartmentForm.reset();

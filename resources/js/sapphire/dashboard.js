@@ -14,11 +14,6 @@ const app = createApp({
             }
         };
     },
-    methods: {
-        bootbox(){
-            return common.bootbox;
-        }
-    },
     computed: {
         defaultChartRange: function(){
             return this.chartRange.start.format('YYYY-MM-DD') + ' to ' + this.chartRange.end.format('YYYY-MM-DD');

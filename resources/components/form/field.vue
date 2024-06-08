@@ -27,7 +27,7 @@
 
 <script>
 import Autocomplete from "../autocomplete.vue";
-let $;
+import {jQuery as $} from '../../js/common';
 
 export default {
     name: "VueField",
@@ -207,9 +207,6 @@ export default {
                 element.val(values).trigger('change');
             }
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted: function(){
         this.placeholder = $(this.$refs.label).text().trim();

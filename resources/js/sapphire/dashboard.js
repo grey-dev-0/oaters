@@ -5,7 +5,6 @@ import 'daterangepicker/daterangepicker.css';
 import moment from "moment";
 import vueTable from '../../components/table';
 
-let $  = common.jQuery;
 const app = createApp({
     data: function(){
         return {
@@ -16,9 +15,6 @@ const app = createApp({
         };
     },
     methods: {
-        jQuery(){
-            return $;
-        },
         bootbox(){
             return common.bootbox;
         }

@@ -1,5 +1,5 @@
 import {createApp} from "vue";
-import common from "../common.js";
+import common, {jQuery as $} from "../common.js";
 import Datatable from "../../components/datatable";
 import Form from "../../components/form";
 import List from "../../components/list";
@@ -12,7 +12,7 @@ import 'daterangepicker';
 import 'daterangepicker/daterangepicker.css';
 select2();
 
-let $ = common.jQuery, app = createApp({
+let app = createApp({
     data(){
         return {
             roles, departments, locale,
@@ -27,9 +27,6 @@ let $ = common.jQuery, app = createApp({
         };
     },
     methods: {
-        jQuery(){
-            return $;
-        },
         bootbox(){
             return common.bootbox;
         },

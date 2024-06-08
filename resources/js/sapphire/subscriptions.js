@@ -3,7 +3,7 @@ import common from "../common.js";
 import Datatable from "../../components/datatable";
 import Form from "../../components/form";
 
-let $ = common.jQuery, bootbox = common.bootbox;
+let bootbox = common.bootbox;
 let app = createApp({
     data: function(){
         return {
@@ -15,9 +15,6 @@ let app = createApp({
         }
     },
     methods: {
-        jQuery(){
-            return $;
-        },
         renderModules: function(modules){
             let rendered = [];
             modules.forEach((module) => {

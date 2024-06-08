@@ -1,10 +1,9 @@
 import {createApp} from "vue";
-import common from "../common.js";
+import common, {jQuery as $} from "../common.js";
 import Datatable from "../../components/datatable";
 import 'daterangepicker';
 import 'daterangepicker/daterangepicker.css';
 
-let $ = common.jQuery;
 let app = createApp({
     data: function(){
         return {
@@ -16,9 +15,6 @@ let app = createApp({
         };
     },
     methods: {
-        jQuery(){
-            return $;
-        },
         renderAmount: function(amount){
             return '$' + amount;
         },

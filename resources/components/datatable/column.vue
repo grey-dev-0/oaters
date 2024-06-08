@@ -8,7 +8,7 @@
 </template>
 
 <script>
-let $;
+import {jQuery as $} from '../../js/common';
 
 export default {
     name: 'DtColumn',
@@ -53,9 +53,6 @@ export default {
                 this.$parent.renderActions(row, actions.children());
             return actions.html();
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted(){
         let column = {},

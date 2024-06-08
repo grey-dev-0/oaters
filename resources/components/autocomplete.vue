@@ -14,7 +14,7 @@
 
 <script>
 import {debounce as _debounce} from "lodash";
-let $;
+import {jQuery as $} from '../js/common';
 
 export default {
     name: "Autocomplete",
@@ -125,9 +125,6 @@ export default {
                 }, 250);
             }
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted(){
         if(this.$parent.$options.name != 'VueField')

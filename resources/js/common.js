@@ -24,4 +24,5 @@ function loadComponents(app, components){
         app.component(name, defineAsyncComponent(() => import(`../components/${components[name]}.vue`)));
 }
 
-export default {load, loadBundles, loadComponents, jQuery, bootbox};
+export {jQuery};
+export default {load, loadBundles, loadComponents, bootbox};

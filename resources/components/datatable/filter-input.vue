@@ -21,7 +21,8 @@
 
 <script>
 import {debounce as _debounce} from 'lodash';
-let $, select2Options = {theme: 'bootstrap', width: '100%', allowClear: true};
+import {jQuery as $} from '../../js/common';
+let select2Options = {theme: 'bootstrap', width: '100%', allowClear: true};
 
 export default {
     name: 'DtFilter',
@@ -123,9 +124,6 @@ export default {
                 element.select2('destroy').select2(select2Options);
             this.$parent.$parent.filters[this.name] = '';
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     }
 }
 </script>

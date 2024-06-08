@@ -7,7 +7,7 @@
 </template>
 
 <script>
-let $;
+import {jQuery as $} from '../js/common';
 
 export default {
     name: "Alert",
@@ -40,9 +40,6 @@ export default {
                 this.shown = false;
             }, 250);
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted(){
         if(!!this.$slots.default)

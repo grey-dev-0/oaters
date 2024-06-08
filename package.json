@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "development": "NODE_ENV=development vite build -m development",
-    "prodcution": "vite build"
+    "production": "NODE_ENV=production vite build"
   },
   "devDependencies": {
     "@nx/eslint": "18.3.3",

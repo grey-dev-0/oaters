@@ -20,7 +20,7 @@
 </template>
 
 <script>
-let $;
+import {jQuery as $} from '../js/common';
 
 export default {
     name: "Modal",
@@ -72,9 +72,6 @@ export default {
         hide(){
             $('#' + this.id).modal('hide');
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted(){
         let body = $('body');

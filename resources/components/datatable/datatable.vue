@@ -17,7 +17,7 @@ import 'datatables.net';
 import DataTable from 'datatables.net-bs4';
 import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 import emitter from "mitt";
-let $;
+import {jQuery as $} from '../../js/common';
 
 export default {
     name: 'VueDatatable',
@@ -91,7 +91,6 @@ export default {
         }
     },
     created(){
-        $ = this.$root.jQuery();
         this.$root.emitter = emitter();
         DataTable.type('date', 'className', '');
         DataTable.type('num', 'className', '');

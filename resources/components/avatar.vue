@@ -6,7 +6,8 @@
 </template>
 
 <script>
-let $;
+import {jQuery as $} from '../js/common';
+
 export default {
     name: 'Avatar',
     props: {
@@ -42,9 +43,6 @@ export default {
                 return;
             this.fontSize = Math.floor($(initsElement).closest('.avatar').outerWidth() / 2.0) + 'px';
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted(){
         this.showImage = !!this.image;

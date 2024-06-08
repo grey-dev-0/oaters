@@ -15,7 +15,7 @@
 <script>
 import {computed} from 'vue';
 import emitter from 'mitt';
-let $;
+import {jQuery as $} from '../../js/common';
 
 export default {
     name: "VueForm",
@@ -125,9 +125,6 @@ export default {
                 return $.ajax(request);
             }
         }
-    },
-    created(){
-        $ = this.$root.jQuery();
     },
     mounted(){
         this.emitter = emitter();

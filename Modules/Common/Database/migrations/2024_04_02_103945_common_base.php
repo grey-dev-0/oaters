@@ -36,6 +36,21 @@ return new class extends Migration{
             $table->string('locale', 2);
         });
 
+        Schema::create('lc_cities', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('country_id');
+            $table->foreign('country_id')->references('id')->on('lc_countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('status')->default(true);
+        });
+
+        Schema::create('lc_city_locales', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('lc_cities')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->string('locale', 2);
+        });
+
         Schema::create('lc_timezones', function(Blueprint $table){
             $table->increments('id');
             $table->string('identifier');

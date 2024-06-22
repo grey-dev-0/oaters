@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Common\Database\Seeders\AddressSeeder;
+use Modules\Common\Database\Seeders\CitySeeder;
 use Modules\Common\Database\Seeders\ContactSeeder;
 use Modules\Common\Database\Seeders\CountrySeeder;
 use Modules\Common\Database\Seeders\EmailSeeder;
@@ -23,6 +24,7 @@ class TenantAppSeeder extends Seeder{
      */
     public function run(): void{
         $this->call(CountrySeeder::class);
+        $this->call(CitySeeder::class);
         $this->call(DegreeSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(RubyPermissionSeeder::class);

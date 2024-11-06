@@ -3,3 +3,4 @@
 !.gitignore
 !countries.json
 !*-cities.json
+!cities.sql.gz

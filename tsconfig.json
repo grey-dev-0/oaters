@@ -9,7 +9,10 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -32,5 +35,11 @@
     }
   ],
   "compileOnSave": false,
-  "exclude": ["app", "Modules", "node_modules", "vendor", "tmp"]
+  "exclude": [
+    "app",
+    "Modules",
+    "node_modules",
+    "vendor",
+    "tmp"
+  ]
 }

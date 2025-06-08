@@ -5,6 +5,7 @@ namespace Modules\Ruby\App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Modules\Common\App\Models\Contact;
 use Modules\Ruby\App\Models\DepartmentLocale;
+use Modules\Ruby\App\Models\Subordinate;
 use Modules\Sapphire\App\Models\RoleLocale;
 
 class ContactController extends Controller{
@@ -44,5 +45,18 @@ class ContactController extends Controller{
             $contact->applicant->recruited_at->format('d/m/Y h:i:s A'));
         $contact->applicant?->documents->each(fn($document) => $document->setAppends(['download_url']));
         return response()->json($contact);
+    }
+
+    public function getStructure(){
+        return view('ruby::structure', ['subordinates' => Subordinate::with(['manager', 'contact',
+            'department.translations' => fn($locales) => $locales->whereLocale('en')])->get()
+            ->map(fn($subordinate) => [
+                'manager' => $subordinate->manager->only(['id', 'name']),
+                'member' => $subordinate->contact->only(['id', 'name']),
+                'department' => [
+                    'id' => $subordinate->department_id,
+                    'name' => $subordinate->department->{'name:en'}
+                ]
+            ])]);
     }
 }

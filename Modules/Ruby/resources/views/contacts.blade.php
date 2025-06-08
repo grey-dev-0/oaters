@@ -7,7 +7,7 @@
 @section('content')
     <div class="row">
         <breadcrumb>
-            <bc-item url="{{url('sa')}}">Ruby</bc-item>
+            <bc-item url="{{url('r')}}">Ruby</bc-item>
             <bc-item active>{{trans('ruby::words.staff')}}</bc-item>
         </breadcrumb>
     </div>

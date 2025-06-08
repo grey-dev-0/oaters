@@ -19,7 +19,7 @@
             <template #label>{{trans('common::words.organization')}}</template>
             <nav-item @if(Route::is('ruby::departments.index')) active @endif in-dropdown url="{{url('r/departments')}}">{{trans('common::words.departments')}}</nav-item>
             <nav-item @if(Route::is('ruby::contacts.index')) active @endif in-dropdown url="{{url('r/contacts')}}">{{trans('ruby::words.staff')}}</nav-item>
-            <nav-item @if(Route::is('ruby::structure.index')) active @endif in-dropdown url="{{url('r/structure')}}">{{trans('common::words.structure')}}</nav-item>
+            <nav-item @if(Route::is('ruby::contacts.structure')) active @endif in-dropdown url="{{route('ruby::contacts.structure')}}">{{trans('common::words.structure')}}</nav-item>
         </nav-item>
         <nav-item>
             <template #label>{{trans('common::words.personnel')}}</template>

@@ -1,13 +1,13 @@
 @extends('ruby::master')
 
 @section('title')
-    <title>OATERS: Departments</title>
+    <title>OATERS: {{__('common::words.departments')}}</title>
 @stop
 
 @section('content')
     <div class="row">
         <breadcrumb>
-            <bc-item url="{{url('sa')}}">Ruby</bc-item>
+            <bc-item url="{{url('r')}}">Ruby</bc-item>
             <bc-item active>{{trans('common::words.departments')}}</bc-item>
         </breadcrumb>
     </div>

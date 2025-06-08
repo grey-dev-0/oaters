@@ -2,11 +2,10 @@
 
 namespace Modules\Ruby\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Common\App\Models\Contact;
 
 class Subordinate extends Model{
-    use HasFactory;
 
     /**
      * @inheritdoc
@@ -24,9 +23,23 @@ class Subordinate extends Model{
     protected $guarded = ['id'];
 
     /**
-     * @inheritdoc
+     * Get the manager contact
      */
-    protected static function newFactory(){
-        return \Modules\Ruby\Database\factories\SubordinateFactory::new();
+    public function manager(){
+        return $this->belongsTo(Contact::class, 'manager_id');
+    }
+
+    /**
+     * Get the contact
+     */
+    public function contact(){
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the department
+     */
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 }

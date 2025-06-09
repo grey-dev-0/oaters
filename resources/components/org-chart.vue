@@ -27,41 +27,35 @@ const props = defineProps({
 
 function layout(){
     let cells = adjacencyListToCells(props.nodes);
-    const groupElements = [];
-    const groupMap = {};
+    const clusterElements = [];
+    const clusterMap = {};
     if(props.groups && Object.keys(props.groups).length > 0){
-        Object.entries(props.groups).forEach(([department, members]) => {
-            if(members && members.length > 0){
-                const groupElement = makeGroupElement(department, members);
-                groupElements.push(groupElement);
-                groupMap[department] = groupElement;
+        Object.entries(props.groups).forEach(([cluster, nodes]) => {
+            if(nodes && nodes.length > 0){
+                const clusterElement = makeClusterElement(cluster);
+                clusterElements.push(clusterElement);
+                clusterMap[cluster] = clusterElement;
             }
         });
-        cells = [...groupElements, ...cells];
+        cells = [...clusterElements, ...cells];
         graph.resetCells(cells);
-        DirectedGraph.layout(graph);
-        Object.entries(props.groups).forEach(([department, memberNames]) => {
-            if(!groupMap[department]) return;
-            const groupElement = groupMap[department];
-            const memberElements = [];
-            memberNames.forEach(memberName => {
-                const element = graph.getCell(memberName);
+        Object.entries(props.groups).forEach(([cluster, nodes]) => {
+            if(!clusterMap[cluster]) return;
+            const clusterElement = clusterMap[cluster];
+            const nodeElements = [];
+            nodes.forEach(nodeName => {
+                const element = graph.getCell(nodeName);
                 if(element){
-                    memberElements.push(element);
-                    groupElement.embed(element);
+                    nodeElements.push(element);
+                    clusterElement.embed(element);
                 }
             });
-            if(memberElements.length > 0){
-                const membersBBox = graph.getCellsBBox(memberElements);
-                if(membersBBox){
-                    groupElement.resize(
-                        membersBBox.width + 30,
-                        membersBBox.height + 60
-                    );
-                    groupElement.position(
-                        membersBBox.x - 15,
-                        membersBBox.y - 40
-                    );
+            DirectedGraph.layout(graph, {nodeSep: 32, rankSep: 24});
+            if(nodeElements.length > 0){
+                const nodesBBox = graph.getCellsBBox(nodeElements);
+                if(nodesBBox){
+                    clusterElement.attr('label/refX', 0 - nodesBBox.width / 2);
+                    clusterElement.attr('label/refY', 0 - nodesBBox.height / 2 - 25);
                 }
             }
         });
@@ -88,7 +82,7 @@ function centerGraph(){
 function adjacencyListToCells(adjacencyList){
     const elements = [], links = [];
     Object.keys(adjacencyList).forEach((parentElementLabel) => {
-        elements.push(makeElement(parentElementLabel));
+        elements.push(makeNodeElement(parentElementLabel));
         const edges = adjacencyList[parentElementLabel] || [];
         edges.forEach((childElementLabel) => {
             if(!adjacencyList[childElementLabel]){
@@ -114,7 +108,7 @@ function makeLink(parentElementLabel, childElementLabel){
     });
 }
 
-function makeElement(label){
+function makeNodeElement(label){
     const maxLineLength = label.split('\n').reduce((max, l) => {
         return Math.max(l.length, max);
     }, 0);
@@ -143,7 +137,7 @@ function makeElement(label){
     });
 }
 
-function makeGroupElement(label, members){
+function makeClusterElement(label){
     return new shapes.standard.Rectangle({
         id: `group-${label}`,
         attrs: {
@@ -160,10 +154,8 @@ function makeGroupElement(label, members){
                 fontSize: 14,
                 fontWeight: 'bold',
                 fontFamily: 'Arial, sans-serif',
-                fill: '#E6A23C',
-                refX: 0,
-                refY: -85,
-                textAnchor: 'middle',
+                fill: '#001840',
+                textAnchor: 'start',
                 textVerticalAnchor: 'middle'
             }
         },

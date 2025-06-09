@@ -11,7 +11,7 @@ let app = createApp({
         };
     },
     mounted(){
-        const departments = {}; // Changed from array to object
+        const departments = {}, deptMembers = [];
         const transformedData = _reduce(subordinates, (result, item) => {
             const managerName = item.manager.name, memberName = item.member.name, departmentName = item.department.name;
             if(!result[managerName])
@@ -21,10 +21,12 @@ let app = createApp({
             result[managerName].push(memberName);
             if(!departments[departmentName])
                 departments[departmentName] = [];
-            if(!departments[departmentName].includes(managerName))
+            if(!departments[departmentName].includes(managerName) && !deptMembers.includes(managerName))
                 departments[departmentName].push(managerName);
-            if(!departments[departmentName].includes(memberName))
+            if(!departments[departmentName].includes(memberName)){
                 departments[departmentName].push(memberName);
+                deptMembers.push(memberName);
+            }
             return result;
         }, {});
         this.members = transformedData;

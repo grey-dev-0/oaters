@@ -4,22 +4,31 @@ import {reduce as _reduce} from "lodash";
 
 let app = createApp({
     name: 'LempManager',
-    date(){
+    data(){
         return {
-            members: null
+            members: null,
+            departments: null
         };
     },
     mounted(){
+        const departments = {}; // Changed from array to object
         const transformedData = _reduce(subordinates, (result, item) => {
-            const managerName = item.manager.name, memberName = item.member.name;
+            const managerName = item.manager.name, memberName = item.member.name, departmentName = item.department.name;
             if(!result[managerName])
                 result[managerName] = [];
             if(!result[memberName])
                 result[memberName] = [];
             result[managerName].push(memberName);
+            if(!departments[departmentName])
+                departments[departmentName] = [];
+            if(!departments[departmentName].includes(managerName))
+                departments[departmentName].push(managerName);
+            if(!departments[departmentName].includes(memberName))
+                departments[departmentName].push(memberName);
             return result;
         }, {});
         this.members = transformedData;
+        this.departments = departments;
     }
 });
 

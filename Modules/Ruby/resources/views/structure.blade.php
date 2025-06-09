@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col">
             <card title="{{trans('common::words.structure')}}" color="brown-4">
-                <org-chart ref="chart" :nodes="members"></org-chart>
+                <org-chart ref="chart" :nodes="members" :groups="departments"></org-chart>
             </card>
         </div>
     </div>

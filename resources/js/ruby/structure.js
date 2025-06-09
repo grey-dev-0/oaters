@@ -1,25 +1,25 @@
 import {createApp} from "vue";
 import common from "../common.js";
-import {reduce} from "lodash";
+import {reduce as _reduce} from "lodash";
 
 let app = createApp({
     name: 'LempManager',
+    date(){
+        return {
+            members: null
+        };
+    },
     mounted(){
-        setTimeout(() => {
-            const transformedData = reduce(subordinates, (result, item) => {
-                const managerName = item.manager.name;
-                const memberName = item.member.name;
-                if(!result[managerName]){
-                    result[managerName] = [];
-                }
-                if(!result[memberName]){
-                    result[memberName] = [];
-                }
-                result[managerName].push(memberName);
-                return result;
-            }, {});
-            this.$refs.chart.draw(transformedData);
-        }, 1000);
+        const transformedData = _reduce(subordinates, (result, item) => {
+            const managerName = item.manager.name, memberName = item.member.name;
+            if(!result[managerName])
+                result[managerName] = [];
+            if(!result[memberName])
+                result[memberName] = [];
+            result[managerName].push(memberName);
+            return result;
+        }, {});
+        this.members = transformedData;
     }
 });
 

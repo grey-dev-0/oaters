@@ -1,5 +1,7 @@
 <template>
-    <div class="canvas" ref="canvas"></div>
+    <div ref="container" style="overflow:auto">
+        <div ref="canvas"></div>
+    </div>
 </template>
 
 <script setup>
@@ -8,10 +10,18 @@ import {dia, shapes} from '@joint/core';
 import {DirectedGraph} from '@joint/layout-directed-graph';
 
 const canvas = ref(null);
+const container = ref(null);
 const graph = new dia.Graph({}, {cellNamespace: shapes});
 
 // Move paper creation inside onMounted so we can set the element
-let paper, nodes;
+let paper;
+
+const {nodes} = defineProps({
+    nodes: {
+        type: Object,
+        required: true
+    }
+});
 
 function layout(){
     let cells = adjacencyListToCells(nodes);
@@ -33,6 +43,7 @@ function centerGraph(){
         const offsetY = (paperSize.height - graphBBox.height) / 2 - graphBBox.y;
         graph.translate(offsetX, offsetY);
     }
+    setTimeout(() => paper.fitToContent({minHeight: container.value.style.height}), 100);
 }
 
 function adjacencyListToCells(adjacencyList){
@@ -94,12 +105,20 @@ function makeElement(label){
     });
 }
 
+function calculateAvailableHeight() {
+    if (!container.value) return;
+    const containerTop = container.value.getBoundingClientRect().top;
+    const availableHeight = window.innerHeight - containerTop - 20;
+    container.value.style.height = `${Math.max(availableHeight, 300)}px`;
+}
+
 onMounted(() => {
+    calculateAvailableHeight();
     paper = new dia.Paper({
         el: canvas.value,
         model: graph,
         width: '100%',
-        height: 500,
+        height: container.value.style.height,
         background: {
             color: '#F8F9FA',
         },
@@ -110,23 +129,6 @@ onMounted(() => {
     });
 
     paper.unfreeze();
-});
-
-defineExpose({
-    draw(members){
-        nodes = members;
-        layout();
-    }
+    layout();
 });
 </script>
-
-<style>
-.canvas{
-    width: 100%;
-    height: 500px;
-}
-
-.canvas :deep(.joint-paper){
-    border: 1px solid #a0a0a0;
-}
-</style>

@@ -22,6 +22,11 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
         Route::get('structure', 'ContactController@getStructure')->name('structure');
     });
 
+    Route::prefix('attendance')->as('attendance.')->group(function(){
+        Route::get('/', 'AttendanceController@getIndex')->name('index');
+        Route::post('/', 'AttendanceController@postIndex');
+    });
+
     Route::prefix('documents')->as('documents.')->group(function(){
         Route::get('download/{filename}', 'DocumentController@getDocument')->name('download');
     });

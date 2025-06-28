@@ -2,17 +2,21 @@
 
 namespace Modules\Ruby\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Common\App\Models\Contact;
 
-class Punch extends Model
-{
-    use HasFactory;
+class Punch extends Model{
+    /**
+     * @inheritdoc
+     */
+    protected $table = 'r_punches';
 
-    protected $fillable = [];
-    
-    protected static function newFactory()
-    {
-        return \Modules\Ruby\Database\factories\PunchFactory::new();
+    /**
+     * @inheritdoc
+     */
+    protected $guarded = ['id'];
+
+    public function contact(){
+        return $this->belongsTo(Contact::class);
     }
 }

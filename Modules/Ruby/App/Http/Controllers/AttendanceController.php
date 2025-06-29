@@ -15,10 +15,8 @@ class AttendanceController extends Controller{
 
     public function postIndex(){
         return tap(\DataTables::of(Punch::with([
-            'contact' => function($query) {
-                $query->withRoles()->withDepartments();
-            }
-        ])), fn($dataTable) => \DataTablesHelper::formatTimestampColumns($dataTable, ['created_at']))
+            'contact' => fn($q) => $q->withRoles()->withDepartments()
+        ])->select('r_punches.*')), fn($dataTable) => \DataTablesHelper::formatTimestampColumns($dataTable, ['created_at']))
             ->filter(function($query){
                 \DataTablesHelper::filterByDate($query, ['r_punches.created_at'], false);
                 $columns = \DataTablesHelper::getColumns();

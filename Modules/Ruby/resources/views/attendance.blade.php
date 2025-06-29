@@ -21,15 +21,16 @@
                     <dt-filter name="contact.name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
                     <dt-filter name="contact.roles.title" type="select2" multiple :values="roles" label="{{trans('common::words.role')}}"></dt-filter>
                     <dt-filter name="contact.departments.name" type="select2" multiple :values="departments" label="{{trans('common::words.departments')}}"></dt-filter>
-                    <dt-filter name="created_at" type="date" label="{{trans('common::words.created_at')}}"></dt-filter>
+                    <dt-filter name="r_punches.created_at" type="date" label="{{trans('common::words.created_at')}}"></dt-filter>
+                    <dt-filter name="type" type="select" :values="{in: '{{__('common::words.in')}}', out: '{{__('common::words.out')}}'}" label="{{__('common::words.type')}}"></dt-filter>
                 </vue-datafilter>
 
-                <vue-datatable datatable-id="attendance-table" ref="attendanceTable">
+                <vue-datatable datatable-id="attendance-table" ref="attendanceTable" :sort="[[4, 'desc']]">
                     <dt-column name="contact.name" data="contact.name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="contact.roles.title" data="contact.roles.0.title" :searchable="false">{{trans('common::words.role')}}</dt-column>
                     <dt-column name="contact.departments.name" :data="renderDepartments" :searchable="false" :orderable="false">{{trans('common::words.departments')}}</dt-column>
                     <dt-column name="type" data="type">{{trans('common::words.type')}}</dt-column>
-                    <dt-column name="r_punches.created_at" data="created_at">{{trans('common::words.created_at')}}</dt-column>
+                    <dt-column name="r_punches.created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
                         {{trans('common::words.actions')}}
                         <template #actions>

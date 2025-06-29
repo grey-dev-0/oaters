@@ -8,8 +8,9 @@ class DataTablesHelper{
      *
      * @param \Illuminate\Database\Query\Builder $query The query to altered.
      * @param string[] $attributes The date attributes to filter by.
+     * @param bool $inRelationship Determines whether the dot notation references a table name or relationship(s).
      */
-    public function filterByDate(&$query, $attributes){
+    public function filterByDate(&$query, $attributes, $inRelationship = true){
         $columns = $this->getColumns();
         $filter = function($query, $column, $value){
             if(count($value) == 1)
@@ -24,7 +25,7 @@ class DataTablesHelper{
         foreach($attributes as $key)
             if(!empty($value = request("columns.{$columns[$key]}.search.value"))){
                 $value = explode(' to ', $value);
-                if(count($segments = explode('.', $key)) <= 1)
+                if(!$inRelationship || count($segments = explode('.', $key)) <= 1)
                     $filter($query, $key, $value);
                 else{
                     $key = array_pop($segments);

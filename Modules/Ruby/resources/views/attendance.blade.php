@@ -29,7 +29,7 @@
                     <dt-column name="contact.roles.title" data="contact.roles.0.title" :searchable="false">{{trans('common::words.role')}}</dt-column>
                     <dt-column name="contact.departments.name" :data="renderDepartments" :searchable="false" :orderable="false">{{trans('common::words.departments')}}</dt-column>
                     <dt-column name="type" data="type">{{trans('common::words.type')}}</dt-column>
-                    <dt-column name="created_at" data="created_at">{{trans('common::words.created_at')}}</dt-column>
+                    <dt-column name="r_punches.created_at" data="created_at">{{trans('common::words.created_at')}}</dt-column>
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
                         {{trans('common::words.actions')}}
                         <template #actions>

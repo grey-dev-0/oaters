@@ -20,7 +20,7 @@ class AttendanceController extends Controller{
             }
         ])), fn($dataTable) => \DataTablesHelper::formatTimestampColumns($dataTable, ['created_at']))
             ->filter(function($query){
-                \DataTablesHelper::filterByDate($query, ['created_at']);
+                \DataTablesHelper::filterByDate($query, ['r_punches.created_at'], false);
                 $columns = \DataTablesHelper::getColumns();
                 if(!empty($departments = request("columns.{$columns['contact.departments.name']}.search.value")))
                     $query->whereHas('contact.departments', fn($depts) => $depts->whereIn('r_departments.id', $departments));

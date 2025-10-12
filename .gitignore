@@ -17,7 +17,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-
 .nx/cache
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
+/docs/.vitepress/cache
+/docs/.vitepress/dist

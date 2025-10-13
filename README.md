@@ -141,9 +141,9 @@ php artisan serve
 
 Comprehensive documentation is available and growing:
 
-- **[Full Documentation](docs/)** - Complete module documentation
-- **[Sapphire Module](docs/modules/sapphire.md)** - Authentication & multi-tenancy
-- **[Ruby Module](docs/modules/ruby.md)** - Human resources management
+- **[Full Documentation](https://grey-dev-0.github.io/oaters/)** - Complete module documentation
+- **[Sapphire Module](https://grey-dev-0.github.io/oaters/modules/sapphire.md)** - Authentication & multi-tenancy
+- **[Ruby Module](https://grey-dev-0.github.io/oaters/modules/ruby.md)** - Human resources management
 
 To build and view documentation locally:
 ```bash

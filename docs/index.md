@@ -130,6 +130,11 @@ Documentation will be added as modules are developed:
 - **Topaz Module** - Financial Management (coming soon)
 - **Emerald Module** - Project Management (coming soon)
 
+#### Development Guides
+- [**Frontend Guide**](/development/getting-started-frontend) - Quick start for frontend development
+- [**Frontend Architecture**](/development/frontend-architecture) - Understanding the Vue + Blade architecture
+- [**Component Development**](/development/component-development) - Building Vue and Blade components
+
 ### 🔗 Key Integrations
 
 #### Sapphire ↔ Common
@@ -165,7 +170,8 @@ Documentation will be added as modules are developed:
 - Onyx, Amethyst, Topaz, and Emerald modules
 - API documentation
 - Installation and deployment guides
-- Developer documentation
+- Backend development documentation
+- Database schema documentation
 
 ### 🤝 Contributing
 

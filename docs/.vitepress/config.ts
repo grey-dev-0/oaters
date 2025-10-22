@@ -19,6 +19,14 @@ export default defineConfig({
           { text: 'Topaz - Finance', link: '/modules/topaz' },
           { text: 'Emerald - Projects', link: '/modules/emerald' }
         ]
+      },
+      {
+        text: 'Development',
+        items: [
+          { text: 'Frontend Guide', link: '/development/getting-started-frontend' },
+          { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
+          { text: 'Component Development', link: '/development/component-development' }
+        ]
       }
     ],
 
@@ -30,21 +38,24 @@ export default defineConfig({
         ]
       },
       {
-        text: 'Core Modules',
-        collapsed: false,
-        items: [
-          { text: 'Sapphire - Auth & Tenancy', link: '/modules/sapphire' },
-          { text: 'Ruby - Human Resources', link: '/modules/ruby' }
-        ]
-      },
-      {
         text: 'Business Modules',
         collapsed: true,
         items: [
           { text: 'Onyx - Manufacturing (Coming Soon)', link: '/modules/onyx' },
           { text: 'Amethyst - E-commerce (Coming Soon)', link: '/modules/amethyst' },
           { text: 'Topaz - Finance (Coming Soon)', link: '/modules/topaz' },
-          { text: 'Emerald - Projects (Coming Soon)', link: '/modules/emerald' }
+          { text: 'Emerald - Projects (Coming Soon)', link: '/modules/emerald' },
+          { text: 'Ruby - Human Resources', link: '/modules/ruby' },
+          { text: 'Sapphire - Auth & Tenancy', link: '/modules/sapphire' }
+        ]
+      },
+      {
+        text: 'Development Guide',
+        collapsed: false,
+        items: [
+          { text: 'Getting Started', link: '/development/getting-started-frontend' },
+          { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
+          { text: 'Component Development', link: '/development/component-development' }
         ]
       }
     ],

@@ -67,20 +67,18 @@ Each Blade view has a corresponding JavaScript entry point that registers and in
 
 ### Location Pattern
 - **Blade Template**: `Modules/{ModuleName}/resources/views/{page}.blade.php`
-- **JavaScript Entry**: `Modules/{ModuleName}/resources/js/{page}.js`
+- **JavaScript Entry**: `resources/js/{moduleName}/{pageName}.js`
 
 ### Naming Convention
 ```
-Blade View                          JavaScript Entry Point
-─────────────────────────────────   ──────────────────────────────────
-employees/index.blade.php     →     js/pages/employees/index.js
-employees/create.blade.php    →     js/pages/employees/create.js
-departments/show.blade.php    →     js/pages/departments/show.js
+Blade View                                                    JavaScript Entry Point
+─────────────────────────────────────────────────────         ──────────────────────────────────
+Modules/{ModuleName}/resources/views/{page}.blade.php         resources/js/{moduleName}/{page}.js
 ```
 ### JavaScript Entry Point Structure
 
 ```javascript
-// Modules/Ruby/resources/js/pages/employees/index.js
+// resources/js/ruby/employees.js
 import { createApp } from 'vue'
 
 // Import generic components
@@ -115,6 +113,19 @@ createApp({})
 
 ### Vite Configuration Example
 
+**Automatic File Discovery**: OATERS uses `glob` to automatically discover all JavaScript entry points:
+
+```javascript
+// Automatically discovers files matching these patterns:
+let files = globSync([
+    "resources/js/*.js",           // Top-level JS files (common.js, login.js)
+    "resources/js/*/*.js",         // Module JS files (ruby/employees.js, sapphire/tenants.js)
+    "resources/scss/*.scss"        // SCSS files
+]);
+```
+
+This means **no manual updates to vite.config.js** are needed when creating new entry points.
+
 ```javascript
 // vite.config.js
 import { defineConfig } from 'vite'
@@ -124,13 +135,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
     plugins: [
         laravel({
-            input: [
-                'resources/js/app.js',
-                // Module-specific entry points
-                'Modules/Ruby/resources/js/pages/employees/index.js',
-                'Modules/Ruby/resources/js/pages/employees/create.js',
-                'Modules/Ruby/resources/js/pages/departments/show.js',
-            ],
+            input, // Automatically populated via glob pattern
             refresh: true,
         }),
         vue({
@@ -142,11 +147,7 @@ export default defineConfig({
             },
         }),
     ],
-    resolve: {
-        alias: {
-            '@': '/resources',
-        },
-    },
+    ...
 })
 ```
 ### Laravel Blade Integration
@@ -165,7 +166,7 @@ In your Blade template, include the Vite directives:
         <!-- Vue components mount here -->
     </div>
     
-    @vite(['Modules/Ruby/resources/js/pages/employees/index.js'])
+    @vite(['resources/js/ruby/employees.js'])
 </body>
 </html>
 ```
@@ -202,7 +203,7 @@ In your Blade template, include the Vite directives:
     ])
 </div>
 
-@vite(['Modules/Ruby/resources/js/pages/employees/index.js'])
+@vite(['resources/js/ruby/employees.js'])
 ```
 ```javascript
 // JavaScript: Make server data accessible to Vue
@@ -288,7 +289,16 @@ resources/
 │   ├── app.css
 │   └── variables.css
 └── js/
-    └── app.js                    # Global app setup
+    ├── ruby/                       # Ruby module entry points
+    │   ├── dashboard.js
+    │   ├── employees.js
+    │   ├── departments.js
+    │   ├── attendance.js
+    │   ├── contacts.js
+    │   └── structure.js
+    ├── sapphire/                   # Sapphire module entry points
+    │   ├── dashboard.js
+    │   ├── tenants.js
 
 Modules/Ruby/resources/
 ├── views/
@@ -299,17 +309,6 @@ Modules/Ruby/resources/
 │   └── components/
 │       ├── employee-form.blade.php
 │       └── department-selector.blade.php
-├── js/
-│   ├── pages/
-│   │   ├── employees/
-│   │   │   ├── index.js
-│   │   │   ├── create.js
-│   │   │   └── show.js
-│   │   └── departments/
-│   │       └── show.js
-│   └── composables/              # Vue 3 composables
-│       ├── useEmployee.js
-│       └── useDepartment.js
 └── css/
     └── module.css
 
@@ -319,12 +318,7 @@ Modules/Sapphire/resources/
 │   │   ├── login.blade.php
 │   │   └── register.blade.php
 │   └── ...
-├── js/
-│   └── pages/
-│       └── auth/
-│           ├── login.js
-│           └── register.js
-└── ...
+└── css/
 ```
 ## Development Workflow
 
@@ -375,7 +369,7 @@ This starts Vite with HMR enabled
     - Initial state setup
 
 4. **Shared Utilities in Composables**
-    - API calls (via `/resources/js/composables/`)
+    - API calls (via `resources/js/composables/`)
     - Form validation logic
     - State management helpers
 
@@ -403,3 +397,22 @@ This starts Vite with HMR enabled
 1. Check JavaScript syntax with `npm run lint`
 2. Verify all component imports are correct
 3. Run `npm run build` locally to reproduce production issues
+## Independent Applications Architecture
+
+Unlike traditional SPAs (Single Page Applications), OATERS treats each Blade view as an **independent frontend application**:
+
+- **No global app.js**: Each page loads only what it needs
+- **Isolated Vue applications**: Multiple Vue apps can coexist without conflicts  
+- **Page-specific bundles**: Better performance through code splitting
+- **Server-side coordination**: Communication between pages happens via Laravel routes
+- **Independent entry points**: Each Blade view has its own corresponding JavaScript entry point
+
+### How It Works
+
+When a user navigates to a Blade view, Vite loads the corresponding JavaScript entry point which:
+1. Creates a new Vue application instance
+2. Registers only the components needed for that page
+3. Mounts the app to the page's DOM
+4. Runs independently until the user navigates to another page
+
+This approach provides better performance, modularity, and eliminates common SPA complexity like global state management and routing.

@@ -238,7 +238,7 @@ console.log('Employee form mounted')
     </div>
 @endsection
 
-@vite(['Modules/Ruby/resources/js/pages/employees/create.js'])
+@vite(['resources/js/ruby/employees.js'])
 ```
 ## Vue Composables
 
@@ -246,7 +246,7 @@ Composables are reusable Vue 3 logic modules that can be shared across component
 
 ### Creating a Composable
 
-**File**: `Modules/Ruby/resources/js/composables/useEmployee.js`
+**File**: `resources/js/composables/useEmployee.js`
 
 ```javascript
 import { ref, computed, onMounted } from 'vue'
@@ -380,11 +380,13 @@ async function handleUpdate() {
 ```
 ## Module-Specific JavaScript Entry Points
 
-Each page needs a JavaScript entry point to register Vue components.
+Each page needs a JavaScript entry point to register Vue components. These files are automatically discovered by Vite using glob patterns.
 
-### Example Entry Point Structure
+### File Structure
 
-**File**: `Modules/Ruby/resources/js/pages/employees/index.js`
+**Location**: `resources/js/{moduleName}/{pageName}.js`
+
+**Example**: `resources/js/ruby/employees.js`
 
 ```javascript
 import { createApp } from 'vue'
@@ -393,23 +395,7 @@ import FilterPanel from '@/components/FilterPanel.vue'
 import PaginationControl from '@/components/PaginationControl.vue'
 
 // Create app instance
-const app = createApp({
-    data() {
-        return {
-            filters: {},
-            currentPage: 1,
-        }
-    },
-    methods: {
-        handleFilter(newFilters) {
-            this.filters = newFilters
-            this.currentPage = 1
-        },
-        handlePageChange(page) {
-            this.currentPage = page
-        }
-    }
-})
+const app = createApp({})
 
 // Register components globally for this page
 app.component('EmployeeTable', EmployeeTable)
@@ -419,6 +405,9 @@ app.component('PaginationControl', PaginationControl)
 // Mount to #app element
 app.mount('#app')
 ```
+
+> **Note**: No changes to `vite.config.js` are needed. The glob pattern automatically discovers all files matching `resources/js/*.js` and `resources/js/*/*.js`.
+
 ## Styling
 
 ### Global Styles

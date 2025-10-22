@@ -56,7 +56,9 @@ const count = ref(0)
 ```
 ### 3. Register Component in Entry Point
 
-**File**: `Modules/Ruby/resources/js/module/page.js`
+**File**: `resources/js/{moduleName}/{pageName}.js`
+
+Example: `resources/js/ruby/employees.js`
 
 ```javascript
 import { createApp } from 'vue'
@@ -65,10 +67,13 @@ import MyNewComponent from '@/components/MyNewComponent.vue'
 const app = createApp({})
 app.component('MyNewComponent', MyNewComponent)
 app.mount('#app')
+> **Note**: No changes to `vite.config.js` are needed. The glob pattern automatically discovers all files in `resources/js/*.js` and `resources/js/*/*.js` directories.
 ```
 ### 4. Use in Blade Template
 
-**File**: `Modules/ModuleName/resources/views/page.blade.php`
+**File**: `Modules/{ModuleName}/resources/views/{page}.blade.php`
+
+Example: `Modules/Ruby/resources/views/employees/index.blade.php`
 
 ```blade
 @extends('layouts.app')
@@ -79,7 +84,7 @@ app.mount('#app')
     </div>
 @endsection
 
-@vite(['resources/js/module/page.js'])
+@vite(['resources/js/ruby/employees.js'])
 ```
 ## Common Tasks
 

@@ -1,21 +1,92 @@
-# Frontend Development
+# Getting Started with OATERS Development
 
-## Getting Started
+## Prerequisites
+
+### System Requirements
+
+- **PHP** 8.1 or higher
+- **Node.js** 16+ and npm
+- **Composer** 2.0 or higher
+- **Git**
+- A local development environment (Laravel Valet, Docker, or similar)
+
+## Backend Setup
+
+### 1. Clone and Install the Project
+
+OATERS is available as a public repository on GitHub. Clone the repository and install dependencies:
+
+```bash
+# Clone the OATERS repository
+git clone https://github.com/grey-dev-0/oaters.git my-oaters-project
+
+# Navigate to the project directory
+cd my-oaters-project
+
+# Install PHP dependencies
+composer install
+```
+
+This process will:
+- Clone the OATERS repository from GitHub
+- Install all PHP dependencies from `composer.json`
+- Set up the Laravel module system
+- Install required packages for multi-tenancy, permissions, localization, and more
+
+### 2. Configure Environment
+
+```bash
+# Copy the example environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+Edit `.env` and configure:
+- `APP_NAME`, `APP_URL`
+- Database credentials (`DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`)
+- Mail settings (optional)
+
+### 3. Set Up Database
+
+```bash
+# Create database tables
+php artisan migrate
+
+# Seed initial data (optional)
+php artisan db:seed
+```
+
+### 4. Start Laravel Development Server
+
+```bash
+# Start the PHP development server
+php artisan serve
+```
+
+The application will be available at `http://127.0.0.1:8000`
+
+## Frontend Setup
 
 ### Prerequisites
 
-- Node.js 16+ and npm
-- A running OATERS installation
+- Node.js 16+ and npm installed
+- Backend server running (see Backend Setup above)
 
 ### Installation
 
 ```bash
-# Install dependencies
+# Install frontend dependencies
 npm install
 
-# Build development assets
+# Start the development server with hot module replacement
 npm run dev
 ```
+
+Keep both servers running:
+- **Backend**: `php artisan serve` (port 8000)
+- **Frontend**: `npm run dev` (port 5173 by default)
 ## Development Workflow
 
 ### 1. Start Development Server

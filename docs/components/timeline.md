@@ -162,27 +162,35 @@ Individual timeline entry component that renders as a list item (`<li>`). Each e
 
 The component uses Vue's `v-bind()` in CSS to dynamically set the marker color. The `color` prop is transformed into a CSS variable reference:
 
-```javascript path=/opt/public_html/theultragrey/oaters/resources/components/timeline/timeline-entry.vue start=14
+```javascript
+
 computed: {
-    colorVariable(){\n        return `var(--${this.color})`;\n    }\n},\n```
+    colorVariable(){
+        return `var(--${this.color})`;
+    }
+}
+```
 
 The border color is then applied via:
 
-```css path=/opt/public_html/theultragrey/oaters/resources/components/timeline/timeline-entry.vue start=23
-ul.timeline > li:before{\n    border-color: v-bind(colorVariable);\n}\n```
+```css
+ul.timeline > li:before{
+   border-color: v-bind(colorVariable);
+}
+```
 
 #### Available Colors
 
 Colors are defined as CSS variables in your application's theme. Common Bootstrap/design system colors:
 
-| Color | CSS Variable | Usage |
-|-------|--------------|-------|
-| Primary | `--primary` | Main/featured events |
-| Success | `--success` | Completed/successful events |
-| Warning | `--warning` | In-progress/warning events |
-| Danger | `--danger` | Failed/error events |
-| Info | `--info` | Information/note events |
-| Secondary | `--secondary` | Neutral events |
+| Color     | CSS Variable  | Usage                       |
+|-----------|---------------|-----------------------------|
+| Primary   | `--primary`   | Main/featured events        |
+| Success   | `--success`   | Completed/successful events |
+| Warning   | `--warning`   | In-progress/warning events  |
+| Danger    | `--danger`    | Failed/error events         |
+| Info      | `--info`      | Information/note events     |
+| Secondary | `--secondary` | Neutral events              |
 
 #### Example Usage
 
@@ -213,7 +221,7 @@ Here's a complete example showing the Timeline component in action:
 
 ### Blade View
 
-```blade path=null start=null
+```blade
 <div class="card">
   <div class="card-header">
     <h5 class="card-title">Project Timeline</h5>
@@ -258,7 +266,7 @@ Here's a complete example showing the Timeline component in action:
 
 ### JavaScript Entry Point
 
-```javascript path=null start=null
+```javascript
 import {createApp} from "vue";
 import Timeline from "../../components/timeline";
 

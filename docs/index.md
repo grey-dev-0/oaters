@@ -5,6 +5,9 @@ hero:
   name: "OATERS"
   text: "Integrated ERP System"
   tagline: A comprehensive, modular Enterprise Resource Planning system built with Laravel
+  image:
+    src: /hero.png
+    alt: OATERS ERP System
   actions:
     - theme: brand
       text: View Modules

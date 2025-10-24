@@ -183,226 +183,58 @@ function updateItem(item) {
 
 Business components are Blade components that combine generic Vue components with business logic. They're module-specific and can access server-side data.
 
-### Creating a Business Component
+### Example: Department Form Component
 
-**File**: `Modules/Ruby/resources/views/components/employee-form.blade.php`
+Here's a real example from OATERS that demonstrates how business components combine generic Vue components (Form, Field, Autocomplete, Select2) with module-specific logic:
 
-```blade
-@props(['employee' => null, 'departments' => [], 'action' => 'create'])
+**File**: `Modules/Ruby/resources/views/components/modals/department-form.blade.php`
 
-<form 
-    action="{{ $action === 'create' 
-        ? route('ruby.employees.store') 
-        : route('ruby.employees.update', $employee) }}"
-    method="POST"
-    id="employee-form"
-    class="employee-form"
->
-    @csrf
-    @if($action === 'update')
-        @method('PUT')
-    @endif
+```blade path=/opt/public_html/theultragrey/oaters/Modules/Ruby/resources/views/components/modals/department-form.blade.php start=1
+@php
+$edit ??= false;
+@endphp
 
-    <div class="form-group">
-        <form-input 
-            name="first_name"
-            type="text"
-            label="First Name"
-            :value="@json($employee?->first_name ?? '')"
-            required
-        />
-    </div>
-
-    <div class="form-group">
-        <form-input 
-            name="last_name"
-            type="text"
-            label="Last Name"
-            :value="@json($employee?->last_name ?? '')"
-            required
-        />
-    </div>
-
-    <div class="form-group">
-        <select-input 
-            name="department_id"
-            label="Department"
-            :options="{{ json_encode($departments->pluck('name', 'id')) }}"
-            :value="@json($employee?->department_id ?? '')"
-            required
-        />
-    </div>
-
-    <div class="form-group">
-        <button type="submit" variant="primary">
-            {{ $action === 'create' ? 'Create Employee' : 'Update Employee' }}
-        </button>
-    </div>
-</form>
-
-<script setup>
-// Optional: Any component-specific logic here
-console.log('Employee form mounted')
-</script>
+<modal id="{{$id}}" ref="{{$ref}}" static size="lg" color="{{$color}}">
+    <template #header>{{$title}}@if($edit) - @{{ openDepartment.name }}@endif</template>
+    <vue-form id="{{$id}}-form" ref="{{$ref}}Form" large="3" ajax action="{{url('r/departments/'.($edit? 'update' : 'create'))}}">
+        @if($edit)
+            <input type="hidden" name="id" :value="openDepartment.id">
+        @endif
+        <vue-field name="en[name]" type="text" id="{{($edit)? 'e_' : ''}}name-en">{{trans('common::words.name')}} ({{trans('common::words.english')}})</vue-field>
+        <vue-field name="ar[name]" type="text" id="{{($edit)? 'e_' : ''}}name-ar">{{trans('common::words.name')}} ({{trans('common::words.arabic')}})</vue-field>
+        <vue-field name="manager_id" type="autocomplete" id="{{($edit)? 'e_' : ''}}manager-id" url="{{route('ruby::contacts.search')}}">{{trans('ruby::departments.head')}}</vue-field>
+        <vue-field name="contact_id" type="select2" multiple id="{{($edit)? 'e_' : ''}}contact-id" url="{{route('ruby::contacts.search')}}">
+            {{trans('ruby::words.staff')}}
+        </vue-field>
+    </vue-form>
+    <template #footer>
+        <div class="btn btn-outline-secondary" data-dismiss="modal">Cancel</div>
+        <div class="btn btn-{{$color}} text-white" @click="submit('{{$ref}}')">Save</div>
+    </template>
+</modal>
 ```
-### Using Business Components
 
-**In a Blade Template**:
-```blade
-<!-- Modules/Ruby/resources/views/employees/create.blade.php -->
-@extends('layouts.app')
+### Using Business Components in Views
 
-@section('content')
-    <div class="container">
-        <h1>Create Employee</h1>
-        
-        <x-ruby::employee-form 
-            :departments="$departments"
-            action="create"
-        />
-    </div>
-@endsection
+This component is used in the departments list page:
 
-@vite(['resources/js/ruby/employees.js'])
+**File**: `Modules/Ruby/resources/views/departments.blade.php`
+
+```blade path=/opt/public_html/theultragrey/oaters/Modules/Ruby/resources/views/departments.blade.php start=48
+<x-ruby::modals.department-form ref="createDepartment" id="add-department" color="green-2" title="{{trans('ruby::departments.new')}}"/>
+<x-ruby::modals.department-form ref="updateDepartment" id="edit-department" color="blue-3" title="{{trans('ruby::departments.edit')}}" :edit="true"/>
 ```
-## Vue Composables
 
-Composables are reusable Vue 3 logic modules that can be shared across components.
+### Key Features Demonstrated
 
-### Creating a Composable
+This real example shows:
 
-**File**: `resources/js/composables/useEmployee.js`
-
-```javascript
-import { ref, computed, onMounted } from 'vue'
-
-export function useEmployee(employeeId = null) {
-    const employee = ref(null)
-    const loading = ref(false)
-    const error = ref(null)
-
-    // Fetch employee data
-    const fetchEmployee = async () => {
-        if (!employeeId) return
-
-        loading.value = true
-        error.value = null
-
-        try {
-            const response = await fetch(`/api/employees/${employeeId}`)
-            if (!response.ok) throw new Error('Failed to fetch employee')
-            employee.value = await response.json()
-        } catch (err) {
-            error.value = err.message
-        } finally {
-            loading.value = false
-        }
-    }
-
-    // Update employee
-    const updateEmployee = async (data) => {
-        loading.value = true
-        error.value = null
-
-        try {
-            const response = await fetch(`/api/employees/${employee.value.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify(data)
-            })
-            if (!response.ok) throw new Error('Failed to update employee')
-            employee.value = await response.json()
-            return true
-        } catch (err) {
-            error.value = err.message
-            return false
-        } finally {
-            loading.value = false
-        }
-    }
-
-    // Delete employee
-    const deleteEmployee = async () => {
-        if (!confirm('Are you sure?')) return false
-
-        loading.value = true
-        error.value = null
-
-        try {
-            const response = await fetch(`/api/employees/${employee.value.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                }
-            })
-            if (!response.ok) throw new Error('Failed to delete employee')
-            return true
-        } catch (err) {
-            error.value = err.message
-            return false
-        } finally {
-            loading.value = false
-        }
-    }
-
-    // Computed properties
-    const fullName = computed(() => 
-        employee.value ? `${employee.value.first_name} ${employee.value.last_name}` : ''
-    )
-
-    const isLoading = computed(() => loading.value)
-
-    onMounted(() => {
-        fetchEmployee()
-    })
-
-    return {
-        employee,
-        loading,
-        error,
-        fullName,
-        isLoading,
-        fetchEmployee,
-        updateEmployee,
-        deleteEmployee,
-    }
-}
-```
-### Using Composables in Components
-
-```vue
-<script setup>
-import { useEmployee } from '@/composables/useEmployee.js'
-
-const props = defineProps({
-  employeeId: Number
-})
-
-const { employee, loading, error, fullName, updateEmployee } = useEmployee(props.employeeId)
-
-async function handleUpdate() {
-    const success = await updateEmployee({
-        first_name: 'John',
-        last_name: 'Doe'
-    })
-    if (success) {
-        alert('Employee updated!')
-    }
-}
-</script>
-
-<template>
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else>
-        <h2>{{ fullName }}</h2>
-        <button @click="handleUpdate">Update</button>
-    </div>
-</template>
-```
+1. **Combining Generic Components**: Uses `VueForm`, `VueField`, `Modal`, `Autocomplete`, and `Select2` components
+2. **Dynamic Properties**: Props like `$edit`, `$id`, `$ref`, `$color`, and `$title` allow component reuse for create/edit operations
+3. **AJAX Integration**: Form submission via AJAX to Laravel routes
+4. **Server-Side Data**: Autocomplete and select2 fields fetch data from server endpoints
+5. **Internationalization**: Uses `trans()` helpers for multi-language support
+6. **Blade Syntax**: Mixes Blade directives with Vue template syntax seamlessly
 ## Module-Specific JavaScript Entry Points
 
 Each page needs a JavaScript entry point to register Vue components. These files are automatically discovered by Vite using glob patterns.

@@ -196,11 +196,11 @@ In your Blade template, include the Vite directives:
 ```blade
 <!-- Blade template: resources/views/employees/index.blade.php -->
 <div id="app">
-    @include('ruby::components.employee-table', [
-        'employees' => $employees,
-        'departments' => $departments,
-        'filters' => $filters,
-    ])
+    <x-ruby::employee-table 
+        :employees="$employees"
+        :departments="$departments"
+        :filters="$filters"
+    />
 </div>
 
 @vite(['resources/js/ruby/employees.js'])
@@ -229,11 +229,11 @@ onMounted(() => {
 ### Props (Parent → Child)
 ```blade
 <!-- Business component passes props to generic components -->
-@include('components.data-table', [
-    'data' => $tableData,
-    'columns' => $columns,
-    'sortable' => true,
-])
+<x-data-table 
+    :data="$tableData"
+    :columns="$columns"
+    :sortable="true"
+/>
 ```
 ### Events (Child → Parent)
 ```vue

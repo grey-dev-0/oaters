@@ -4,6 +4,31 @@
 
 This guide covers how to develop components in OATERS, from generic Vue components to business-specific Blade components.
 
+## Component Documentation
+
+Detailed documentation for all generic Vue components is available:
+
+### Simple Components
+- [Alert](../components/alert.md) - Dismissible notification alerts
+- [Autocomplete](../components/autocomplete.md) - AJAX-powered autocomplete input
+- [Avatar](../components/avatar.md) - User avatar with image/initials fallback
+- [Card](../components/card.md) - Card container with header and footer
+- [Chart](../components/chart.md) - Chart.js integration with date filtering
+- [Counter](../components/counter.md) - Dashboard statistics counter
+- [Loader](../components/loader.md) - Hybrid loading spinner (Blade + Vue)
+- [Modal](../components/modal.md) - Bootstrap 4 modal dialogs
+- [OrgChart](../components/org-chart.md) - Organization hierarchy visualization
+
+### Component Bundles
+- [Breadcrumb](../components/breadcrumb.md) - Breadcrumb navigation trail
+- [DataTable](../components/datatable.md) - Complete table component suite with filtering and pagination
+- [Form](../components/form.md) - Comprehensive form building system with validation and field management
+- [List](../components/list.md) - Bootstrap-styled list with collapsible items
+- [Navbar](../components/navbar.md) - Navigation bar component
+- [Tab](../components/tab.md) - Tabbed interface with fade animations
+- [Table](../components/table.md) - Simple HTML table wrapper
+- [Timeline](../components/timeline.md) - Visual timeline for chronological events
+
 ## Generic Vue Components
 
 Generic Vue components are reusable UI components located in `resources/components/`. They should have no module-specific logic and be usable across all modules.
@@ -231,10 +256,10 @@ console.log('Employee form mounted')
     <div class="container">
         <h1>Create Employee</h1>
         
-        @include('ruby::components.employee-form', [
-            'departments' => $departments,
-            'action' => 'create',
-        ])
+        <x-ruby::employee-form 
+            :departments="$departments"
+            action="create"
+        />
     </div>
 @endsection
 

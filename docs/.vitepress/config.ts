@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "OATERS",
   description: "A comprehensive, modular Enterprise Resource Planning system built with Laravel",
-  base: "/oaters/",
+  base: "/docs/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -12,12 +12,12 @@ export default defineConfig({
       { 
         text: 'Modules', 
         items: [
-          { text: 'Sapphire - Auth & Tenancy', link: '/modules/sapphire' },
-          { text: 'Ruby - Human Resources', link: '/modules/ruby' },
           { text: 'Onyx - Manufacturing', link: '/modules/onyx' },
           { text: 'Amethyst - E-commerce', link: '/modules/amethyst' },
           { text: 'Topaz - Finance', link: '/modules/topaz' },
-          { text: 'Emerald - Projects', link: '/modules/emerald' }
+          { text: 'Emerald - Projects', link: '/modules/emerald' },
+          { text: 'Ruby - Human Resources', link: '/modules/ruby' },
+          { text: 'Sapphire - Auth & Tenancy', link: '/modules/sapphire' }
         ]
       },
       {
@@ -51,17 +51,52 @@ export default defineConfig({
       },
       {
         text: 'Development Guide',
-        collapsed: false,
+        collapsed: true,
         items: [
           { text: 'Getting Started', link: '/development/getting-started-frontend' },
           { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
-          { text: 'Component Development', link: '/development/component-development' }
+          {
+            text: 'Component Development',
+            collapsed: true,
+            items: [
+              { text: 'Overview', link: '/development/component-development' },
+              {
+                text: 'Simple Components',
+                collapsed: true,
+                items: [
+                  { text: 'Alert', link: '/components/alert' },
+                  { text: 'Autocomplete', link: '/components/autocomplete' },
+                  { text: 'Avatar', link: '/components/avatar' },
+                  { text: 'Card', link: '/components/card' },
+                  { text: 'Chart', link: '/components/chart' },
+                  { text: 'Counter', link: '/components/counter' },
+                  { text: 'Loader', link: '/components/loader' },
+                  { text: 'Modal', link: '/components/modal' },
+                  { text: 'OrgChart', link: '/components/org-chart' }
+                ]
+              },
+              {
+                text: 'Component Bundles',
+                collapsed: true,
+                items: [
+                  { text: 'Navbar', link: '/components/navbar' },
+                  { text: 'Breadcrumb', link: '/components/breadcrumb' },
+                  { text: 'DataTable', link: '/components/datatable' },
+                  { text: 'Table', link: '/components/table' },
+                  { text: 'Tab', link: '/components/tab' },
+                  { text: 'Timeline', link: '/components/timeline' },
+                  { text: 'List', link: '/components/list' },
+                  { text: 'Form', link: '/components/form' }
+                ]
+              }
+            ]
+          }
         ]
       }
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/yourusername/oaters' }
+      { icon: 'github', link: 'https://github.com/grey-dev-0/oaters' }
     ],
 
     search: {

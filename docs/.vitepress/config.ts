@@ -23,7 +23,7 @@ export default defineConfig({
       {
         text: 'Development',
         items: [
-          { text: 'Frontend Guide', link: '/development/getting-started-frontend' },
+          { text: 'Getting Started', link: '/development/getting-started-frontend' },
           { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
           { text: 'Component Development', link: '/development/component-development' }
         ]

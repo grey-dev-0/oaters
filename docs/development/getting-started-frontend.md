@@ -50,13 +50,92 @@ Edit `.env` and configure:
 
 ### 3. Set Up Database
 
+OATERS uses a sophisticated multi-tenancy architecture with separate databases:
+- **Central Database**: Houses the super admin tenant and Sapphire module
+- **Tenant Databases**: Each tenant has an isolated database with their own data
+
+#### 3.1 Migrate Central Database
+
+First, migrate the default Laravel migrations for the central database:
+
 ```bash
-# Create database tables
+# Migrate the central database schema
+php artisan migrate
+```
+
+This creates tables for the super admin tenant and system-wide entities.
+
+#### 3.2 Migrate and Seed Sapphire Module
+
+The Sapphire module (authentication, tenants, users) must be migrated into the central database:
+
+```bash
+# Migrate the Sapphire module
+php artisan module:migrate Sapphire
+
+```
+
+#### 3.3 Seed the Central Database
+
+Seed the central application data, which automatically includes all Sapphire module data:
+
+```bash
+# Run the central app seeder (includes Sapphire module seeding)
+php artisan db:seed --class=Database\Seeders\CentralAppSeeder
+```
+
+#### 3.4 Migrate Module into Tenant Database
+
+All other modules (Ruby, Onyx, Amethyst, etc.) need to be migrated into each tenant's database.
+
+For the second tenant (example tenant), use the multi-tenancy artisan command:
+
+```bash
+# Migrate all modules for the second tenant
+php artisan tenants:artisan "module:migrate" --tenant=2
+```
+
+#### 3.5 Seed Tenant Database
+
+Seed all tenant-specific data using the TenantAppSeeder, which automatically handles seeding all necessary module data:
+
+```bash
+# Run the tenant app seeder for the second tenant (seeds all module data)
+php artisan tenants:artisan "db:seed --class=Database\Seeders\TenantAppSeeder" --tenant=2
+```
+#### Complete Database Setup Command Sequence
+
+Here's the complete sequence to set up everything from scratch:
+
+```bash
+# 1. Migrate central database
 php artisan migrate
 
-# Seed initial data (optional)
-php artisan db:seed
+# 2. Migrate Sapphire module (central)
+php artisan module:migrate Sapphire
+
+# 3. Seed central database (includes Sapphire module data)
+php artisan db:seed --class=Database\Seeders\CentralAppSeeder
+
+# 4. Migrate all modules for tenant #2
+php artisan tenants:artisan "module:migrate" --tenant=2
+
+# 5. Seed tenant #2 database (includes all module data)
+php artisan tenants:artisan "db:seed --class=Database\Seeders\TenantAppSeeder" --tenant=2
 ```
+
+#### Understanding the Architecture
+
+**Central Database Structure:**
+- System configuration and super admin data
+- Sapphire module tables (tenants, users, roles, permissions)
+
+**Tenant Database Structure:**
+- All module data specific to that tenant
+- Shared entities (countries, colors, etc.)
+- Other module tables as they're developed
+
+> **Note**: If you add additional tenants later, repeat steps 4-6 for each new tenant.
 
 ### 4. Start Laravel Development Server
 

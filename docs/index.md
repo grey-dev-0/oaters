@@ -48,6 +48,19 @@ features:
     link: /modules/sapphire
 ---
 
+:::warning ⚠️ IMPORTANT NOTICE
+**This documentation is AI-assisted and under active development.**
+
+Please be aware:
+- This documentation was generated with AI assistance and may contain inaccuracies or errors
+- The OATERS project is in its **very early stages of development**
+- Documentation is being continuously reviewed, updated, and improved
+- Features described may not be fully implemented yet
+- If you encounter any errors or inconsistencies, please report them via [GitHub Issues](https://github.com/grey-dev-0/oaters/issues)
+
+Thank you for your understanding and patience as we build and refine this project! 🚀
+:::
+
 ## About OATERS
 
 **OATERS** is a modern, modular ERP (Enterprise Resource Planning) system built on Laravel, designed to streamline business operations across multiple domains. The system integrates six powerful modules, each represented by a precious gemstone, working together to provide a complete business management solution.

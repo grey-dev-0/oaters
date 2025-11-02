@@ -54,75 +54,21 @@ OATERS uses a sophisticated multi-tenancy architecture with separate databases:
 - **Central Database**: Houses the super admin tenant and Sapphire module
 - **Tenant Databases**: Each tenant has an isolated database with their own data
 
-#### 3.1 Migrate Central Database
-
-First, migrate the default Laravel migrations for the central database:
+#### 3.1 Migrate and Seed Central Database
 
 ```bash
 # Migrate the central database schema
 php artisan migrate
+
+# Seed central database (includes Sapphire module data)
+php artisan db:seed --class=CentralAppSeeder
 ```
 
-This creates tables for the super admin tenant and system-wide entities.
-
-#### 3.2 Migrate and Seed Sapphire Module
-
-The Sapphire module (authentication, tenants, users) must be migrated into the central database:
-
-```bash
-# Migrate the Sapphire module
-php artisan module:migrate Sapphire
-
-```
-
-#### 3.3 Seed the Central Database
-
-Seed the central application data, which automatically includes all Sapphire module data:
-
-```bash
-# Run the central app seeder (includes Sapphire module seeding)
-php artisan db:seed --class=Database\Seeders\CentralAppSeeder
-```
-
-#### 3.4 Migrate Module into Tenant Database
-
-All other modules (Ruby, Onyx, Amethyst, etc.) need to be migrated into each tenant's database.
-
-For the second tenant (example tenant), use the multi-tenancy artisan command:
-
-```bash
-# Migrate all modules for the second tenant
-php artisan tenants:artisan "module:migrate" --tenant=2
-```
-
-#### 3.5 Seed Tenant Database
-
-Seed all tenant-specific data using the TenantAppSeeder, which automatically handles seeding all necessary module data:
-
-```bash
-# Run the tenant app seeder for the second tenant (seeds all module data)
-php artisan tenants:artisan "db:seed --class=Database\Seeders\TenantAppSeeder" --tenant=2
-```
-#### Complete Database Setup Command Sequence
-
-Here's the complete sequence to set up everything from scratch:
-
-```bash
-# 1. Migrate central database
-php artisan migrate
-
-# 2. Migrate Sapphire module (central)
-php artisan module:migrate Sapphire
-
-# 3. Seed central database (includes Sapphire module data)
-php artisan db:seed --class=Database\Seeders\CentralAppSeeder
-
-# 4. Migrate all modules for tenant #2
-php artisan tenants:artisan "module:migrate" --tenant=2
-
-# 5. Seed tenant #2 database (includes all module data)
-php artisan tenants:artisan "db:seed --class=Database\Seeders\TenantAppSeeder" --tenant=2
-```
+The `CentralAppSeeder` automatically:
+- Migrates Sapphire module schema
+- Seeds Sapphire module data (users, roles, permissions)
+- Creates a test tenant database called "maxwell"
+- Seeds the test tenant with sample data for all modules
 
 #### Understanding the Architecture
 
@@ -130,12 +76,12 @@ php artisan tenants:artisan "db:seed --class=Database\Seeders\TenantAppSeeder" -
 - System configuration and super admin data
 - Sapphire module tables (tenants, users, roles, permissions)
 
-**Tenant Database Structure:**
+**Tenant Database Structure ("maxwell" test tenant):**
 - All module data specific to that tenant
 - Shared entities (countries, colors, etc.)
-- Other module tables as they're developed
+- Sample data for testing and development
 
-> **Note**: If you add additional tenants later, repeat steps 4-6 for each new tenant.
+> **Note**: The test tenant "maxwell" is automatically created and seeded by `CentralAppSeeder`. For production use, you can create additional tenants as needed.
 
 ### 4. Start Laravel Development Server
 
@@ -166,6 +112,7 @@ npm run dev
 Keep both servers running:
 - **Backend**: `php artisan serve` (port 8000)
 - **Frontend**: `npm run dev` (port 5173 by default)
+
 ## Development Workflow
 
 ### 1. Start Development Server
@@ -173,6 +120,7 @@ Keep both servers running:
 ```bash
 npm run dev
 ```
+
 This starts Vite with hot module replacement enabled.
 
 ### 2. Create a New Vue Component
@@ -204,6 +152,7 @@ const count = ref(0)
 }
 </style>
 ```
+
 ### 3. Register Component in Entry Point
 
 **File**: `resources/js/{moduleName}/{pageName}.js`
@@ -217,8 +166,10 @@ import MyNewComponent from '@/components/MyNewComponent.vue'
 const app = createApp({})
 app.component('MyNewComponent', MyNewComponent)
 app.mount('#app')
-> **Note**: No changes to `vite.config.js` are needed. The glob pattern automatically discovers all files in `resources/js/*.js` and `resources/js/*/*.js` directories.
 ```
+
+> **Note**: No changes to `vite.config.js` are needed. The glob pattern automatically discovers all files in `resources/js/*.js` and `resources/js/*/*.js` directories.
+
 ### 4. Use in Blade Template
 
 **File**: `Modules/{ModuleName}/resources/views/{page}.blade.php`
@@ -236,6 +187,7 @@ Example: `Modules/Ruby/resources/views/employees/index.blade.php`
 
 @vite(['resources/js/ruby/employees.js'])
 ```
+
 ## Common Tasks
 
 ### Add Props to Component
@@ -255,6 +207,7 @@ const props = defineProps({
 })
 </script>
 ```
+
 ### Emit Events
 
 ```vue
@@ -266,6 +219,7 @@ function handleSave() {
 }
 </script>
 ```
+
 ### Use Slots
 
 ```vue
@@ -280,6 +234,7 @@ function handleSave() {
   </div>
 </template>
 ```
+
 ### API Calls in Composable
 
 ```javascript
@@ -303,6 +258,7 @@ export function useData() {
   return { data, loading, error, fetchData }
 }
 ```
+
 ### Form Handling
 
 ```vue
@@ -335,6 +291,7 @@ async function handleSubmit() {
   </form>
 </template>
 ```
+
 ## Debugging
 
 ### Vue DevTools
@@ -350,6 +307,7 @@ const app = document.querySelector('#app').__vue__
 // Inspect component data
 app.$data
 ```
+
 ### Network Tab
 
 Monitor API calls and network performance in browser DevTools.
@@ -359,6 +317,7 @@ Monitor API calls and network performance in browser DevTools.
 ```bash
 npm run production
 ```
+
 This creates optimized, minified assets ready for deployment.
 
 ## Troubleshooting

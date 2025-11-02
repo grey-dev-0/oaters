@@ -235,31 +235,54 @@ This real example shows:
 4. **Server-Side Data**: Autocomplete and select2 fields fetch data from server endpoints
 5. **Internationalization**: Uses `trans()` helpers for multi-language support
 6. **Blade Syntax**: Mixes Blade directives with Vue template syntax seamlessly
-## Module-Specific JavaScript Entry Points
+## JavaScript Entry Points for Blade Views
 
-Each page needs a JavaScript entry point to register Vue components. These files are automatically discovered by Vite using glob patterns.
+Each Blade view requires a corresponding JavaScript entry point to register and initialize Vue components used on that page. These files are automatically discovered by Vite using glob patterns.
+
+### Common Helper Script
+
+The `resources/js/common.js` helper script provides centralized management of common libraries and components used across all pages. It exports:
+
+- `load(app)` - Registers common components (Alert, Avatar, Card, VLoader) and navigation (Breadcrumb, Navbar)
+- `loadBundles(app, bundles)` - Registers component bundles (Form, DataTable, Tab, etc.)
+- `loadComponents(app, components)` - Dynamically registers individual simple components
+- `jQuery` - Pre-configured jQuery with CSRF token support
+- `bootbox` - Modal library for alerts and confirmations
+
+**Key Benefits:**
+- Bootstrap and jQuery pre-loaded for all pages
+- CSRF tokens automatically configured for AJAX requests
+- Common components available globally
+- Consistent component registration across modules
 
 ### File Structure
 
-**Location**: `resources/js/{moduleName}/{pageName}.js`
+**Location**: `resources/js/{moduleName}/{pageName}.js` corresponds to `Modules/{ModuleName}/resources/views/{page-name}.blade.php`
 
-**Example**: `resources/js/ruby/employees.js`
+**Example**: `resources/js/ruby/employees.js` for `Modules/Ruby/resources/views/employees.blade.php`
 
-```javascript
+```javascript path=null start=null
 import { createApp } from 'vue'
-import EmployeeTable from '@/components/EmployeeTable.vue'
-import FilterPanel from '@/components/FilterPanel.vue'
-import PaginationControl from '@/components/PaginationControl.vue'
+import common, { jQuery, bootbox } from '@/common'
+import Form from '@/components/form'
+import DataTable from '@/components/datatable'
 
 // Create app instance
 const app = createApp({})
 
-// Register components globally for this page
-app.component('EmployeeTable', EmployeeTable)
-app.component('FilterPanel', FilterPanel)
-app.component('PaginationControl', PaginationControl)
+// Load common libraries and base components (Alert, Avatar, Card, VLoader, etc.)
+common.load(app)
 
-// Mount to #app element
+// Load component bundles needed for this Blade view
+common.loadBundles(app, [Form, DataTable])
+
+// Register simple components (non-bundled) used on this page
+common.loadComponents(app, {
+  Chart: 'chart',
+  OrgChart: 'org-chart'
+})
+
+// Mount to #app element in the Blade template
 app.mount('#app')
 ```
 

@@ -12,6 +12,7 @@ export default defineConfig({
       { 
         text: 'Modules', 
         items: [
+          { text: 'Lava - Common Modules', link: '/modules/lava-common' },
           { text: 'Onyx - Manufacturing', link: '/modules/onyx' },
           { text: 'Amethyst - E-commerce', link: '/modules/amethyst' },
           { text: 'Topaz - Finance', link: '/modules/topaz' },
@@ -41,6 +42,7 @@ export default defineConfig({
         text: 'Business Modules',
         collapsed: true,
         items: [
+          { text: 'Lava - Common Modules', link: '/modules/lava-common' },
           { text: 'Onyx - Manufacturing (Coming Soon)', link: '/modules/onyx' },
           { text: 'Amethyst - E-commerce (Coming Soon)', link: '/modules/amethyst' },
           { text: 'Topaz - Finance (Coming Soon)', link: '/modules/topaz' },

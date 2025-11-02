@@ -200,8 +200,3 @@ As documentation is completed, contribution guidelines will be added here.
 OATERS is open-source software. Please refer to the LICENSE file for more information.
 
 ---
-
-<div style="text-align: center; margin-top: 2rem; color: #666;">
-  <p>Built with ❤️ using Laravel and VitePress</p>
-  <p>Version 1.0.0 (Under Development)</p>
-</div>

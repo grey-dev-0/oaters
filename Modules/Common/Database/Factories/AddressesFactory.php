@@ -18,7 +18,8 @@ class AddressesFactory extends Factory{
     public function definition(): array{
         return [
             'contact_id' => Contact::factory(),
-            'country_id' => Country::factory()
+            'country_id' => Country::factory(),
+            'default' => false
         ];
     }
 }

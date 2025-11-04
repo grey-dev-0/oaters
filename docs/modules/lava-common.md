@@ -7,7 +7,7 @@ The **Lava** framework comprises three foundational common modules that integrat
 **Lava Modules:**
 - **Article** (LA) - Content management and product catalog
 - **Commerce** (LE) - E-commerce transactions and financial operations
-- **Contact** (LC) - Contact management and geographic information
+- **Common** (LC) - General purpose entities: contacts, addresses, colors, and geographic information
 
 > **Note**: "Lava" is a framework module that precedes and integrates with the gemstone-based business modules.
 
@@ -17,7 +17,7 @@ The **Lava** framework comprises three foundational common modules that integrat
 ┌───────────────────────────────────────────────────┐
 │          LAVA COMMON FRAMEWORK                    │
 ├───────────────────────────────────────────────────┤
-│  Article (LA)    │  Commerce (LE)  │  Contact(LC) │
+│  Article (LA)    │  Commerce (LE)  │  Common(LC)  │
 └───────────────────────────────────────────────────┘
          ↓                ↓                 ↓
 ┌───────────────────────────────────────────────────┐
@@ -408,10 +408,10 @@ Relationships:
 - Customer financial records
 - Transaction audit trails
 
-## Contact Module (LC) - Contacts & Geography
+## Common Module (LC) - General Purpose Entities
 
 ### Purpose
-Manages all contact-related entities and geographic information. Serves as the central repository for contacts, addresses, and location data used across all modules.
+Manages general purpose entities including contacts, addresses, colors, and geographic information. Serves as the central repository for contacts, addresses, and location data used across all modules.
 
 ### Core Features
 
@@ -667,7 +667,7 @@ Currency (1) ─────── (N) Country (Common)
 Refund (N) ─────── (1) Order|OrderLine (polymorphic: refundable)
 Transaction (N) ─────── (1) Order|Refund (polymorphic: transferable)
 
-// Contact Module Relationships
+// Common Module Relationships
 User (Sapphire) (1) ─────── (1) Contact (nullable)
 Timezone (1) ─────── (N) Contact
 Contact (1) ─────── (N) Phone
@@ -751,10 +751,10 @@ User (Sapphire) ─────── Contact (Common) (profile extension)
 - Order and refund management
 - Financial transaction tracking
 
-**Contact Module:**
-- Contact information storage
-- Geographic data management
-- Address and communication tracking
+**Common Module:**
+- Contact and address management
+- Geographic data and color definitions
+- Communication channel tracking
 
 ### Best Practices
 
@@ -772,7 +772,7 @@ The Lava common modules are automatically migrated when the `CentralAppSeeder` r
 php artisan db:seed --class=CentralAppSeeder
 ```
 
-This creates all necessary tables for Article, Commerce, and Contact modules in the central database.
+This creates all necessary tables for Article, Commerce, and Common modules in the central database.
 
 ## Future Enhancements
 

@@ -101,6 +101,7 @@ return new class extends Migration{
             $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('country_id');
             $table->foreign('country_id')->references('id')->on('lc_countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('default')->default(false);
         });
 
         Schema::create('lc_colors', function(Blueprint $table){

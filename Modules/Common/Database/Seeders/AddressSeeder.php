@@ -15,7 +15,9 @@ class AddressSeeder extends Seeder{
         $contacts = Contact::all('id');
         $countries = Country::all('id');
         $count = $contacts->count();
-        Address::factory()->sequence(fn($sequence) => ['contact_id' => $contacts[$sequence->index % $count]->id])
-            ->recycle($countries)->count($count * 3)->create();
+        Address::factory()->sequence(fn($sequence) => [
+            'contact_id' => $contacts[$sequence->index % $count]->id,
+            'default' => $sequence->index % 3 === 0,
+        ])->recycle($countries)->count($count * 3)->create();
     }
 }

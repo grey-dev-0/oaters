@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Ruby\App\Models\Applicant;
 use Modules\Ruby\App\Models\Department;
 use Modules\Ruby\App\Models\Leave;
+use Modules\Ruby\App\Models\Shift;
 use Spatie\Permission\Traits\HasRoles;
 
 class Contact extends Model{
@@ -70,6 +71,10 @@ class Contact extends Model{
 
     public function leaves(){
         return $this->hasMany(Leave::class);
+    }
+
+    public function shifts(){
+        return $this->belongsToMany(Shift::class, 'r_contact_shifts', 'contact_id', 'shift_id')->withPivot('weekday');
     }
 
     public function getDepartmentAttribute(){

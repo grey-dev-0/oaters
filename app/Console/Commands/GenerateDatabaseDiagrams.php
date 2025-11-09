@@ -89,8 +89,7 @@ class GenerateDatabaseDiagrams extends Command
     private function extractTablesFromMigration(string $content): array
     {
         $tables = [];
-        
-        // Match Schema::create statements with literal table names
+
         if (preg_match_all('/Schema::create\([\'"]([^\'"]+)[\'"]\s*,\s*function\s*\(\s*Blueprint\s+\$\w+\s*\)\s*\{(.*?)\}\s*\);/s', $content, $matches)) {
             for ($i = 0; $i < count($matches[1]); $i++) {
                 $tableName = $matches[1][$i];
@@ -105,8 +104,7 @@ class GenerateDatabaseDiagrams extends Command
                 $tables[] = $table;
             }
         }
-        
-        // Check if this is a Spatie permission migration and add the hardcoded Sapphire tables
+
         if (strpos($content, 'permission.table_names') !== false) {
             $sapphireTables = [
                 ['name' => 's_permissions', 'columns' => ['id' => 'bigIncrements', 'name' => 'string', 'guard_name' => 'string'], 'relationships' => []],
@@ -125,14 +123,12 @@ class GenerateDatabaseDiagrams extends Command
     private function extractColumns(string $tableBody): array
     {
         $columns = [];
-        
-        // Match column definitions
+
         if (preg_match_all('/\$table->([\w]+)\([\'"]?([^\'"(),\[\]]+)[\'"]?[^;]*\);/m', $tableBody, $matches)) {
             for ($i = 0; $i < count($matches[1]); $i++) {
                 $type = $matches[1][$i];
                 $name = trim($matches[2][$i]);
 
-                // Skip empty names or invalid identifiers
                 if (empty($name) || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $name)) {
                     continue;
                 }
@@ -150,7 +146,6 @@ class GenerateDatabaseDiagrams extends Command
     {
         $relationships = [];
 
-        // Match foreign key definitions
         if (preg_match_all('/->foreign\([\'"](\w+)[\'"]\)->references\([\'"](\w+)[\'"]\)->on\([\'"](\w+)[\'"]\)/m', $tableBody, $matches)) {
             for ($i = 0; $i < count($matches[1]); $i++) {
                 $relationships[] = [
@@ -170,13 +165,15 @@ class GenerateDatabaseDiagrams extends Command
 
         foreach ($tables as $table) {
             $module = $table['module'];
-            
-            // Move Sapphire tables from Core to Sapphire module
-            // Tables starting with 's_' are Sapphire tables
+
             if ($module === 'Core' && strpos($table['name'], 's_') === 0) {
                 $module = 'Sapphire';
             }
-            
+
+            if ($module === 'Core' && strpos($table['name'], 'le_') === 0) {
+                $module = 'Lava Commerce';
+            }
+
             if (!isset($grouped[$module])) {
                 $grouped[$module] = [];
             }
@@ -189,9 +186,16 @@ class GenerateDatabaseDiagrams extends Command
     private function generateModuleDiagram(string $module, array $moduleData, string $outputDir): void
     {
         $mermaid = $this->buildMermaidDiagram($moduleData);
+
+        $displayNames = [
+            'Common' => 'Lava Common',
+            'Commerce' => 'Lava Commerce',
+        ];
+        $displayName = $displayNames[$module] ?? $module;
+        
         $filename = "{$outputDir}/" . strtolower(str_replace(' ', '-', $module)) . '-diagram.md';
 
-        $content = "# {$module} Database Schema\n\n";
+        $content = "# {$displayName} Database Schema\n\n";
         $content .= "```mermaid\n{$mermaid}\n```\n";
 
         file_put_contents($filename, $content);
@@ -216,16 +220,15 @@ class GenerateDatabaseDiagrams extends Command
         $relationships = [];
         $processedRelationships = [];
 
-        // Define all tables first
         foreach ($tables as $tableName => $table) {
             $mermaid .= "    {$tableName} {\n";
             foreach ($table['columns'] as $columnName => $columnType) {
-                $mermaid .= "        string {$columnName}\n";
+                $mermaidType = $this->mapLaravelTypeToMermaid($columnType);
+                $mermaid .= "        {$mermaidType} {$columnName}\n";
             }
             $mermaid .= "    }\n";
         }
 
-        // Add relationships
         foreach ($tables as $tableName => $table) {
             foreach ($table['relationships'] as $rel) {
                 $relKey = "{$tableName}|" . $rel['table'];
@@ -244,5 +247,41 @@ class GenerateDatabaseDiagrams extends Command
         if (!is_dir($dir)) {
             mkdir($dir, 0755, true);
         }
+    }
+
+    private function mapLaravelTypeToMermaid(string $laravelType): string
+    {
+        $typeMap = [
+            'increments' => 'int',
+            'bigIncrements' => 'bigint',
+            'unsignedInteger' => 'int',
+            'unsignedBigInteger' => 'bigint',
+            'integer' => 'int',
+            'bigInteger' => 'bigint',
+            'smallInteger' => 'smallint',
+            'unsignedSmallInteger' => 'smallint',
+            'unsignedTinyInteger' => 'tinyint',
+            'tinyInteger' => 'tinyint',
+            'string' => 'string',
+            'char' => 'char',
+            'text' => 'text',
+            'mediumText' => 'text',
+            'longText' => 'text',
+            'float' => 'float',
+            'double' => 'double',
+            'decimal' => 'decimal',
+            'boolean' => 'boolean',
+            'enum' => 'string',
+            'date' => 'date',
+            'dateTime' => 'datetime',
+            'timestamp' => 'datetime',
+            'time' => 'time',
+            'json' => 'json',
+            'jsonb' => 'json',
+            'uuid' => 'uuid',
+            'ulid' => 'string',
+        ];
+
+        return $typeMap[$laravelType] ?? 'string';
     }
 }

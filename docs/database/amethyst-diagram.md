@@ -3,14 +3,14 @@
 ```mermaid
 erDiagram
     a_carts {
-        string id
-        string user_id
+        int id
+        int user_id
         string token
     }
     a_cart_articles {
-        string cart_id
-        string article_id
-        string quantity
+        int cart_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     a_carts ||--o{ s_users : ""

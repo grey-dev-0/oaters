@@ -3,69 +3,69 @@
 ```mermaid
 erDiagram
     a_carts {
-        string id
-        string user_id
+        int id
+        int user_id
         string token
     }
     a_cart_articles {
-        string cart_id
-        string article_id
-        string quantity
+        int cart_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     la_articles {
-        string id
-        string type
+        int id
+        tinyint type
     }
     la_article_locales {
-        string id
-        string article_id
+        int id
+        int article_id
         string title
-        string description
+        text description
         string locale
     }
     la_categories {
-        string id
+        int id
     }
     la_category_locales {
-        string id
-        string category_id
+        int id
+        int category_id
         string title
-        string description
+        text description
         string locale
     }
     la_article_categories {
-        string article_id
-        string category_id
+        int article_id
+        int category_id
     }
     la_properties {
-        string id
-        string type
-        string public
-        string system
+        int id
+        tinyint type
+        boolean public
+        boolean system
     }
     la_property_locales {
-        string id
-        string property_id
+        int id
+        int property_id
         string name
         string locale
     }
     la_options {
-        string id
+        int id
     }
     la_option_locales {
-        string id
-        string option_id
+        int id
+        int option_id
         string name
         string locale
     }
     la_property_options {
-        string property_id
-        string option_id
+        int property_id
+        int option_id
     }
     le_bank_accounts {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string bank
         string name
         string number
@@ -73,421 +73,421 @@ erDiagram
         string swift
     }
     le_orders {
-        string id
-        string contact_id
-        string shipping_address_id
-        string billing_address_id
-        string amount
-        string paid
-        string delivered_at
+        int id
+        int contact_id
+        int shipping_address_id
+        int billing_address_id
+        float amount
+        boolean paid
+        datetime delivered_at
     }
     le_order_lines {
-        string id
-        string order_id
-        string article_id
-        string quantity
+        int id
+        int order_id
+        int article_id
+        float quantity
         string quantity_unit
-        string price
-        string discount
+        float price
+        float discount
         string discount_type
     }
     le_refunds {
-        string id
-        string refundable_id
+        int id
+        int refundable_id
         string refundable_type
-        string amount
-        string paid
-        string returned_at
+        float amount
+        boolean paid
+        datetime returned_at
     }
     le_order_histories {
-        string id
-        string order_id
-        string event
-        string time
-        string created_at
+        int id
+        int order_id
+        text event
+        datetime time
+        datetime created_at
     }
     le_transactions {
-        string id
-        string transferable_id
+        int id
+        int transferable_id
         string transferable_type
         string type
-        string amount
-        string created_at
+        float amount
+        datetime created_at
     }
     lc_countries {
-        string id
-        string currency_id
+        int id
+        int currency_id
         string code
-        string status
+        boolean status
     }
     lc_country_locales {
-        string id
-        string country_id
+        int id
+        int country_id
         string name
         string locale
     }
     lc_cities {
-        string id
-        string country_id
-        string status
+        int id
+        int country_id
+        boolean status
     }
     lc_city_locales {
-        string id
-        string city_id
+        int id
+        int city_id
         string name
         string locale
     }
     lc_timezones {
-        string id
+        int id
         string identifier
     }
     lc_country_timezones {
-        string country_id
-        string timezone_id
+        int country_id
+        int timezone_id
     }
     lc_contacts {
-        string id
-        string user_id
-        string timezone_id
+        int id
+        int user_id
+        int timezone_id
         string name
         string job
         string image
         string gender
-        string marital_status
-        string birthdate
+        tinyint marital_status
+        date birthdate
     }
     lc_phones {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string number
-        string default
+        boolean default
     }
     lc_emails {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string address
-        string default
+        boolean default
     }
     lc_addresses {
-        string id
-        string contact_id
-        string country_id
-        string default
+        int id
+        int contact_id
+        int country_id
+        boolean default
     }
     lc_colors {
         string id
     }
     lc_color_locales {
-        string id
+        int id
         string color_id
         string name
         string locale
     }
     e_milestones {
-        string id
-        string user_id
+        int id
+        int user_id
         string title
-        string description
-        string starts_at
-        string ends_at
+        text description
+        date starts_at
+        date ends_at
     }
     e_tasks {
-        string id
-        string parent_id
-        string creator_id
-        string milestone_id
-        string estimated_time
+        int id
+        int parent_id
+        int creator_id
+        int milestone_id
+        int estimated_time
         string title
-        string description
+        text description
     }
     e_attachments {
-        string id
-        string user_id
-        string task_id
+        int id
+        int user_id
+        int task_id
         string filename
     }
     e_attachment_versions {
-        string id
-        string attachment_id
-        string created_at
+        int id
+        int attachment_id
+        datetime created_at
     }
     e_comments {
-        string id
-        string task_id
-        string user_id
-        string content
+        int id
+        int task_id
+        int user_id
+        text content
     }
     e_assignees {
-        string contact_id
-        string task_id
+        int contact_id
+        int task_id
     }
     e_labels {
-        string id
+        int id
         string function
-        string system
+        boolean system
     }
     e_label_locales {
-        string id
-        string label_id
+        int id
+        int label_id
         string title
         string locale
     }
     e_task_labels {
-        string task_id
-        string label_id
+        int task_id
+        int label_id
     }
     e_workflows {
-        string id
-        string system
-        string label_ids
+        int id
+        boolean system
+        text label_ids
     }
     e_custom_schedules {
-        string id
-        string working_days
+        int id
+        text working_days
         string start_time
         string end_time
     }
     o_purchases {
-        string id
-        string contact_id
-        string bank_account_id
-        string amount
-        string paid
-        string received_at
+        int id
+        int contact_id
+        int bank_account_id
+        float amount
+        boolean paid
+        datetime received_at
     }
     o_purchase_lines {
-        string id
-        string purchase_id
-        string article_id
-        string quantity
+        int id
+        int purchase_id
+        int article_id
+        float quantity
         string quantity_unit
-        string price
+        float price
     }
     o_purchase_histories {
-        string id
-        string purchase_id
-        string event
-        string time
-        string created_at
+        int id
+        int purchase_id
+        text event
+        datetime time
+        datetime created_at
     }
     o_product_plans {
-        string id
-        string user_id
-        string article_id
-        string quantity
+        int id
+        int user_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     o_plan_consumptions {
-        string id
-        string product_plan_id
-        string article_id
-        string quantity
+        int id
+        int product_plan_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     o_plan_executions {
-        string id
-        string user_id
-        string product_plan_id
+        int id
+        int user_id
+        int product_plan_id
         string plan_log_id
-        string status
-        string note
+        tinyint status
+        text note
     }
     o_execution_consumptions {
-        string id
-        string plan_execution_id
-        string article_id
-        string quantity
+        int id
+        int plan_execution_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     o_execution_logs {
-        string id
-        string user_id
-        string plan_execution_id
-        string status
-        string note
-        string created_at
+        int id
+        int user_id
+        int plan_execution_id
+        tinyint status
+        text note
+        datetime created_at
     }
     r_salaries {
-        string id
+        int id
         string type
     }
     r_payroll_components {
-        string id
+        int id
         string type
     }
     r_payroll_component_locales {
-        string id
-        string payroll_component_id
+        int id
+        int payroll_component_id
         string title
         string locale
     }
     r_salary_components {
-        string salary_id
-        string payroll_component_id
-        string amount
+        int salary_id
+        int payroll_component_id
+        float amount
     }
     r_payroll_payments {
-        string id
-        string salary_id
-        string bank_account_id
-        string units
-        string paid_at
+        int id
+        int salary_id
+        int bank_account_id
+        tinyint units
+        datetime paid_at
     }
     r_payment_components {
-        string payroll_payment_id
-        string payroll_component_id
-        string amount
+        int payroll_payment_id
+        int payroll_component_id
+        float amount
     }
     r_notices {
-        string id
-        string author_id
-        string contact_id
-        string payroll_payment_id
+        int id
+        int author_id
+        int contact_id
+        int payroll_payment_id
         string type
-        string content
+        text content
     }
     r_leaves {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string type
-        string status
-        string starts_at
-        string ends_at
+        boolean status
+        date starts_at
+        date ends_at
     }
     r_departments {
-        string id
+        int id
     }
     r_department_locales {
-        string id
-        string department_id
+        int id
+        int department_id
         string locale
         string name
     }
     r_subordinates {
         string id
-        string manager_id
-        string contact_id
-        string department_id
+        int manager_id
+        int contact_id
+        int department_id
     }
     r_punches {
-        string id
-        string contact_id
+        bigint id
+        int contact_id
         string type
-        string created_at
+        datetime created_at
     }
     r_vacancies {
-        string id
-        string department_id
-        string active
+        int id
+        int department_id
+        boolean active
     }
     r_vacancy_locales {
-        string id
-        string vacancy_id
+        int id
+        int vacancy_id
         string locale
         string title
-        string description
+        text description
     }
     r_degrees {
-        string id
+        int id
     }
     r_degree_locales {
-        string id
-        string degree_id
+        int id
+        int degree_id
         string locale
         string name
     }
     r_applicants {
-        string id
-        string country_id
-        string degree_id
-        string degree_date
-        string tenure
-        string recruited_at
+        int id
+        int country_id
+        int degree_id
+        int degree_date
+        tinyint tenure
+        datetime recruited_at
     }
     r_applicables {
-        string applicant_id
+        int applicant_id
         string applicable
     }
     r_documents {
-        string id
-        string applicant_id
+        int id
+        int applicant_id
         string title
         string filename
     }
     s_users {
-        string id
+        int id
         string username
         string password
         string image
     }
     s_permissions {
-        string id
+        bigint id
         string name
         string guard_name
     }
     s_roles {
-        string id
+        bigint id
         string name
         string guard_name
     }
     s_role_locales {
-        string id
-        string role_id
+        bigint id
+        bigint role_id
         string title
         string locale
     }
     s_model_has_permissions {
-        string permission_id
-        string model_id
+        bigint permission_id
+        bigint model_id
         string model_type
     }
     s_model_has_roles {
-        string role_id
-        string model_id
+        bigint role_id
+        bigint model_id
         string model_type
     }
     s_role_has_permissions {
-        string permission_id
-        string role_id
+        bigint permission_id
+        bigint role_id
     }
     tenants {
-        string id
-        string user_id
+        int id
+        int user_id
         string name
         string email
         string password
         string hash
-        string data
+        text data
     }
     domains {
-        string id
+        int id
         string domain
-        string tenant_id
+        int tenant_id
     }
     subscriptions {
-        string id
-        string tenant_id
-        string price
-        string discount
+        int id
+        int tenant_id
+        float price
+        int discount
         string discount_type
-        string paid
-        string expires_at
+        boolean paid
+        datetime expires_at
     }
     modules {
-        string id
+        int id
         string name
-        string price
+        float price
     }
     tenant_modules {
-        string subscription_id
-        string module_id
+        int subscription_id
+        int module_id
     }
     purchases {
-        string id
-        string subscription_id
-        string amount
+        int id
+        int subscription_id
+        float amount
         string token
-        string executed
+        boolean executed
     }
     a_carts ||--o{ s_users : ""
     a_cart_articles ||--o{ a_carts : ""

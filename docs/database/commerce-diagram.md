@@ -1,10 +1,10 @@
-# Commerce Database Schema
+# Lava Commerce Database Schema
 
 ```mermaid
 erDiagram
     le_bank_accounts {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string bank
         string name
         string number
@@ -12,46 +12,46 @@ erDiagram
         string swift
     }
     le_orders {
-        string id
-        string contact_id
-        string shipping_address_id
-        string billing_address_id
-        string amount
-        string paid
-        string delivered_at
+        int id
+        int contact_id
+        int shipping_address_id
+        int billing_address_id
+        float amount
+        boolean paid
+        datetime delivered_at
     }
     le_order_lines {
-        string id
-        string order_id
-        string article_id
-        string quantity
+        int id
+        int order_id
+        int article_id
+        float quantity
         string quantity_unit
-        string price
-        string discount
+        float price
+        float discount
         string discount_type
     }
     le_refunds {
-        string id
-        string refundable_id
+        int id
+        int refundable_id
         string refundable_type
-        string amount
-        string paid
-        string returned_at
+        float amount
+        boolean paid
+        datetime returned_at
     }
     le_order_histories {
-        string id
-        string order_id
-        string event
-        string time
-        string created_at
+        int id
+        int order_id
+        text event
+        datetime time
+        datetime created_at
     }
     le_transactions {
-        string id
-        string transferable_id
+        int id
+        int transferable_id
         string transferable_type
         string type
-        string amount
-        string created_at
+        float amount
+        datetime created_at
     }
     le_bank_accounts ||--o{ lc_contacts : ""
     le_orders ||--o{ lc_contacts : ""

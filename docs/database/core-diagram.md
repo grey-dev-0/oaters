@@ -3,43 +3,43 @@
 ```mermaid
 erDiagram
     tenants {
-        string id
-        string user_id
+        int id
+        int user_id
         string name
         string email
         string password
         string hash
-        string data
+        text data
     }
     domains {
-        string id
+        int id
         string domain
-        string tenant_id
+        int tenant_id
     }
     subscriptions {
-        string id
-        string tenant_id
-        string price
-        string discount
+        int id
+        int tenant_id
+        float price
+        int discount
         string discount_type
-        string paid
-        string expires_at
+        boolean paid
+        datetime expires_at
     }
     modules {
-        string id
+        int id
         string name
-        string price
+        float price
     }
     tenant_modules {
-        string subscription_id
-        string module_id
+        int subscription_id
+        int module_id
     }
     purchases {
-        string id
-        string subscription_id
-        string amount
+        int id
+        int subscription_id
+        float amount
         string token
-        string executed
+        boolean executed
     }
     domains ||--o{ tenants : ""
     subscriptions ||--o{ tenants : ""

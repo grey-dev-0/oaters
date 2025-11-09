@@ -1,72 +1,72 @@
-# Common Database Schema
+# Lava Common Database Schema
 
 ```mermaid
 erDiagram
     lc_countries {
-        string id
-        string currency_id
+        int id
+        int currency_id
         string code
-        string status
+        boolean status
     }
     lc_country_locales {
-        string id
-        string country_id
+        int id
+        int country_id
         string name
         string locale
     }
     lc_cities {
-        string id
-        string country_id
-        string status
+        int id
+        int country_id
+        boolean status
     }
     lc_city_locales {
-        string id
-        string city_id
+        int id
+        int city_id
         string name
         string locale
     }
     lc_timezones {
-        string id
+        int id
         string identifier
     }
     lc_country_timezones {
-        string country_id
-        string timezone_id
+        int country_id
+        int timezone_id
     }
     lc_contacts {
-        string id
-        string user_id
-        string timezone_id
+        int id
+        int user_id
+        int timezone_id
         string name
         string job
         string image
         string gender
-        string marital_status
-        string birthdate
+        tinyint marital_status
+        date birthdate
     }
     lc_phones {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string number
-        string default
+        boolean default
     }
     lc_emails {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string address
-        string default
+        boolean default
     }
     lc_addresses {
-        string id
-        string contact_id
-        string country_id
-        string default
+        int id
+        int contact_id
+        int country_id
+        boolean default
     }
     lc_colors {
         string id
     }
     lc_color_locales {
-        string id
+        int id
         string color_id
         string name
         string locale

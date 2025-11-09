@@ -3,66 +3,66 @@
 ```mermaid
 erDiagram
     e_milestones {
-        string id
-        string user_id
+        int id
+        int user_id
         string title
-        string description
-        string starts_at
-        string ends_at
+        text description
+        date starts_at
+        date ends_at
     }
     e_tasks {
-        string id
-        string parent_id
-        string creator_id
-        string milestone_id
-        string estimated_time
+        int id
+        int parent_id
+        int creator_id
+        int milestone_id
+        int estimated_time
         string title
-        string description
+        text description
     }
     e_attachments {
-        string id
-        string user_id
-        string task_id
+        int id
+        int user_id
+        int task_id
         string filename
     }
     e_attachment_versions {
-        string id
-        string attachment_id
-        string created_at
+        int id
+        int attachment_id
+        datetime created_at
     }
     e_comments {
-        string id
-        string task_id
-        string user_id
-        string content
+        int id
+        int task_id
+        int user_id
+        text content
     }
     e_assignees {
-        string contact_id
-        string task_id
+        int contact_id
+        int task_id
     }
     e_labels {
-        string id
+        int id
         string function
-        string system
+        boolean system
     }
     e_label_locales {
-        string id
-        string label_id
+        int id
+        int label_id
         string title
         string locale
     }
     e_task_labels {
-        string task_id
-        string label_id
+        int task_id
+        int label_id
     }
     e_workflows {
-        string id
-        string system
-        string label_ids
+        int id
+        boolean system
+        text label_ids
     }
     e_custom_schedules {
-        string id
-        string working_days
+        int id
+        text working_days
         string start_time
         string end_time
     }

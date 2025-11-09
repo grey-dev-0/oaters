@@ -3,109 +3,109 @@
 ```mermaid
 erDiagram
     r_salaries {
-        string id
+        int id
         string type
     }
     r_payroll_components {
-        string id
+        int id
         string type
     }
     r_payroll_component_locales {
-        string id
-        string payroll_component_id
+        int id
+        int payroll_component_id
         string title
         string locale
     }
     r_salary_components {
-        string salary_id
-        string payroll_component_id
-        string amount
+        int salary_id
+        int payroll_component_id
+        float amount
     }
     r_payroll_payments {
-        string id
-        string salary_id
-        string bank_account_id
-        string units
-        string paid_at
+        int id
+        int salary_id
+        int bank_account_id
+        tinyint units
+        datetime paid_at
     }
     r_payment_components {
-        string payroll_payment_id
-        string payroll_component_id
-        string amount
+        int payroll_payment_id
+        int payroll_component_id
+        float amount
     }
     r_notices {
-        string id
-        string author_id
-        string contact_id
-        string payroll_payment_id
+        int id
+        int author_id
+        int contact_id
+        int payroll_payment_id
         string type
-        string content
+        text content
     }
     r_leaves {
-        string id
-        string contact_id
+        int id
+        int contact_id
         string type
-        string status
-        string starts_at
-        string ends_at
+        boolean status
+        date starts_at
+        date ends_at
     }
     r_departments {
-        string id
+        int id
     }
     r_department_locales {
-        string id
-        string department_id
+        int id
+        int department_id
         string locale
         string name
     }
     r_subordinates {
         string id
-        string manager_id
-        string contact_id
-        string department_id
+        int manager_id
+        int contact_id
+        int department_id
     }
     r_punches {
-        string id
-        string contact_id
+        bigint id
+        int contact_id
         string type
-        string created_at
+        datetime created_at
     }
     r_vacancies {
-        string id
-        string department_id
-        string active
+        int id
+        int department_id
+        boolean active
     }
     r_vacancy_locales {
-        string id
-        string vacancy_id
+        int id
+        int vacancy_id
         string locale
         string title
-        string description
+        text description
     }
     r_degrees {
-        string id
+        int id
     }
     r_degree_locales {
-        string id
-        string degree_id
+        int id
+        int degree_id
         string locale
         string name
     }
     r_applicants {
-        string id
-        string country_id
-        string degree_id
-        string degree_date
-        string tenure
-        string recruited_at
+        int id
+        int country_id
+        int degree_id
+        int degree_date
+        tinyint tenure
+        datetime recruited_at
     }
     r_applicables {
-        string applicant_id
+        int applicant_id
         string applicable
     }
     r_documents {
-        string id
-        string applicant_id
+        int id
+        int applicant_id
         string title
         string filename
     }

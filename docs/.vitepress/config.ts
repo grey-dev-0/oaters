@@ -100,13 +100,15 @@ export default defineConfig({
             items: [
               { text: 'Overview', link: '/database/' },
               { text: 'SaaS Core', link: '/database/core-diagram' },
-              { text: 'Sapphire', link: '/database/sapphire-diagram' },
-              { text: 'Common', link: '/database/common-diagram' },
-              { text: 'Ruby', link: '/database/ruby-diagram' },
+              { text: 'Lava Article', link: '/database/article-diagram' },
+              { text: 'Lava Commerce', link: '/database/commerce-diagram' },
+              { text: 'Lava Common', link: '/database/common-diagram' },
               { text: 'Onyx', link: '/database/onyx-diagram' },
               { text: 'Amethyst', link: '/database/amethyst-diagram' },
+              { text: 'Topaz (Coming Soon)', link: '/database/topaz-diagram' },
               { text: 'Emerald', link: '/database/emerald-diagram' },
-              { text: 'Article', link: '/database/article-diagram' },
+              { text: 'Ruby', link: '/database/ruby-diagram' },
+              { text: 'Sapphire', link: '/database/sapphire-diagram' },
               { text: 'Complete Schema', link: '/database/database-diagram' }
             ]
           }

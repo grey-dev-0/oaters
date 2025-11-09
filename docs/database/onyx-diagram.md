@@ -3,64 +3,64 @@
 ```mermaid
 erDiagram
     o_purchases {
-        string id
-        string contact_id
-        string bank_account_id
-        string amount
-        string paid
-        string received_at
+        int id
+        int contact_id
+        int bank_account_id
+        float amount
+        boolean paid
+        datetime received_at
     }
     o_purchase_lines {
-        string id
-        string purchase_id
-        string article_id
-        string quantity
+        int id
+        int purchase_id
+        int article_id
+        float quantity
         string quantity_unit
-        string price
+        float price
     }
     o_purchase_histories {
-        string id
-        string purchase_id
-        string event
-        string time
-        string created_at
+        int id
+        int purchase_id
+        text event
+        datetime time
+        datetime created_at
     }
     o_product_plans {
-        string id
-        string user_id
-        string article_id
-        string quantity
+        int id
+        int user_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     o_plan_consumptions {
-        string id
-        string product_plan_id
-        string article_id
-        string quantity
+        int id
+        int product_plan_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     o_plan_executions {
-        string id
-        string user_id
-        string product_plan_id
+        int id
+        int user_id
+        int product_plan_id
         string plan_log_id
-        string status
-        string note
+        tinyint status
+        text note
     }
     o_execution_consumptions {
-        string id
-        string plan_execution_id
-        string article_id
-        string quantity
+        int id
+        int plan_execution_id
+        int article_id
+        float quantity
         string quantity_unit
     }
     o_execution_logs {
-        string id
-        string user_id
-        string plan_execution_id
-        string status
-        string note
-        string created_at
+        int id
+        int user_id
+        int plan_execution_id
+        tinyint status
+        text note
+        datetime created_at
     }
     o_purchases ||--o{ lc_contacts : ""
     o_purchases ||--o{ le_bank_accounts : ""

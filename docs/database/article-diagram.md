@@ -3,54 +3,54 @@
 ```mermaid
 erDiagram
     la_articles {
-        string id
-        string type
+        int id
+        tinyint type
     }
     la_article_locales {
-        string id
-        string article_id
+        int id
+        int article_id
         string title
-        string description
+        text description
         string locale
     }
     la_categories {
-        string id
+        int id
     }
     la_category_locales {
-        string id
-        string category_id
+        int id
+        int category_id
         string title
-        string description
+        text description
         string locale
     }
     la_article_categories {
-        string article_id
-        string category_id
+        int article_id
+        int category_id
     }
     la_properties {
-        string id
-        string type
-        string public
-        string system
+        int id
+        tinyint type
+        boolean public
+        boolean system
     }
     la_property_locales {
-        string id
-        string property_id
+        int id
+        int property_id
         string name
         string locale
     }
     la_options {
-        string id
+        int id
     }
     la_option_locales {
-        string id
-        string option_id
+        int id
+        int option_id
         string name
         string locale
     }
     la_property_options {
-        string property_id
-        string option_id
+        int property_id
+        int option_id
     }
     la_article_locales ||--o{ la_articles : ""
     la_category_locales ||--o{ la_categories : ""

@@ -26,7 +26,8 @@ export default defineConfig({
         items: [
           { text: 'Getting Started', link: '/development/getting-started-frontend' },
           { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
-          { text: 'Component Development', link: '/development/component-development' }
+          { text: 'Component Development', link: '/development/component-development' },
+          { text: 'Database Structure', link: '/database/' }
         ]
       }
     ],
@@ -91,6 +92,22 @@ export default defineConfig({
                   { text: 'Form', link: '/components/form' }
                 ]
               }
+            ]
+          },
+          {
+            text: 'Database Structure',
+            collapsed: true,
+            items: [
+              { text: 'Overview', link: '/database/' },
+              { text: 'SaaS Core', link: '/database/core-diagram' },
+              { text: 'Sapphire', link: '/database/sapphire-diagram' },
+              { text: 'Common', link: '/database/common-diagram' },
+              { text: 'Ruby', link: '/database/ruby-diagram' },
+              { text: 'Onyx', link: '/database/onyx-diagram' },
+              { text: 'Amethyst', link: '/database/amethyst-diagram' },
+              { text: 'Emerald', link: '/database/emerald-diagram' },
+              { text: 'Article', link: '/database/article-diagram' },
+              { text: 'Complete Schema', link: '/database/database-diagram' }
             ]
           }
         ]

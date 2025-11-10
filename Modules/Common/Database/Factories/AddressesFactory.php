@@ -19,6 +19,10 @@ class AddressesFactory extends Factory{
         return [
             'contact_id' => Contact::factory(),
             'city_id' => City::factory(),
+            'line_1' => $this->faker->address(),
+            'line_2' => $this->faker->streetAddress(),
+            'lat' => $this->faker->latitude(-90, 90),
+            'long' => $this->faker->longitude(-180, 180),
             'default' => false
         ];
     }

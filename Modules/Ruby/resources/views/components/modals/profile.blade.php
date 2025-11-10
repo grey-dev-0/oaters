@@ -51,7 +51,7 @@
             <template v-if="openContact.addresses && openContact.addresses.length">
                 <h5 class="m-0 font-weight-bolder">{{trans('common::words.addresses')}}</h5>
                 <ul>
-                    <li v-for="address in openContact.addresses">@{{address.country.name}}</li>
+                    <li v-for="address in openContact.addresses">@{{address.city.name}}<template v-if="address.city.country"> - @{{address.city.country.name}}</template></li>
                 </ul>
             </template>
             <template v-if="openContact.leaves && openContact.leaves.length">

@@ -4,7 +4,7 @@ namespace Modules\Common\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Common\App\Models\Contact;
-use Modules\Common\App\Models\Country;
+use Modules\Common\App\Models\City;
 
 class AddressesFactory extends Factory{
     /**
@@ -18,7 +18,7 @@ class AddressesFactory extends Factory{
     public function definition(): array{
         return [
             'contact_id' => Contact::factory(),
-            'country_id' => Country::factory(),
+            'city_id' => City::factory(),
             'default' => false
         ];
     }

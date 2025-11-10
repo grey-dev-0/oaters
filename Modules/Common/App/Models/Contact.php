@@ -115,8 +115,9 @@ class Contact extends Model{
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithAllInfo($query){
-        return $query->with(['phones', 'emails', 'addresses.country:id',
-            'addresses.country.translations' => fn($locales) => $locales->whereLocale(app()->getLocale())]);
+        $localeFilter = fn($locales) => $locales->whereLocale(app()->getLocale());
+        return $query->with(['phones', 'emails', 'addresses.city:id,country_id', 'addresses.city.translations' => $localeFilter,
+            'addresses.city.country:id', 'addresses.city.country.translations' => $localeFilter]);
     }
 
     /**

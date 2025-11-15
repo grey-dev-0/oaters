@@ -21,9 +21,9 @@
             <nav-item @if(Route::is('ruby::contacts.index')) active @endif in-dropdown url="{{url('r/contacts')}}">{{trans('ruby::words.staff')}}</nav-item>
             <nav-item @if(Route::is('ruby::contacts.structure')) active @endif in-dropdown url="{{route('ruby::contacts.structure')}}">{{trans('common::words.structure')}}</nav-item>
         </nav-item>
-        <nav-item>
+        <nav-item @if(Route::is(['ruby::attendance.*', 'ruby::notices.*', 'ruby::leaves.*', 'ruby::visas.*'])) active @endif>
             <template #label>{{trans('common::words.personnel')}}</template>
-            <nav-item in-dropdown url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item>
+            <nav-item @if(Route::is('ruby::attendance.index')) active @endif in-dropdown url="{{url('r/attendance')}}">{{trans('ruby::words.attendance')}}</nav-item>
             <nav-item in-dropdown url="{{url('r/notices')}}">{{trans('ruby::words.notices')}}</nav-item>
             <nav-item in-dropdown url="{{url('r/leaves')}}">{{trans('ruby::words.leaves')}}</nav-item>
             <nav-item in-dropdown url="{{url('r/visas')}}">{{trans('ruby::words.visas')}}</nav-item>

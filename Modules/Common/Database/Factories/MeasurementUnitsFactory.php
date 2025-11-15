@@ -12,6 +12,7 @@ class MeasurementUnitsFactory extends Factory{
             'type' => $this->faker->randomElement(['length', 'area', 'volume', 'weight', 'data', 'box', 'piece']),
             'base_id' => null,
             'factor' => 1,
+            'custom' => false,
             'en' => ['name' => 'Unit', 'symbol' => 'U'],
             'ar' => ['name' => 'وحدة', 'symbol' => 'و'],
         ];

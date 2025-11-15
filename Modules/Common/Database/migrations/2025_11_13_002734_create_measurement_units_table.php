@@ -12,6 +12,7 @@ return new class extends Migration{
             $table->unsignedInteger('base_id')->nullable();
             $table->foreign('base_id')->references('id')->on('lc_measurement_units')->onUpdate('cascade')->onDelete('set null');
             $table->decimal('factor', 20, 10)->default(1);
+            $table->boolean('custom')->default(true);
         });
 
         Schema::create('lc_measurement_unit_locales', function(Blueprint $table){

@@ -34,7 +34,7 @@ class Address extends Model{
         return $this->belongsTo(Contact::class);
     }
 
-    public function country(){
-        return $this->belongsTo(Country::class);
+    public function city(){
+        return $this->belongsTo(City::class);
     }
 }

@@ -8,13 +8,16 @@ use Modules\Common\Database\Seeders\CitySeeder;
 use Modules\Common\Database\Seeders\ContactSeeder;
 use Modules\Common\Database\Seeders\CountrySeeder;
 use Modules\Common\Database\Seeders\EmailSeeder;
+use Modules\Common\Database\Seeders\MeasurementUnitsSeeder;
 use Modules\Common\Database\Seeders\PhoneSeeder;
 use Modules\Ruby\Database\Seeders\ApplicantSeeder;
+use Modules\Ruby\Database\Seeders\AttendanceSeeder;
 use Modules\Ruby\Database\Seeders\DegreeSeeder;
 use Modules\Ruby\Database\Seeders\DepartmentSeeder;
 use Modules\Ruby\Database\Seeders\DocumentSeeder;
 use Modules\Ruby\Database\Seeders\LeaveSeeder;
 use Modules\Ruby\Database\Seeders\PermissionSeeder as RubyPermissionSeeder;
+use Modules\Ruby\Database\Seeders\ShiftSeeder;
 use Modules\Sapphire\Database\seeders\RoleSeeder;
 use Modules\Sapphire\Database\seeders\UsersTableSeeder;
 
@@ -25,6 +28,7 @@ class TenantAppSeeder extends Seeder{
     public function run(): void{
         $this->call(CountrySeeder::class);
         $this->call(CitySeeder::class);
+        $this->call(MeasurementUnitsSeeder::class);
         $this->call(DegreeSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(RubyPermissionSeeder::class);
@@ -35,7 +39,9 @@ class TenantAppSeeder extends Seeder{
             $this->call(EmailSeeder::class);
             $this->call(AddressSeeder::class);
             $this->call(DepartmentSeeder::class);
+            $this->call(ShiftSeeder::class);
             $this->call(ApplicantSeeder::class);
+            $this->call(AttendanceSeeder::class);
             $this->call(DocumentSeeder::class);
             $this->call(LeaveSeeder::class);
         }

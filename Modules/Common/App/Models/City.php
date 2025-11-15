@@ -35,4 +35,8 @@ class City extends Model{
     protected static function newFactory(){
         return \Modules\Common\Database\Factories\CitiesFactory::new();
     }
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
 }

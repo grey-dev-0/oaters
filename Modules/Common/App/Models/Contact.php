@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Ruby\App\Models\Applicant;
 use Modules\Ruby\App\Models\Department;
 use Modules\Ruby\App\Models\Leave;
+use Modules\Ruby\App\Models\Shift;
 use Spatie\Permission\Traits\HasRoles;
 
 class Contact extends Model{
@@ -72,6 +73,10 @@ class Contact extends Model{
         return $this->hasMany(Leave::class);
     }
 
+    public function shifts(){
+        return $this->belongsToMany(Shift::class, 'r_contact_shifts', 'contact_id', 'shift_id')->withPivot('weekday');
+    }
+
     public function getDepartmentAttribute(){
         return $this->departments->first();
     }
@@ -110,8 +115,9 @@ class Contact extends Model{
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithAllInfo($query){
-        return $query->with(['phones', 'emails', 'addresses.country:id',
-            'addresses.country.translations' => fn($locales) => $locales->whereLocale(app()->getLocale())]);
+        $localeFilter = fn($locales) => $locales->whereLocale(app()->getLocale());
+        return $query->with(['phones', 'emails', 'addresses.city:id,country_id', 'addresses.city.translations' => $localeFilter,
+            'addresses.city.country:id', 'addresses.city.country.translations' => $localeFilter]);
     }
 
     /**

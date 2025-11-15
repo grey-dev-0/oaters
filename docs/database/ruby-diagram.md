@@ -2,94 +2,10 @@
 
 ```mermaid
 erDiagram
-    r_salaries {
-        int id
-        string type
-    }
-    r_payroll_components {
-        int id
-        string type
-    }
-    r_payroll_component_locales {
-        int id
-        int payroll_component_id
-        string title
-        string locale
-    }
-    r_salary_components {
-        int salary_id
-        int payroll_component_id
-        float amount
-    }
-    r_payroll_payments {
-        int id
-        int salary_id
-        int bank_account_id
-        tinyint units
-        datetime paid_at
-    }
-    r_payment_components {
-        int payroll_payment_id
-        int payroll_component_id
-        float amount
-    }
-    r_notices {
-        int id
-        int author_id
-        int contact_id
-        int payroll_payment_id
-        string type
-        text content
-    }
-    r_leaves {
-        int id
-        int contact_id
-        string type
-        boolean status
-        date starts_at
-        date ends_at
-    }
-    r_departments {
-        int id
-    }
-    r_department_locales {
-        int id
-        int department_id
-        string locale
-        string name
-    }
-    r_subordinates {
-        string id
-        int manager_id
-        int contact_id
-        int department_id
-    }
-    r_punches {
-        bigint id
-        int contact_id
-        string type
-        datetime created_at
-    }
-    r_vacancies {
-        int id
-        int department_id
-        boolean active
-    }
-    r_vacancy_locales {
-        int id
-        int vacancy_id
-        string locale
-        string title
-        text description
-    }
-    r_degrees {
-        int id
-    }
-    r_degree_locales {
-        int id
-        int degree_id
-        string locale
-        string name
+    r_applicables {
+        int applicant_id
+        string applicable_type
+        bigint applicable_id
     }
     r_applicants {
         int id
@@ -98,37 +14,155 @@ erDiagram
         int degree_date
         tinyint tenure
         datetime recruited_at
+        datetime created_at
+        datetime updated_at
     }
-    r_applicables {
-        int applicant_id
-        string applicable
+    r_contact_shifts {
+        int contact_id
+        int shift_id
+        tinyint weekday
+    }
+    r_degree_locales {
+        int id
+        int degree_id
+        string locale
+        string name
+    }
+    r_degrees {
+        int id
+    }
+    r_department_locales {
+        int id
+        int department_id
+        string locale
+        string name
+    }
+    r_departments {
+        int id
+        datetime created_at
+        datetime updated_at
     }
     r_documents {
         int id
         int applicant_id
         string title
         string filename
+        datetime created_at
+        datetime updated_at
     }
-    r_salaries ||--o{ lc_contacts : ""
-    r_payroll_component_locales ||--o{ r_payroll_components : ""
-    r_salary_components ||--o{ r_salaries : ""
-    r_salary_components ||--o{ r_payroll_components : ""
-    r_payroll_payments ||--o{ r_salaries : ""
-    r_payroll_payments ||--o{ le_bank_accounts : ""
-    r_notices ||--o{ lc_contacts : ""
-    r_notices ||--o{ r_payroll_payments : ""
-    r_leaves ||--o{ lc_contacts : ""
-    r_department_locales ||--o{ r_departments : ""
-    r_subordinates ||--o{ lc_contacts : ""
-    r_subordinates ||--o{ r_departments : ""
-    r_punches ||--o{ lc_contacts : ""
-    r_vacancies ||--o{ r_departments : ""
-    r_vacancy_locales ||--o{ r_vacancies : ""
-    r_degree_locales ||--o{ r_degrees : ""
-    r_applicants ||--o{ lc_contacts : ""
-    r_applicants ||--o{ lc_countries : ""
-    r_applicants ||--o{ r_degrees : ""
-    r_applicables ||--o{ r_applicants : ""
-    r_documents ||--o{ r_applicants : ""
+    r_leaves {
+        int id
+        int contact_id
+        string type
+        tinyint status
+        date starts_at
+        date ends_at
+        datetime created_at
+        datetime updated_at
+    }
+    r_notices {
+        int id
+        int author_id
+        int contact_id
+        int payroll_payment_id
+        string type
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+    r_payment_components {
+        int payroll_payment_id
+        int payroll_component_id
+        double amount
+    }
+    r_payroll_component_locales {
+        int id
+        int payroll_component_id
+        string title
+        string locale
+    }
+    r_payroll_components {
+        int id
+        string type
+    }
+    r_payroll_payments {
+        int id
+        int salary_id
+        int bank_account_id
+        tinyint units
+        datetime paid_at
+        datetime created_at
+        datetime updated_at
+    }
+    r_punches {
+        bigint id
+        int contact_id
+        int shift_id
+        string type
+        smallint latency
+        datetime created_at
+    }
+    r_salaries {
+        int id
+        string type
+        datetime created_at
+        datetime updated_at
+    }
+    r_salary_components {
+        int salary_id
+        int payroll_component_id
+        double amount
+    }
+    r_shifts {
+        int id
+        string start
+        string end
+    }
+    r_subordinates {
+        string id
+        int manager_id
+        int contact_id
+        int department_id
+    }
+    r_vacancies {
+        int id
+        int department_id
+        tinyint active
+        datetime created_at
+        datetime updated_at
+    }
+    r_vacancy_locales {
+        int id
+        int vacancy_id
+        string locale
+        string title
+        text description
+    }
+    r_applicants ||--o{ r_applicables : ""
+    lc_countries ||--o{ r_applicants : ""
+    r_degrees ||--o{ r_applicants : ""
+    lc_contacts ||--o{ r_applicants : ""
+    lc_contacts ||--o{ r_contact_shifts : ""
+    r_shifts ||--o{ r_contact_shifts : ""
+    r_degrees ||--o{ r_degree_locales : ""
+    r_departments ||--o{ r_department_locales : ""
+    r_applicants ||--o{ r_documents : ""
+    lc_contacts ||--o{ r_leaves : ""
+    lc_contacts ||--o{ r_notices : ""
+    r_payroll_payments ||--o{ r_notices : ""
+    r_payroll_components ||--o{ r_payment_components : ""
+    r_payroll_payments ||--o{ r_payment_components : ""
+    r_payroll_components ||--o{ r_payroll_component_locales : ""
+    le_bank_accounts ||--o{ r_payroll_payments : ""
+    r_salaries ||--o{ r_payroll_payments : ""
+    r_shifts ||--o{ r_punches : ""
+    lc_contacts ||--o{ r_punches : ""
+    lc_contacts ||--o{ r_salaries : ""
+    r_payroll_components ||--o{ r_salary_components : ""
+    r_salaries ||--o{ r_salary_components : ""
+    lc_contacts ||--o{ r_subordinates : ""
+    r_departments ||--o{ r_subordinates : ""
+    r_departments ||--o{ r_vacancies : ""
+    r_vacancies ||--o{ r_vacancy_locales : ""
 
 ```

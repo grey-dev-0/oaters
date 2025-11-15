@@ -2,6 +2,48 @@
 
 ```mermaid
 erDiagram
+    e_assignees {
+        int contact_id
+        int task_id
+    }
+    e_attachment_versions {
+        int id
+        int attachment_id
+        datetime created_at
+    }
+    e_attachments {
+        int id
+        int user_id
+        int task_id
+        string filename
+    }
+    e_comments {
+        int id
+        int task_id
+        int user_id
+        text content
+        datetime created_at
+        datetime updated_at
+    }
+    e_custom_schedules {
+        int id
+        text working_days
+        string start_time
+        string end_time
+    }
+    e_label_locales {
+        int id
+        int label_id
+        string title
+        string locale
+    }
+    e_labels {
+        int id
+        string function
+        tinyint system
+        datetime created_at
+        datetime updated_at
+    }
     e_milestones {
         int id
         int user_id
@@ -9,6 +51,12 @@ erDiagram
         text description
         date starts_at
         date ends_at
+        datetime created_at
+        datetime updated_at
+    }
+    e_task_labels {
+        int task_id
+        int label_id
     }
     e_tasks {
         int id
@@ -18,69 +66,29 @@ erDiagram
         int estimated_time
         string title
         text description
-    }
-    e_attachments {
-        int id
-        int user_id
-        int task_id
-        string filename
-    }
-    e_attachment_versions {
-        int id
-        int attachment_id
         datetime created_at
-    }
-    e_comments {
-        int id
-        int task_id
-        int user_id
-        text content
-    }
-    e_assignees {
-        int contact_id
-        int task_id
-    }
-    e_labels {
-        int id
-        string function
-        boolean system
-    }
-    e_label_locales {
-        int id
-        int label_id
-        string title
-        string locale
-    }
-    e_task_labels {
-        int task_id
-        int label_id
+        datetime updated_at
     }
     e_workflows {
         int id
-        boolean system
+        tinyint system
         text label_ids
     }
-    e_custom_schedules {
-        int id
-        text working_days
-        string start_time
-        string end_time
-    }
-    e_milestones ||--o{ s_users : ""
+    lc_contacts ||--o{ e_assignees : ""
+    e_tasks ||--o{ e_assignees : ""
+    e_attachments ||--o{ e_attachment_versions : ""
+    e_tasks ||--o{ e_attachments : ""
+    s_users ||--o{ e_attachments : ""
+    e_tasks ||--o{ e_comments : ""
+    s_users ||--o{ e_comments : ""
+    lc_contacts ||--o{ e_custom_schedules : ""
+    e_labels ||--o{ e_label_locales : ""
+    s_users ||--o{ e_milestones : ""
+    e_labels ||--o{ e_task_labels : ""
+    e_tasks ||--o{ e_task_labels : ""
+    s_users ||--o{ e_tasks : ""
+    e_milestones ||--o{ e_tasks : ""
     e_tasks ||--o{ e_tasks : ""
-    e_tasks ||--o{ s_users : ""
-    e_tasks ||--o{ e_milestones : ""
-    e_attachments ||--o{ s_users : ""
-    e_attachments ||--o{ e_tasks : ""
-    e_attachment_versions ||--o{ e_attachments : ""
-    e_comments ||--o{ e_tasks : ""
-    e_comments ||--o{ s_users : ""
-    e_assignees ||--o{ lc_contacts : ""
-    e_assignees ||--o{ e_tasks : ""
-    e_label_locales ||--o{ e_labels : ""
-    e_task_labels ||--o{ e_tasks : ""
-    e_task_labels ||--o{ e_labels : ""
-    e_workflows ||--o{ e_labels : ""
-    e_custom_schedules ||--o{ lc_contacts : ""
+    e_labels ||--o{ e_workflows : ""
 
 ```

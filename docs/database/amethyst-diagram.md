@@ -2,19 +2,22 @@
 
 ```mermaid
 erDiagram
+    a_cart_articles {
+        int cart_id
+        int article_id
+        double quantity
+        int quantity_unit_id
+    }
     a_carts {
         int id
         int user_id
         string token
+        datetime created_at
+        datetime updated_at
     }
-    a_cart_articles {
-        int cart_id
-        int article_id
-        float quantity
-        string quantity_unit
-    }
-    a_carts ||--o{ s_users : ""
-    a_cart_articles ||--o{ a_carts : ""
-    a_cart_articles ||--o{ la_articles : ""
+    la_articles ||--o{ a_cart_articles : ""
+    a_carts ||--o{ a_cart_articles : ""
+    lc_measurement_units ||--o{ a_cart_articles : ""
+    s_users ||--o{ a_carts : ""
 
 ```

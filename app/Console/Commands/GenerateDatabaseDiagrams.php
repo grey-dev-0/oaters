@@ -3,22 +3,21 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
+use Illuminate\Support\Facades\DB;
 
 class GenerateDatabaseDiagrams extends Command
 {
-    protected $signature = 'db:generate-diagrams {--output=docs/database}';
-    protected $description = 'Generate Mermaid ERD diagrams from database migrations';
+    protected $signature = 'db:generate-diagrams {--output=docs/database} {--database= : The database to generate diagrams from}';
+    protected $description = 'Generate Mermaid ERD diagrams from the current database schema';
 
     public function handle()
     {
         $outputDir = $this->option('output');
+        $database = $this->option('database');
+        
         $this->ensureDirectoryExists($outputDir);
 
-        $migrations = $this->collectMigrations();
-        $tables = $this->parseMigrations($migrations);
+        $tables = $this->extractDatabaseSchema($database);
         $diagrams = $this->groupTablesByModule($tables);
 
         foreach ($diagrams as $module => $moduleData) {
@@ -29,149 +28,119 @@ class GenerateDatabaseDiagrams extends Command
         $this->info('Database diagrams generated successfully!');
     }
 
-    private function collectMigrations(): array
-    {
-        $migrations = [];
-        $basePath = base_path('Modules');
-
-        if (is_dir($basePath)) {
-            $iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($basePath),
-                \RecursiveIteratorIterator::CHILD_FIRST
-            );
-
-            foreach ($iterator as $file) {
-                if ($file->getExtension() === 'php' && strpos($file->getPathname(), 'migrations') !== false) {
-                    $pathParts = explode('/', str_replace($basePath . '/', '', $file->getPathname()));
-                    $moduleName = $pathParts[0] ?? 'Unknown';
-                    $migrations[$moduleName][] = $file->getPathname();
-                }
-            }
-        }
-
-        // Add core migrations
-        $corePath = database_path('migrations');
-        if (is_dir($corePath)) {
-            $iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($corePath),
-                \RecursiveIteratorIterator::CHILD_FIRST
-            );
-
-            foreach ($iterator as $file) {
-                if ($file->getExtension() === 'php') {
-                    $migrations['Core'][] = $file->getPathname();
-                }
-            }
-        }
-
-        return $migrations;
-    }
-
-    private function parseMigrations(array $migrations): array
+    private function extractDatabaseSchema(?string $database = null): array
     {
         $tables = [];
-
-        foreach ($migrations as $module => $files) {
-            foreach ($files as $file) {
-                $content = file_get_contents($file);
-                $parsedTables = $this->extractTablesFromMigration($content);
-
-                foreach ($parsedTables as $table) {
-                    $table['module'] = $module;
-                    $tables[$table['name']] = $table;
-                }
-            }
+        $connection = DB::connection();
+        
+        if ($database) {
+            $connection->statement("USE `{$database}`");
+            $databaseName = $database;
+        } else {
+            $databaseName = $connection->getDatabaseName();
         }
-
-        return $tables;
-    }
-
-    private function extractTablesFromMigration(string $content): array
-    {
-        $tables = [];
-
-        if (preg_match_all('/Schema::create\([\'"]([^\'"]+)[\'"]\s*,\s*function\s*\(\s*Blueprint\s+\$\w+\s*\)\s*\{(.*?)\}\s*\);/s', $content, $matches)) {
-            for ($i = 0; $i < count($matches[1]); $i++) {
-                $tableName = $matches[1][$i];
-                $tableBody = $matches[2][$i];
-
-                $table = [
-                    'name' => $tableName,
-                    'columns' => $this->extractColumns($tableBody),
-                    'relationships' => $this->extractRelationships($tableBody),
-                ];
-
-                $tables[] = $table;
+        
+        $allTables = DB::select("SHOW TABLES");
+        $tableKey = "Tables_in_{$databaseName}";
+        
+        foreach ($allTables as $tableObj) {
+            $tableName = $tableObj->$tableKey;
+            
+            if ($tableName === 'migrations') {
+                continue;
             }
-        }
-
-        if (strpos($content, 'permission.table_names') !== false) {
-            $sapphireTables = [
-                ['name' => 's_permissions', 'columns' => ['id' => 'bigIncrements', 'name' => 'string', 'guard_name' => 'string'], 'relationships' => []],
-                ['name' => 's_roles', 'columns' => ['id' => 'bigIncrements', 'name' => 'string', 'guard_name' => 'string'], 'relationships' => []],
-                ['name' => 's_role_locales', 'columns' => ['id' => 'bigIncrements', 'role_id' => 'unsignedBigInteger', 'title' => 'string', 'locale' => 'string'], 'relationships' => [['column' => 'role_id', 'references' => 'id', 'table' => 's_roles']]],
-                ['name' => 's_model_has_permissions', 'columns' => ['permission_id' => 'unsignedBigInteger', 'model_id' => 'unsignedBigInteger', 'model_type' => 'string'], 'relationships' => [['column' => 'permission_id', 'references' => 'id', 'table' => 's_permissions']]],
-                ['name' => 's_model_has_roles', 'columns' => ['role_id' => 'unsignedBigInteger', 'model_id' => 'unsignedBigInteger', 'model_type' => 'string'], 'relationships' => [['column' => 'role_id', 'references' => 'id', 'table' => 's_roles']]],
-                ['name' => 's_role_has_permissions', 'columns' => ['permission_id' => 'unsignedBigInteger', 'role_id' => 'unsignedBigInteger'], 'relationships' => [['column' => 'permission_id', 'references' => 'id', 'table' => 's_permissions'], ['column' => 'role_id', 'references' => 'id', 'table' => 's_roles']]],
+            
+            $columns = $this->getTableColumns($tableName);
+            $relationships = $this->getTableRelationships($tableName);
+            
+            $tables[$tableName] = [
+                'name' => $tableName,
+                'columns' => $columns,
+                'relationships' => $relationships,
             ];
-            $tables = array_merge($tables, $sapphireTables);
         }
-
+        
         return $tables;
     }
-
-    private function extractColumns(string $tableBody): array
+    
+    private function getTableColumns(string $tableName): array
     {
         $columns = [];
-
-        if (preg_match_all('/\$table->([\w]+)\([\'"]?([^\'"(),\[\]]+)[\'"]?[^;]*\);/m', $tableBody, $matches)) {
-            for ($i = 0; $i < count($matches[1]); $i++) {
-                $type = $matches[1][$i];
-                $name = trim($matches[2][$i]);
-
-                if (empty($name) || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $name)) {
-                    continue;
-                }
-
-                if (!in_array($type, ['foreign', 'primary', 'timestamps'])) {
-                    $columns[$name] = $type;
-                }
-            }
+        
+        $columnInfo = DB::select("SHOW COLUMNS FROM `{$tableName}`");
+        
+        foreach ($columnInfo as $column) {
+            $columnName = $column->Field;
+            $columnType = $this->parseColumnType($column->Type);
+            $columns[$columnName] = $columnType;
         }
-
+        
         return $columns;
     }
-
-    private function extractRelationships(string $tableBody): array
+    
+    private function parseColumnType(string $fullType): string
+    {
+        if (preg_match('/^([a-z]+)/i', $fullType, $matches)) {
+            return strtolower($matches[1]);
+        }
+        
+        return 'string';
+    }
+    
+    private function getTableRelationships(string $tableName): array
     {
         $relationships = [];
-
-        if (preg_match_all('/->foreign\([\'"](\w+)[\'"]\)->references\([\'"](\w+)[\'"]\)->on\([\'"](\w+)[\'"]\)/m', $tableBody, $matches)) {
-            for ($i = 0; $i < count($matches[1]); $i++) {
-                $relationships[] = [
-                    'column' => $matches[1][$i],
-                    'references' => $matches[2][$i],
-                    'table' => $matches[3][$i],
-                ];
-            }
+        $connection = DB::connection();
+        
+        $result = DB::select("SELECT DATABASE() as db");
+        $databaseName = $result[0]->db;
+        
+        $foreignKeys = DB::select("
+            SELECT 
+                COLUMN_NAME,
+                REFERENCED_TABLE_NAME,
+                REFERENCED_COLUMN_NAME
+            FROM information_schema.KEY_COLUMN_USAGE
+            WHERE TABLE_SCHEMA = ? 
+                AND TABLE_NAME = ?
+                AND REFERENCED_TABLE_NAME IS NOT NULL
+        ", [$databaseName, $tableName]);
+        
+        foreach ($foreignKeys as $fk) {
+            $relationships[] = [
+                'column' => $fk->COLUMN_NAME,
+                'references' => $fk->REFERENCED_COLUMN_NAME,
+                'table' => $fk->REFERENCED_TABLE_NAME,
+            ];
         }
-
+        
         return $relationships;
     }
 
     private function groupTablesByModule(array $tables): array
     {
         $grouped = [];
+        
+        $prefixMap = [
+            's_' => 'Sapphire',
+            'a_' => 'Amethyst',
+            'r_' => 'Ruby',
+            'e_' => 'Emerald',
+            'o_' => 'Onyx',
+            'la_' => 'Article',
+            'lc_' => 'Common',
+            'le_' => 'Commerce',
+        ];
 
         foreach ($tables as $table) {
-            $module = $table['module'];
-
-            if ($module === 'Core' && strpos($table['name'], 's_') === 0) {
-                $module = 'Sapphire';
-            }
-
-            if ($module === 'Core' && strpos($table['name'], 'le_') === 0) {
-                $module = 'Lava Commerce';
+            $tableName = $table['name'];
+            $module = 'Core';
+            
+            foreach ($prefixMap as $prefix => $moduleName) {
+                if (strpos($tableName, $prefix) === 0) {
+                    $module = $moduleName;
+                    break;
+                }
             }
 
             if (!isset($grouped[$module])) {
@@ -188,6 +157,7 @@ class GenerateDatabaseDiagrams extends Command
         $mermaid = $this->buildMermaidDiagram($moduleData);
 
         $displayNames = [
+            'Article' => 'Lava Article',
             'Common' => 'Lava Common',
             'Commerce' => 'Lava Commerce',
         ];
@@ -233,7 +203,7 @@ class GenerateDatabaseDiagrams extends Command
             foreach ($table['relationships'] as $rel) {
                 $relKey = "{$tableName}|" . $rel['table'];
                 if (!in_array($relKey, $processedRelationships)) {
-                    $mermaid .= "    {$tableName} ||--o{ " . $rel['table'] . " : \"\"\n";
+                    $mermaid .= "    " . $rel['table'] . " ||--o{ {$tableName} : \"\"\n";
                     $processedRelationships[] = $relKey;
                 }
             }
@@ -252,36 +222,45 @@ class GenerateDatabaseDiagrams extends Command
     private function mapLaravelTypeToMermaid(string $laravelType): string
     {
         $typeMap = [
+            'bigint' => 'bigint',
+            'integer' => 'int',
+            'int' => 'int',
+            'smallint' => 'smallint',
+            'tinyint' => 'tinyint',
+            'varchar' => 'string',
+            'string' => 'string',
+            'char' => 'char',
+            'text' => 'text',
+            'mediumtext' => 'text',
+            'longtext' => 'text',
+            'float' => 'float',
+            'double' => 'double',
+            'decimal' => 'decimal',
+            'boolean' => 'boolean',
+            'tinyint(1)' => 'boolean',
+            'enum' => 'string',
+            'date' => 'date',
+            'datetime' => 'datetime',
+            'timestamp' => 'datetime',
+            'time' => 'time',
+            'json' => 'json',
+            'uuid' => 'uuid',
             'increments' => 'int',
             'bigIncrements' => 'bigint',
             'unsignedInteger' => 'int',
             'unsignedBigInteger' => 'bigint',
-            'integer' => 'int',
             'bigInteger' => 'bigint',
             'smallInteger' => 'smallint',
             'unsignedSmallInteger' => 'smallint',
             'unsignedTinyInteger' => 'tinyint',
             'tinyInteger' => 'tinyint',
-            'string' => 'string',
-            'char' => 'char',
-            'text' => 'text',
             'mediumText' => 'text',
             'longText' => 'text',
-            'float' => 'float',
-            'double' => 'double',
-            'decimal' => 'decimal',
-            'boolean' => 'boolean',
-            'enum' => 'string',
-            'date' => 'date',
             'dateTime' => 'datetime',
-            'timestamp' => 'datetime',
-            'time' => 'time',
-            'json' => 'json',
             'jsonb' => 'json',
-            'uuid' => 'uuid',
             'ulid' => 'string',
         ];
 
-        return $typeMap[$laravelType] ?? 'string';
+        return $typeMap[strtolower($laravelType)] ?? 'string';
     }
 }

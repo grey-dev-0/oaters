@@ -1,10 +1,10 @@
-# Article Database Schema
+# Lava Article Database Schema
 
 ```mermaid
 erDiagram
-    la_articles {
-        int id
-        tinyint type
+    la_article_categories {
+        int article_id
+        int category_id
     }
     la_article_locales {
         int id
@@ -13,8 +13,16 @@ erDiagram
         text description
         string locale
     }
+    la_articles {
+        int id
+        tinyint type
+        datetime created_at
+        datetime updated_at
+    }
     la_categories {
         int id
+        datetime created_at
+        datetime updated_at
     }
     la_category_locales {
         int id
@@ -23,15 +31,20 @@ erDiagram
         text description
         string locale
     }
-    la_article_categories {
-        int article_id
-        int category_id
+    la_option_locales {
+        int id
+        int option_id
+        string name
+        string locale
+    }
+    la_options {
+        int id
     }
     la_properties {
         int id
         tinyint type
-        boolean public
-        boolean system
+        tinyint public
+        tinyint system
     }
     la_property_locales {
         int id
@@ -39,26 +52,17 @@ erDiagram
         string name
         string locale
     }
-    la_options {
-        int id
-    }
-    la_option_locales {
-        int id
-        int option_id
-        string name
-        string locale
-    }
     la_property_options {
         int property_id
         int option_id
     }
-    la_article_locales ||--o{ la_articles : ""
-    la_category_locales ||--o{ la_categories : ""
-    la_article_categories ||--o{ la_articles : ""
-    la_article_categories ||--o{ la_categories : ""
-    la_property_locales ||--o{ la_properties : ""
-    la_option_locales ||--o{ la_options : ""
-    la_property_options ||--o{ la_properties : ""
-    la_property_options ||--o{ la_options : ""
+    la_articles ||--o{ la_article_categories : ""
+    la_categories ||--o{ la_article_categories : ""
+    la_articles ||--o{ la_article_locales : ""
+    la_categories ||--o{ la_category_locales : ""
+    la_options ||--o{ la_option_locales : ""
+    la_properties ||--o{ la_property_locales : ""
+    la_options ||--o{ la_property_options : ""
+    la_properties ||--o{ la_property_options : ""
 
 ```

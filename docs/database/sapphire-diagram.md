@@ -2,21 +2,26 @@
 
 ```mermaid
 erDiagram
-    s_users {
-        int id
-        string username
-        string password
-        string image
+    s_model_has_permissions {
+        bigint permission_id
+        string model_type
+        bigint model_id
+    }
+    s_model_has_roles {
+        bigint role_id
+        string model_type
+        bigint model_id
     }
     s_permissions {
         bigint id
         string name
         string guard_name
+        datetime created_at
+        datetime updated_at
     }
-    s_roles {
-        bigint id
-        string name
-        string guard_name
+    s_role_has_permissions {
+        bigint permission_id
+        bigint role_id
     }
     s_role_locales {
         bigint id
@@ -24,24 +29,25 @@ erDiagram
         string title
         string locale
     }
-    s_model_has_permissions {
-        bigint permission_id
-        bigint model_id
-        string model_type
+    s_roles {
+        bigint id
+        string name
+        string guard_name
+        datetime created_at
+        datetime updated_at
     }
-    s_model_has_roles {
-        bigint role_id
-        bigint model_id
-        string model_type
+    s_users {
+        int id
+        string username
+        string password
+        string image
+        datetime created_at
+        datetime updated_at
     }
-    s_role_has_permissions {
-        bigint permission_id
-        bigint role_id
-    }
-    s_role_locales ||--o{ s_roles : ""
-    s_model_has_permissions ||--o{ s_permissions : ""
-    s_model_has_roles ||--o{ s_roles : ""
-    s_role_has_permissions ||--o{ s_permissions : ""
-    s_role_has_permissions ||--o{ s_roles : ""
+    s_permissions ||--o{ s_model_has_permissions : ""
+    s_roles ||--o{ s_model_has_roles : ""
+    s_permissions ||--o{ s_role_has_permissions : ""
+    s_roles ||--o{ s_role_has_permissions : ""
+    s_roles ||--o{ s_role_locales : ""
 
 ```

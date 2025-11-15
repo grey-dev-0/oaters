@@ -10,9 +10,10 @@ return new class extends Migration{
             $table->increments('id');
             $table->enum('type', ['length', 'area', 'volume', 'weight', 'data', 'box', 'piece']);
             $table->unsignedInteger('base_id')->nullable();
-            $table->foreign('base_id')->references('id')->on('lc_measurement_units')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('base_id')->references('id')->on('lc_measurement_units')->onUpdate('cascade')->onDelete('cascade');
             $table->decimal('factor', 20, 10)->default(1);
             $table->boolean('custom')->default(true);
+            $table->softDeletes();
         });
 
         Schema::create('lc_measurement_unit_locales', function(Blueprint $table){

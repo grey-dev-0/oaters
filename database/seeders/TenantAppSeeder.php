@@ -8,6 +8,7 @@ use Modules\Common\Database\Seeders\CitySeeder;
 use Modules\Common\Database\Seeders\ContactSeeder;
 use Modules\Common\Database\Seeders\CountrySeeder;
 use Modules\Common\Database\Seeders\EmailSeeder;
+use Modules\Common\Database\Seeders\MeasurementUnitsSeeder;
 use Modules\Common\Database\Seeders\PhoneSeeder;
 use Modules\Ruby\Database\Seeders\ApplicantSeeder;
 use Modules\Ruby\Database\Seeders\AttendanceSeeder;
@@ -27,6 +28,7 @@ class TenantAppSeeder extends Seeder{
     public function run(): void{
         $this->call(CountrySeeder::class);
         $this->call(CitySeeder::class);
+        $this->call(MeasurementUnitsSeeder::class);
         $this->call(DegreeSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(RubyPermissionSeeder::class);

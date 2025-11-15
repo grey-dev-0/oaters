@@ -5,9 +5,10 @@ namespace Modules\Common\App\Models;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MeasurementUnit extends Model{
-    use HasFactory, Translatable;
+    use HasFactory, Translatable, SoftDeletes;
 
     /**
      * @inheritdoc

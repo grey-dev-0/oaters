@@ -3,7 +3,7 @@ import breadcrumb from "../components/breadcrumb";
 import bootbox from "bootbox";
 import navbar from "../components/navbar"
 import jQuery from "jquery";
-import {defineAsyncComponent} from "vue";
+import {compile, defineAsyncComponent, h, render} from "vue";
 
 jQuery.ajaxSettings.headers = {'X-CSRF-TOKEN': jQuery('[name="csrf-token"]').attr('content')};
 
@@ -24,5 +24,13 @@ function loadComponents(app, components){
         app.component(name, defineAsyncComponent(() => import(`../components/${components[name]}.vue`)));
 }
 
-export {jQuery, bootbox};
+function renderVueTemplate(template, app, options = {}) {
+    const compiled = compile(template.innerHTML);
+    const node = h({render: compiled, ...options});
+    node.appContext = app.appContext;
+    render(node, template.parentNode);
+    template.remove();
+}
+
+export {jQuery, bootbox, renderVueTemplate};
 export default {load, loadBundles, loadComponents};

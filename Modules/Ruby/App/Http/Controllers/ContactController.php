@@ -31,10 +31,10 @@ class ContactController extends Controller{
                     ->orWhereHas('managed_departments', fn($depts) => $depts->whereIn('r_departments.id', $departments)));
             if(!empty($roles = request("columns.{$columns['roles']}.search.value")))
                 $query->whereHas('roles', fn($r) => $r->whereIn('id', $roles));
-        })->orderColumn('roles', function($query, $direction){
+        })->addColumn('actions', fn() => view('ruby::actions.contacts'))->orderColumn('roles', function($query, $direction){
             $query->leftJoin('s_model_has_roles AS mr', fn($join) => $join->on('lc_contacts.id', 'mr.model_id')
                 ->where('model_type', Contact::class))->leftJoin('s_role_locales AS rl', 'mr.role_id', 'rl.role_id')->orderBy('rl.title', $direction);
-        })->make();
+        })->rawColumns(['actions'])->make();
     }
 
     public function getContact($contact){

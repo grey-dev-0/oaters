@@ -1,6 +1,6 @@
 @props(['inModal' => false])
 
-<vue-datatable datatable-id="contacts-table" ref="contactsTable" @if($inModal) deferred url="{{route('ruby::contacts.index')}}" :ajax-data="{department: openDepartment.id}" @endif>
+<vue-datatable datatable-id="contacts-table" ref="contactsTable" @if($inModal) deferred url="{{route('ruby::contacts.index')}}" :ajax-data="{department: openDepartment.id}" @else :ajax-complete="renderActions" @endif>
     <dt-column name="name" data="name">{{trans('common::words.name')}}</dt-column>
     <dt-column name="emails.address" data="emails.0.address">{{trans('common::words.email')}}</dt-column>
     <dt-column name="phones.number" data="phones.0.number">{{trans('common::words.phone')}}</dt-column>
@@ -11,13 +11,6 @@
     @endif
     <dt-column name="applicant.recruited_at" data="applicant.recruited_at" :searchable="false">{{trans('ruby::applicants.recruited_at')}}</dt-column>
     @if(!$inModal)
-        <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
-            {{trans('common::words.actions')}}
-            <template #actions>
-                <span class="text-primary profile mr-1" role="button" title="{{trans('common::words.profile')}}"><i class="fas fa-lg fa-address-card"></i></span>
-                <span class="text-success edit mr-1" role="button" title="{{trans('common::words.edit')}}"><i class="far fa-lg fa-edit"></i></span>
-                <span class="text-danger delete" role="button" title="{{trans('common::words.delete')}}"><i class="fas fa-lg fa-trash-can"></i></span>
-            </template>
-        </dt-column>
+        <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
     @endif
 </vue-datatable>

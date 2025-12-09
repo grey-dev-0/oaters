@@ -1,5 +1,5 @@
 import {createApp} from "vue";
-import common, {jQuery as $} from "../common.js";
+import common, {jQuery as $, renderVueTemplate} from "../common.js";
 import Datatable from "../../components/datatable";
 import Form from "../../components/form";
 import List from "../../components/list";
@@ -37,6 +37,25 @@ let app = createApp({
         },
         closeContact(){
             this.openContact.addresses = undefined;
+        },
+        renderActions(){
+            let view = this, appInstance = this.$appInstance;
+            $('[vue-template]').each(function(){
+                renderVueTemplate(this, appInstance, {
+                    methods: {
+                        showProfile(e){
+                            view.openContact = view.dataTable.row($(e.target).closest('tr')).data();
+                            view.$nextTick(() => {
+                                view.$refs.profileModal.show(() => {
+                                    $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
+                                        view.openContact = response;
+                                    });
+                                });
+                            });
+                        }
+                    }
+                });
+            });
         }
     },
     computed: {
@@ -51,22 +70,10 @@ let app = createApp({
             return this.openContact.applicant && this.openContact.applicant.tenure
                 && (this.openContact.applicant.tenure % 12) || 0;
         }
-    },
-    mounted(){
-        let view = this;
-        $('body').on('click', '.profile', function(){
-            view.openContact = view.dataTable.row($(this).closest('tr')).data();
-            view.$nextTick(() => {
-                view.$refs.profileModal.show(() => {
-                    $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
-                        view.openContact = response;
-                    });
-                });
-            });
-        });
     }
 }), bundles = [Datatable, Form, Timeline, List, Tab], components = {Modal: 'modal'};
 
+app.config.globalProperties.$appInstance = app;
 common.load(app);
 common.loadBundles(app, bundles);
 common.loadComponents(app, components);

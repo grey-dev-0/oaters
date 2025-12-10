@@ -27,19 +27,13 @@
                     <dt-filter name="created_at" type="date" label="{{trans('common::words.created_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>
 
-                <vue-datatable datatable-id="departments-table" ref="departmentsTable">
+                <vue-datatable datatable-id="departments-table" ref="departmentsTable" :ajax-complete="renderActions">
                     <dt-column name="translations.name" data="translations.0.name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="head.name" data="head">{{trans('ruby::departments.head')}}</dt-column>
                     <dt-column name="subordinates_count" data="subordinates_count" :searchable="false">{{trans('common::words.members')}}</dt-column>
                     <dt-column name="vacancies_count" data="vacancies_count" :searchable="false">{{trans('ruby::words.vacancies')}}</dt-column>
                     <dt-column name="created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
-                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
-                        {{trans('common::words.actions')}}
-                        <template #actions>
-                            <span class="text-primary contacts mr-1" role="button" title="{{trans('ruby::words.staff')}}"><i class="fas fa-lg fa-user-group"></i></span>
-                            <span class="text-success edit" role="button" title="{{trans('common::words.edit')}}"><i class="far fa-lg fa-edit"></i></span>
-                        </template>
-                    </dt-column>
+                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
                 </vue-datatable>
             </card>
         </div>

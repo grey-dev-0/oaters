@@ -1,5 +1,5 @@
 import {createApp} from "vue";
-import common, {jQuery as $} from "../common.js";
+import common, {jQuery as $, renderVueTemplate} from "../common.js";
 import Datatable from "../../components/datatable";
 import select2 from 'select2';
 import 'select2/dist/css/select2.min.css';
@@ -41,52 +41,59 @@ let app = createApp({
                 this.dataTable.draw();
                 this.$nextTick(() => this.$refs.toast.show());
             });
+        },
+        renderActions(){
+            let view = this, appInstance = this.$appInstance;
+            const editDepartment = e => {
+                let dept = view.dataTable.row($(e.target).closest('tr')).data();
+                view.openDepartment.id = dept.id;
+                view.openDepartment.name = dept.translations[0].name;
+                view.$nextTick(() => view.$refs.updateDepartment.show(() => {
+                    view.$refs.updateDepartmentForm.loading = true;
+                    $.get(window.baseUrl + '/departments/' + view.openDepartment.id).then(response => {
+                        let text;
+                        if(response.head[0]){
+                            text = response.head[0].name + ' - ';
+                            if(response.head[0].emails[0])
+                                text += response.head[0].emails[0].address;
+                        }
+                        view.$refs.updateDepartmentForm.reset({
+                            'en[name]': response.name,
+                            'ar[name]': response.name_ar,
+                            manager_id: {
+                                id: response.head[0] && response.head[0].id,
+                                text
+                            },
+                            contact_id: (() => {
+                                let employees = {};
+                                response.employees.forEach(employee => {
+                                    employees[employee.id] = employee.name;
+                                });
+                                return employees;
+                            })()
+                        });
+                    });
+                }));
+            };
+            const showContacts = e => {
+                let dept = view.dataTable.row($(e.target).closest('tr')).data();
+                view.openDepartment.id = dept.id;
+                view.openDepartment.name = dept.translations[0].name;
+                view.$nextTick(() => view.$refs.contactsModal.show(() => view.$refs.contactsTable.init()));
+            };
+            $('[vue-template]').each(function(){
+                renderVueTemplate(this, appInstance, {methods: {editDepartment, showContacts}});
+            });
         }
     },
     computed: {
         dataTable: function(){
             return this.$refs.departmentsTable.dataTable;
         }
-    },
-    mounted(){
-        let view = this;
-        $('body').on('click', '.edit', function(){
-            view.openDepartment.id = $(this).data('id');
-            view.openDepartment.name = view.dataTable.row($(this).closest('tr')).data().name;
-            view.$nextTick(() => view.$refs.updateDepartment.show(() => {
-                view.$refs.updateDepartmentForm.loading = true;
-                $.get(window.baseUrl + '/departments/' + view.openDepartment.id).then(response => {
-                    let text;
-                    if(response.head[0]){
-                        text = response.head[0].name + ' - ';
-                        if(response.head[0].emails[0])
-                            text += response.head[0].emails[0].address;
-                    }
-                    view.$refs.updateDepartmentForm.reset({
-                        'en[name]': response.name,
-                        'ar[name]': response.name_ar,
-                        manager_id: {
-                            id: response.head[0] && response.head[0].id,
-                            text
-                        },
-                        contact_id: (() => {
-                            let employees = {};
-                            response.employees.forEach(employee => {
-                                employees[employee.id] = employee.name;
-                            });
-                            return employees;
-                        })()
-                    });
-                });
-            }));
-        }).on('click', '.contacts', function(){
-            view.openDepartment.id = $(this).data('id');
-            view.openDepartment.name = view.dataTable.row($(this).closest('tr')).data().name;
-            view.$nextTick(() => view.$refs.contactsModal.show(() => view.$refs.contactsTable.init()));
-        });
     }
 }), bundles = [Datatable, Form], components = {Modal: 'modal'};
 
+app.config.globalProperties.$appInstance = app;
 common.load(app);
 common.loadBundles(app, bundles);
 common.loadComponents(app, components);

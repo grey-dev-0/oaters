@@ -40,21 +40,18 @@ let app = createApp({
         },
         renderActions(){
             let view = this, appInstance = this.$appInstance;
-            $('[vue-template]').each(function(){
-                renderVueTemplate(this, appInstance, {
-                    methods: {
-                        showProfile(e){
-                            view.openContact = view.dataTable.row($(e.target).closest('tr')).data();
-                            view.$nextTick(() => {
-                                view.$refs.profileModal.show(() => {
-                                    $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
-                                        view.openContact = response;
-                                    });
-                                });
-                            });
-                        }
-                    }
+            const showProfile = e => {
+                view.openContact = view.dataTable.row($(e.target).closest('tr')).data();
+                view.$nextTick(() => {
+                    view.$refs.profileModal.show(() => {
+                        $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
+                            view.openContact = response;
+                        });
+                    });
                 });
+            };
+            $('[vue-template]').each(function(){
+                renderVueTemplate(this, appInstance, {methods: {showProfile}});
             });
         }
     },

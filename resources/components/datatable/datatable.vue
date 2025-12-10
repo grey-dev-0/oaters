@@ -96,6 +96,13 @@ export default {
         DataTable.type('num', 'className', '');
         DataTable.type('num-fmt', 'className', '');
         DataTable.type('html-num', 'className', '');
+    },
+    mounted(){
+        let modal = $('#' + this.datatableId).closest('.modal');
+        if(modal.length)
+            modal.on('shown.bs.modal', () => {
+                this.dataTable.columns.adjust();
+            });
     }
 };
 </script>

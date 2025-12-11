@@ -12,11 +12,12 @@ class TenantController extends Controller{
         $response = \DataTables::of(Tenant::selectRaw('tenants.*, s.id AS subscription_id, domain, s.expires_at')
             ->leftJoin('subscriptions AS s', 's.tenant_id', 'tenants.id')->leftJoin('domains AS d', 'd.tenant_id', 'tenants.id')
             ->orderBy('s.id', 'desc')->groupBy('s.id'))
+            ->addColumn('actions', fn($tenant) => view('sapphire::admin.actions.tenants', compact('tenant')))
             ->filter(function($query){
                 \DataTablesHelper::filterByDate($query, ['tenants.created_at', 'expires_at']);
             });
         \DataTablesHelper::formatTimestampColumns($response, ['created_at', 'expires_at']);
-        return $response->make(true);
+        return $response->rawColumns(['actions'])->make(true);
     }
 
     public function getModules(Subscription $subscription){
@@ -30,9 +31,10 @@ class TenantController extends Controller{
     }
 
     public function postSubscriptions(){
-        $response = \DataTables::of(Subscription::with(['tenant:id,name', 'modules:id,name']));
+        $response = \DataTables::of(Subscription::with(['tenant:id,name', 'modules:id,name']))
+            ->addColumn('actions', fn() => view('sapphire::admin.actions.subscriptions'));
         \DataTablesHelper::formatTimestampColumns($response, ['created_at', 'expires_at']);
-        return $response->make(true);
+        return $response->rawColumns(['actions'])->make(true);
     }
 
     public function postAutocomplete(){

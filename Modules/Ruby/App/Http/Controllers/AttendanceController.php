@@ -17,6 +17,7 @@ class AttendanceController extends Controller{
         return tap(\DataTables::of(Punch::with([
             'contact' => fn($q) => $q->withRoles()->withDepartments()
         ])->select('r_punches.*')), fn($dataTable) => \DataTablesHelper::formatTimestampColumns($dataTable, ['created_at']))
+            ->addColumn('actions', fn() => view('ruby::actions.attendance'))
             ->filter(function($query){
                 \DataTablesHelper::filterByDate($query, ['r_punches.created_at'], false);
                 $columns = \DataTablesHelper::getColumns();
@@ -24,6 +25,6 @@ class AttendanceController extends Controller{
                     $query->whereHas('contact.departments', fn($depts) => $depts->whereIn('r_departments.id', $departments));
                 if(!empty($roles = request("columns.{$columns['contact.roles.title']}.search.value")))
                     $query->whereHas('contact.roles', fn($r) => $r->whereIn('id', $roles));
-            })->make();
+            })->rawColumns(['actions'])->make();
     }
 }

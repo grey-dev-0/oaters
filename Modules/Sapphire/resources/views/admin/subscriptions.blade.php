@@ -26,21 +26,14 @@
                     <dt-filter name="expires_at" type="date" label="{{trans('common::words.expires_at')}}" :options="{opens: 'left'}"></dt-filter>
                 </vue-datafilter>-->
 
-                <vue-datatable datatable-id="subscriptions-table" ref="subscriptionsTable" :sort="[[5, 'desc']]">
+                <vue-datatable datatable-id="subscriptions-table" ref="subscriptionsTable" :sort="[[5, 'desc']]" :ajax-complete="renderActions">
                     <dt-column name="tenant.name" data="tenant.name">{{trans('sapphire::admin.subscriptions.tenant')}}</dt-column>
                     <dt-column name="modules.id" data="modules" :render="renderModules" :orderable="false">{{trans('sapphire::admin.subscriptions.modules')}}</dt-column>
                     <dt-column name="amount" :data="renderAmount">{{trans('common::words.amount')}}</dt-column>
                     <dt-column name="paid" data="paid" :render="renderPaid" :searchable="false">{{trans('common::words.paid')}}</dt-column>
                     <dt-column name="expires_at" data="expires_at" :searchable="false">{{trans('common::words.expires_at')}}</dt-column>
                     <dt-column name="created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
-                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" :data="null">
-                        {{trans('common::words.actions')}}
-                        <template #actions>
-                            <div class="btn btn-sm btn-outline-primary edit" title="{{trans('common::words.edit')}}"><i class="fas fa-pen"></i></div>
-                            <div class="btn btn-sm btn-outline-warning revoke" title="{{trans('sapphire::admin.subscriptions.revoke')}}"><i class="fas fa-ban"></i></div>
-                            <div class="btn btn-sm btn-outline-danger delete" title="{{trans('common::words.delete')}}"><i class="fas fa-trash-alt"></i></div>
-                        </template>
-                    </dt-column>
+                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
                 </vue-datatable>
             </card>
         </div>

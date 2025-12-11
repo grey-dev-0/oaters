@@ -25,18 +25,13 @@
                     <dt-filter name="type" type="select" :values="{in: '{{__('common::words.in')}}', out: '{{__('common::words.out')}}'}" label="{{__('common::words.type')}}"></dt-filter>
                 </vue-datafilter>
 
-                <vue-datatable datatable-id="attendance-table" ref="attendanceTable" :sort="[[4, 'desc']]">
+                <vue-datatable datatable-id="attendance-table" ref="attendanceTable" :sort="[[4, 'desc']]" :ajax-complete="renderActions">
                     <dt-column name="contact.name" data="contact.name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="contact.roles.title" data="contact.roles.0.title" :searchable="false">{{trans('common::words.role')}}</dt-column>
                     <dt-column name="contact.departments.name" :data="renderDepartments" :searchable="false" :orderable="false">{{trans('common::words.departments')}}</dt-column>
                     <dt-column name="type" data="type">{{trans('common::words.type')}}</dt-column>
                     <dt-column name="r_punches.created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
-                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" :data="null">
-                        {{trans('common::words.actions')}}
-                        <template #actions>
-                            <span class="text-primary profile mr-1" role="button" title="{{trans('common::words.profile')}}"><i class="fas fa-lg fa-address-card"></i></span>
-                        </template>
-                    </dt-column>
+                    <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
                 </vue-datatable>
             </card>
         </div>

@@ -1,5 +1,5 @@
 import {createApp} from "vue";
-import common, {jQuery as $, bootbox} from "../common.js";
+import common, {jQuery as $, bootbox, renderVueTemplate} from "../common.js";
 import Datatable from "../../components/datatable";
 import Form from "../../components/form";
 
@@ -41,6 +41,43 @@ let app = createApp({
             this.$refs.createSubscription.show(() => {
                 this.$refs.createSubscriptionForm.reset();
             });
+        },
+        renderActions(){
+            let view = this, appInstance = this.$appInstance;
+            const editSubscription = e => {
+                view.openSubscription.id = $(e.target).closest('[data-id]').data('id');
+                view.openSubscription.name = view.dataTable.row($(e.target).closest('tr')).data().tenant.name;
+                view.$nextTick(() => view.$refs.updateSubscription.show(() => {
+                    // Form will handle loading the subscription data
+                }));
+            };
+            const revokeSubscription = e => {
+                const subscriptionId = $(e.target).closest('[data-id]').data('id');
+                bootbox.confirm({
+                    message: 'Are you sure?',
+                    centerVertical: true,
+                    callback: answer => {
+                        if(answer) {
+                            // Handle revoke logic
+                        }
+                    }
+                });
+            };
+            const deleteSubscription = e => {
+                const subscriptionId = $(e.target).closest('[data-id]').data('id');
+                bootbox.confirm({
+                    message: 'Are you sure?',
+                    centerVertical: true,
+                    callback: answer => {
+                        if(answer) {
+                            // Handle delete logic
+                        }
+                    }
+                });
+            };
+            $('[vue-template]').each(function(){
+                renderVueTemplate(this, appInstance, {methods: {editSubscription, revokeSubscription, deleteSubscription}});
+            });
         }
     },
     computed: {
@@ -50,17 +87,8 @@ let app = createApp({
     }
 }), bundles = [Datatable, Form], components = {Modal: 'modal'};
 
+app.config.globalProperties.$appInstance = app;
 common.load(app);
 common.loadBundles(app, bundles);
 common.loadComponents(app, components);
 app.mount('#app');
-
-$('body').on('click', '#subscriptions-table .delete', () => {
-    bootbox.confirm({
-        message: 'Are you sure?',
-        centerVertical: true,
-        callback: answer => {
-            console.log('The answer is ', answer);
-        }
-    });
-});

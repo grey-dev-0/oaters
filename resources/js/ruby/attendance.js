@@ -1,5 +1,5 @@
 import {createApp} from "vue";
-import common, {jQuery as $} from "../common.js";
+import common, {jQuery as $, renderVueTemplate} from "../common.js";
 import Datatable from "../../components/datatable";
 import List from "../../components/list/index.js";
 import Timeline from "../../components/timeline/index.js";
@@ -36,6 +36,22 @@ let app = createApp({
         },
         closeContact(){
             this.openContact.addresses = undefined;
+        },
+        renderActions(){
+            let view = this, appInstance = this.$appInstance;
+            const showProfile = e => {
+                view.openContact = view.dataTable.row($(e.target).closest('tr')).data().contact;
+                view.$nextTick(() => {
+                    view.$refs.profileModal.show(() => {
+                        $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
+                            view.openContact = response;
+                        });
+                    });
+                });
+            };
+            $('[vue-template]').each(function(){
+                renderVueTemplate(this, appInstance, {methods: {showProfile}});
+            });
         }
     },
     computed: {
@@ -50,22 +66,10 @@ let app = createApp({
             return this.openContact.applicant && this.openContact.applicant.tenure
                 && (this.openContact.applicant.tenure % 12) || 0;
         }
-    },
-    mounted(){
-        let view = this;
-        $('body').on('click', '.profile', function(){
-            view.openContact = view.dataTable.row($(this).closest('tr')).data().contact;
-            view.$nextTick(() => {
-                view.$refs.profileModal.show(() => {
-                    $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
-                        view.openContact = response;
-                    });
-                });
-            });
-        });
     }
 }), bundles = [Datatable, Timeline, List], components = {Modal: 'modal'};
 
+app.config.globalProperties.$appInstance = app;
 common.load(app);
 common.loadBundles(app, bundles);
 common.loadComponents(app, components);

@@ -18,6 +18,7 @@ AccountManager::update(int $contactId, string $username, ?string $password,
                        array $roleNames): void           // password null = keep
 AccountManager::suspend(int $contactId): void
 AccountManager::restore(int $contactId): void
+AccountManager::delete(int $contactId): void             // permanent removal
 ```
 
 ## Semantics
@@ -28,6 +29,7 @@ AccountManager::restore(int $contactId): void
 | Update | Username change allowed (uniqueness checked); null password keeps the current hash; roles synced. |
 | Suspend | Sets `active = false`. Auth guard (`attempt` / middleware) MUST reject inactive users. |
 | Restore | Sets `active = true`. |
+| Delete | Deletes the `s_users` row (and its role assignments); called by Ruby's force-removal branch. **Required**: `lc_contacts.user_id`'s FK is `on delete set null`, so deleting a contact cascades nothing to the user — without this call an active orphaned login survives the staff record. |
 | Atomicity | Caller (Ruby) wraps the whole staff save in a DB transaction; `AccountException` aborts it → **all-or-nothing** per FR-010 (no staff record persists, form data preserved client-side). |
 | Credentials | Password handling (hashing, never returning values) is entirely Sapphire-side. Ruby validates only shape (min length, confirmation match). |
 

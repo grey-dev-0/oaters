@@ -119,8 +119,10 @@ dependencies with siblings in the same phase).
       check (`r_punches`, `r_leaves`, `r_documents`, `r_notices`,
       `r_salaries`/`r_payroll_payments`): with history → `delete()` (soft) +
       `AccountManager::suspend`; without → `forceDelete()` (documents removed
-      from disk); both detach `r_subordinates` (memberships + management) and
-      `r_contact_shifts`; departments untouched; distinct toast per mode.
+      from disk) + `AccountManager::delete` (the `user_id` FK does not cascade
+      from the contact side — without this an orphaned login survives); both
+      detach `r_subordinates` (memberships + management) and `r_contact_shifts`;
+      departments untouched; distinct toast per mode.
 - [ ] T022 Implement `ContactController@postRestore`: `restore()` +
       `AccountManager::restore` (memberships intentionally NOT reattached —
       documented behavior); list default scope excludes deactivated members.

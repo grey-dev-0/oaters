@@ -33,6 +33,14 @@ experience end to end.
   viewable or reactivate-able anywhere in this feature? → A: Both — a staff list filter
   includes deactivated members, and a reactivate action restores them.
 
+### Session 2026-10-31
+
+- Q: What happens to the platform account when a member is permanently removed? → A:
+  The account is deleted through the auth-owned contract — no orphaned sign-in survives
+  the staff record (the contact→user foreign key cascades nothing).
+- Q: Should the application enforce upload size/type limits in the staff form? → A: No —
+  upload constraints are enforced at the web-server (nginx) level for this project.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Add a New Staff Member (Priority: P1)
@@ -207,7 +215,8 @@ verifying the created account can sign in with the access its role grants.
   managed departments are cleared with the departments themselves left intact. The staff
   list MUST offer a filter that includes deactivated members; deactivation MUST suspend
   the member's account access through the auth-owned contract, and a reactivate action
-  MUST restore both the member and their account access.
+  MUST restore both the member and their account access. Permanent removal MUST also
+  delete the member's platform account so no orphaned sign-in remains.
 - **FR-009**: All form labels, validation messages and display values MUST be available in
   both English and Arabic.
 - **FR-010**: Every staff member MUST have a platform account. The user account group MUST
@@ -268,6 +277,8 @@ verifying the created account can sign in with the access its role grants.
 - Account credentials entered in the staff form are delegated to the authentication
   module through an explicit contract; the HR module does not store or manage
   credentials itself.
+- Upload size and type constraints are enforced at the web-server (nginx) level, not by
+  application validation; the staff form only collects the files.
 - Employment documents are uploaded, renamed, removed and downloaded via the existing
   documents mechanism; no versioning is required.
 - The profile image belongs to the staff member's contact record and is optional

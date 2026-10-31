@@ -61,4 +61,7 @@ Member "has history" if **any** of:
 
 Otherwise permanent removal. In both modes `r_subordinates` rows for the member
 (memberships **and** management) are detached; `r_contact_shifts` pivot rows are
-detached; departments themselves untouched.
+detached; departments themselves untouched. Permanent removal also deletes the
+provisioned account via `AccountManager::delete` — `lc_contacts.user_id`'s FK is
+`set null` (nothing cascades from the contact side), so without the contract call an
+active orphaned login would survive.

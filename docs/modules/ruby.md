@@ -614,11 +614,40 @@ $department->head;   // Returns top-level managers
 4. **Recruitment**: Set `recruited_at` timestamp on Applicant
 5. **Onboarding**: Recruited applicants become employees via Subordinate relationship
 
+## Staff Management
+
+Staff members are Common module contacts holding a recruited applicant record
+(`r_applicants.recruited_at` set). The staff page (`/r/contacts`) provides:
+
+- **Staff list** — filterable by name, default email/phone, role, job, departments,
+  recruitment date, and status (active/deactivated).
+- **Profile modal** — contact details, job, tenure, degree, latest five approved
+  leaves, and downloadable employment documents.
+- **Create/Edit form** — one transactional form with three groups:
+  - *User Account*: username, password (optional on edit, kept when blank),
+    profile image. Accounts are provisioned through the Sapphire-owned
+    `AccountManager` contract — Ruby never touches accounts directly, and a
+    contract failure (e.g. duplicate username) aborts the whole save.
+  - *Contact Details*: name, job, dynamic emails/phones/addresses with exactly
+    one default email and one default phone normalized by the server.
+  - *Employment Details*: position roles, managed / member departments, and the
+    applicant link — either an existing (not yet recruited) applicant picked
+    from a search, or a minimal applicant record created inline (nationality,
+    degree, degree year, recruitment date, documents). The applicant link is
+    exclusive: one member per applicant record.
+- **Removal** — mode is chosen automatically: a member with any history
+  (attendance, leaves, documents, notices, payroll references) is **deactivated**
+  (soft delete, account suspended, departments left managerless); a member with
+  no history is **permanently removed** together with their account (no orphaned
+  logins). Deactivated members stay reachable via the status filter and can be
+  **reactivated** (memberships are not restored).
+
 ## API Endpoints
 
 ### Implemented Controllers:
 - **AttendanceController**: Punch in/out functionality
-- **ContactController**: Employee contact management
+- **ContactController**: Staff CRUD (`contacts/create|update|delete|restore`),
+  applicant picker search, city search, profile/image/document streaming
 - **DashboardController**: HR dashboard and statistics
 - **DepartmentController**: Department CRUD operations
 - **DocumentController**: Document upload/download

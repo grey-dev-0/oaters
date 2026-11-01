@@ -5,41 +5,51 @@ namespace Modules\Ruby\App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Common\App\Models\Contact;
 
-class Subordinate extends Model{
-
+class Subordinate extends Model
+{
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $incrementing = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_subordinates';
 
     /**
-     * @inheritdoc
+     * r_subordinates carries no timestamp columns.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * {@inheritdoc}
      */
     protected $guarded = ['id'];
 
     /**
      * Get the manager contact
      */
-    public function manager(){
+    public function manager()
+    {
         return $this->belongsTo(Contact::class, 'manager_id');
     }
 
     /**
      * Get the contact
      */
-    public function contact(){
+    public function contact()
+    {
         return $this->belongsTo(Contact::class);
     }
 
     /**
      * Get the department
      */
-    public function department(){
+    public function department()
+    {
         return $this->belongsTo(Department::class);
     }
 }

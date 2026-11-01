@@ -9,8 +9,13 @@ class Salary extends Model
 {
     use HasFactory;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $table = 'r_salaries';
+
     protected $fillable = [];
-    
+
     protected static function newFactory()
     {
         return \Modules\Ruby\Database\factories\SalaryFactory::new();

@@ -7,24 +7,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Common\App\Models\Contact;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable{
+class User extends Authenticatable
+{
     use HasFactory, HasRoles;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 's_users';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = [];
 
-    protected static function newFactory(){
+    /**
+     * @var string[] Attribute casts.
+     */
+    protected $casts = ['active' => 'boolean'];
+
+    protected static function newFactory()
+    {
         return \Modules\Sapphire\Database\factories\UsersFactory::new();
     }
 
-    public function contact(){
+    public function contact()
+    {
         return $this->hasOne(Contact::class);
     }
 }

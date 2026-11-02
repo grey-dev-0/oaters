@@ -90,11 +90,11 @@ export default {
             if(!this.ajax)
                 form.submit();
             else{
+                this.hasFiles = form.find('input[type="file"]').toArray().some((input) => input.files && input.files.length);
                 let request = {
                     url: this.action || window.location.href,
                     type: 'POST',
-                    error: (xhr) => {
-                        if(xhr.status != 422){
+                    error: (xhr) => {                        if(xhr.status != 422){
                             this.$root.bootbox().alert('Something went wrong!');
                             console.error(xhr.responseText);
                         } else{

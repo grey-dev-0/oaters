@@ -4,19 +4,27 @@ namespace Modules\Ruby\App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 
-class ModuleController extends Controller{
-    public function getLogin($extraData = []){
+class ModuleController extends Controller
+{
+    public function getLogin($extraData = [])
+    {
         $data = ['title' => 'Ruby', 'borderColor' => 'red-4', 'buttonColor' => 'danger'];
-        if(!empty($extraData))
+        if (! empty($extraData)) {
             $data += $extraData;
+        }
+
         return view('common::login', $data);
     }
 
-    public function postLogin(){
-        if(auth()->attempt(request()->only(['username', 'password'])) && auth()->user()->can('ruby'))
+    public function postLogin()
+    {
+        if (auth()->attempt(request()->only(['username', 'password']) + ['active' => true]) && auth()->user()->can('ruby')) {
             return redirect()->intended('r');
-        if(!empty(auth()->user()))
+        }
+        if (! empty(auth()->user())) {
             auth()->logout();
+        }
+
         return $this->getLogin(['fail' => true]);
     }
 }

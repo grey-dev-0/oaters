@@ -9,8 +9,13 @@ class PayrollPayment extends Model
 {
     use HasFactory;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $table = 'r_payroll_payments';
+
     protected $fillable = [];
-    
+
     protected static function newFactory()
     {
         return \Modules\Ruby\Database\factories\PayrollPaymentFactory::new();

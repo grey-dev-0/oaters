@@ -57,5 +57,12 @@ return [
     'personnel' => 'Personnel',
     'attachments' => 'Attachments',
     'components' => 'Components',
-    'unassigned' => 'Unassigned'
+    'unassigned' => 'Unassigned',
+    'city' => 'City',
+    'default' => 'Default',
+    'emails' => 'Email(s)',
+    'phones' => 'Phone(s)',
+    'reactivate' => 'Reactivate',
+    'remove' => 'Remove',
+    'save' => 'Save'
 ];

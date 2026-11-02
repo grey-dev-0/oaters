@@ -29,6 +29,7 @@
                     <dt-filter name="job" type="text" label="{{trans('ruby::contacts.job')}}"></dt-filter>
                     <dt-filter name="departments" type="select2" multiple :values="departments" label="{{trans('common::words.departments')}}"></dt-filter>
                     <dt-filter name="applicant.recruited_at" type="date" label="{{trans('ruby::applicants.recruited_at')}}"></dt-filter>
+                    <dt-filter name="status" type="select2" :values="statuses" label="{{trans('common::words.inactive')}}"></dt-filter>
                 </vue-datafilter>
 
                 <x-ruby::tables.contacts/>
@@ -37,7 +38,8 @@
     </div>
 
     <x-ruby::modals.profile/>
-    <x-ruby::modals.contact-form id="create-contact" ref="createContact" :title="trans('ruby::contacts.new')" color="green-1"/>
+    <x-ruby::modals.contact-form id="create-contact" ref="createContact" :title="trans('ruby::contacts.new')" color="green-1" :cities="$cities" :countries="$countries" :degrees="$degrees"/>
+    <x-ruby::modals.contact-form id="update-contact" ref="updateContact" :title="trans('ruby::words.staff')" color="teal-2" edit :cities="$cities" :countries="$countries" :degrees="$degrees"/>
 @endsection
 
 @push('scripts')
@@ -45,10 +47,11 @@
         @php
             $locale = [
                 'common' => \Arr::only(trans('common::words'), 'unassigned'),
-                'leaves' => \Arr::only(trans('ruby::leaves'), 'types')
+                'leaves' => \Arr::only(trans('ruby::leaves'), 'types'),
+                'contacts' => \Arr::only(trans('ruby::contacts'), ['confirm_delete', 'confirm_reactivate'])
             ];
         @endphp
-        let roles = @json($roles), departments = @json($departments);
+        let roles = @json($roles), departments = @json($departments), statuses = @json(['inactive' => trans('common::words.inactive')]);
         locale = @json($locale);
     </script>
     @vite('resources/js/ruby/contacts.js')

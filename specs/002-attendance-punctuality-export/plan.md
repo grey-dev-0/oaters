@@ -162,6 +162,13 @@ DataTables column and the exporter share one implementation of FR-001/FR-002.
 6. **Column placement / default sort** — Punctuality is inserted between Type and
    Created At; the page's default sort `[[4,'desc']]` shifts to the new Created At
    index so behavior is unchanged.
+7. **Export cell serialization & order** — export columns mirror the table exactly
+   (Name, Role, Departments, Type, Punctuality, Created At) and cells mirror the
+   table's rendering in plain text: Name = contact name; Role = first role title (as
+   the table column shows); Departments = comma-joined names (member then managed,
+   table order); Type = localized in/out label; Punctuality =
+   `Punctuality::reading()['text']`, empty cell for shift-less punches; Created At =
+   the table's timestamp format (`d/m/Y h:i:s A`).
 
 ## Complexity Tracking
 

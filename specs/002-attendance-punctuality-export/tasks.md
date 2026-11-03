@@ -156,8 +156,9 @@ scenario 1).
 
 - [ ] T015 [P] [US3] `tests/Feature/Ruby/AttendanceExportTest.php`: seeded punches +
       department/date/type filter payload → CSV body matches the filtered `postIndex`
-      row set exactly (order included) with localized headers, leading UTF-8 BOM,
-      punctuality text column, NO Actions column (FR-007/FR-008, SC-003/SC-004);
+      row set exactly (order included; cells serialized per plan §Key Decisions #7)
+      with localized headers, leading UTF-8 BOM, punctuality text column, NO Actions
+      column (FR-007/FR-008, SC-003/SC-004);
       XLSX response is a valid zip and sheet rows match via openspout reader;
       zero-match filters → headers-only file; unfiltered → all rows; user without
       `ruby` access is redirected/denied.
@@ -172,9 +173,10 @@ scenario 1).
       DataTables request shape (the JS sends `table.ajax.params()`) + `format`
       (`xlsx|csv`); render ALL matching rows (yajra over `attendanceQuery()` with
       paging skipped or equivalent chunked retrieval); stream via openspout — CSV
-      with UTF-8 BOM, XLSX plain; headers = Name, Role, Departments, Type, Created
-      At, Punctuality via `trans()` in the requesting locale; punctuality cell =
-      `Punctuality::reading()['text']` without markup; filename
+      with UTF-8 BOM, XLSX plain; headers and cells per plan §Key Decisions #7
+      (columns mirror the table; departments comma-joined, first role, table
+      timestamp format, empty punctuality cell for shift-less punches) via
+      `trans()` in the requesting locale; filename
       `attendance_YYYY-MM-DD.xlsx|.csv` in `Content-Disposition`.
 - [ ] T018 [US3] `attendance.blade.php`: Excel + CSV buttons in the attendance card
       header; `resources/js/ruby/attendance.js`: `exportTable(format)` posts
@@ -190,7 +192,8 @@ scenario 1).
 - [ ] T019 Build assets in the container:
       `docker exec -w /home/projects/theultragrey/oaters lemp-php-1 npm run development`
       and verify the attendance page in the browser (EN + AR pass: column colors,
-      settings modal, exports open in LibreOffice/Excel).
+      settings modal, exports open in LibreOffice/Excel); time an export of one
+      month of punches (~5,000 rows) in both formats against SC-003 (< 10 s each).
 - [ ] T020 `docker exec -w /home/projects/theultragrey/oaters lemp-php-1
       ./vendor/bin/pint` over touched files; full
       `php vendor/bin/phpunit` green (existing staff suite + new tests).

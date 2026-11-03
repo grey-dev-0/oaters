@@ -122,9 +122,9 @@ configured — delivers "policy ownership" value on its own.
 3. **Given** the settings field, **When** an invalid value is submitted (empty,
    non-integer, negative, or greater than 240 minutes), **Then** it is rejected with a
    clear, actionable message and the previously stored value is retained.
-4. **Given** a user holding only the attendance-viewing privilege, **When** they attempt
-   to reach or submit the threshold setting, **Then** editing is denied and the stored
-   value cannot be changed.
+4. **Given** a user who can view the attendance table but lacks the threshold-editing
+   privilege, **When** they attempt to reach or submit the threshold setting, **Then**
+   editing is denied and the stored value cannot be changed.
 5. **Given** two different organisations with different thresholds, **When** either
    views its attendance table, **Then** each sees color coding driven solely by its own
    threshold.
@@ -141,9 +141,9 @@ An HR user applies any combination of the table's filters — name search, role(
 department(s), creation date range, punch type — then chooses to export the table as
 Excel (.xlsx) or CSV. The downloaded file contains every punch matching the currently
 applied filters in the table's current order — not just the visible page — with the
-same data columns (Name, Role, Departments, Type, Created At, Punctuality as text) and
-localized headers. The exported file opens cleanly in mainstream spreadsheet
-applications in both English and Arabic.
+same data columns as the table (Name, Role, Departments, Type, Punctuality as text,
+Created At) and localized headers. The exported file opens cleanly in mainstream
+spreadsheet applications in both English and Arabic.
 
 **Why this priority**: Export extends the value of the punctuality view into payroll
 review, audits and offline reporting, but depends on the table (US1) being worth
@@ -157,8 +157,8 @@ row-for-row — delivers take-the-data-with-you value on its own.
 
 1. **Given** filters selecting one department and a date range, **When** the user
    exports, **Then** the file contains exactly the punches the filtered table reports,
-   in the same order, with columns Name, Role, Departments, Type, Created At and
-   Punctuality (as text, e.g. "20 minutes late").
+   in the same order, with the table's columns Name, Role, Departments, Type,
+   Punctuality (as text, e.g. "20 minutes late") and Created At.
 2. **Given** no filters applied, **When** the user exports, **Then** the file contains
    the entire attendance register, and an export of a month of punches (thousands of
    rows) completes promptly without silent truncation.
@@ -170,8 +170,8 @@ row-for-row — delivers take-the-data-with-you value on its own.
    spreadsheet applications without garbled characters.
 5. **Given** any export, **When** the file is opened, **Then** it does not contain the
    row Actions column.
-6. **Given** a user without the attendance-viewing privilege, **When** they attempt to
-   export, **Then** the action is denied.
+6. **Given** a user without access to the attendance page, **When** they attempt to
+   export, **Then** the action is denied, exactly as viewing the table is.
 
 ---
 
@@ -228,9 +228,9 @@ row-for-row — delivers take-the-data-with-you value on its own.
   MUST leave the stored value unchanged.
 - **FR-007**: The attendance table MUST offer export to Excel (.xlsx) and CSV that
   includes every punch matching the currently applied filters and searches, in the
-  table's current ordering — never limited to the visible page — with the columns Name,
-  Role, Departments, Type, Created At and Punctuality, and with headers localized to the
-  user's language.
+  table's current ordering — never limited to the visible page — with the same columns
+  and order as the table (Name, Role, Departments, Type, Punctuality, Created At), and
+  with headers localized to the user's language.
 - **FR-008**: Exports MUST carry the punctuality reading as text (color coding is not
   required in the file) and MUST open correctly in mainstream spreadsheet applications
   in both English and Arabic, with no garbled characters.
@@ -238,10 +238,10 @@ row-for-row — delivers take-the-data-with-you value on its own.
   singular/plural minute forms), settings labels, validation messages and export
   affordances — MUST be available in both English and Arabic.
 - **FR-010**: Access MUST follow the project's privilege model: viewing and exporting
-  the attendance table are gated by the existing attendance-viewing privilege; editing
-  the punctuality threshold is gated by a dedicated privilege granted to the general
-  manager, HR manager and HR assistant roles, enforced by the Sapphire authorization
-  layer.
+  the attendance table share the access control that governs the attendance page
+  today; editing the punctuality threshold is gated by a dedicated privilege granted
+  to the general manager, HR manager and HR assistant roles, enforced by the Sapphire
+  authorization layer.
 - **FR-011**: The Punctuality column MUST be sortable by the punch's recorded latency
   and, being a derived reading, MUST NOT participate in text search.
 - **FR-012**: Settings MUST be tenant-isolated: no user action may read or write another
@@ -294,6 +294,8 @@ row-for-row — delivers take-the-data-with-you value on its own.
 - The default punctuality threshold is 15 minutes (confirmed 2026-11-02), a common
   organisational grace period; tenants can change it within the validated bounds
   (0–240 minutes).
+- "Resetting" the threshold means saving the default value back manually; no separate
+  reset-to-default control exists in this feature.
 - "At or below" the threshold colors blue; strictly greater colors red (verbatim from
   the source notes). Exactly on-time (0 minutes) is the only "on time" reading.
 - Minutes are displayed as plain minutes (e.g., "90 minutes late"); no
@@ -310,8 +312,9 @@ row-for-row — delivers take-the-data-with-you value on its own.
 - The threshold editing surface lives inside the Ruby module (attendance settings),
   gated to the general manager, HR manager and HR assistant roles (clarified
   2026-11-02); a cross-module settings hub/page is out of scope.
-- Viewing the punctuality column follows the existing attendance-viewing privilege; no
-  new attendance roles are introduced beyond the dedicated threshold-editing privilege.
+- Viewing the punctuality column and exports follow the attendance page's existing
+  access control; no new attendance roles are introduced beyond the dedicated
+  threshold-editing privilege.
 - Existing attendance filters, the profile modal and all other staff-module behavior are
   unchanged by this feature.
 - Documentation on the docs branch is updated in the same change, per the project

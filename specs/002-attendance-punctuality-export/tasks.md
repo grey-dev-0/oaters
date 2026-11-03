@@ -19,10 +19,10 @@ dependencies with siblings in the same phase).
 
 **⚠️ No user story work can begin until this phase is complete.**
 
-- [ ] T001 [P] Add the export writer dependency inside the container:
+- [x] T001 [P] Add the export writer dependency inside the container:
       `docker exec -w /home/projects/theultragrey/oaters lemp-php-1 composer require
       openspout/openspout` — commit `composer.json` + `composer.lock`.
-- [ ] T002 [P] Common settings mechanism (Lava-owned, spec FR-003): migration
+- [x] T002 [P] Common settings mechanism (Lava-owned, spec FR-003): migration
       `Modules/Common/Database/migrations/*_create_lc_settings_table.php`
       (`id`, `key` string unique, `value` nullable string, timestamps) + model
       `Modules/Common/App/Models/Setting.php` (`$table = 'lc_settings'`,
@@ -31,20 +31,20 @@ dependencies with siblings in the same phase).
       `updateOrCreate`). Register facade `app/Facades/Settings.php` and the `Settings`
       alias following the `DataTablesHelper` precedent (facade +
       `app/Providers/DataTablesHelperServiceProvider.php` + `config/app.php` aliases).
-- [ ] T003 [P] Add permission `manage-attendance-settings` to
+- [x] T003 [P] Add permission `manage-attendance-settings` to
       `Modules/Ruby/Database/Seeders/PermissionSeeder.php`; grant to `general-manager`,
       `hr-manager`, `hr-assistant` ONLY — widen the `financial-manager` exclusion
       (currently "all except view-recruitment") so it does NOT receive the new
       permission; `director`, `team-lead`, `accountant`, `employee` unchanged
       (view-only). Spec clarification 2026-11-02.
-- [ ] T004 [P] EN/AR lang file `Modules/Ruby/resources/lang/{en,ar}/attendance.php`:
+- [x] T004 [P] EN/AR lang file `Modules/Ruby/resources/lang/{en,ar}/attendance.php`:
       `punctuality`, punctuality values with `:minutes` placeholder using
       trans-choice for singular/plural (`on time`, `:m minute late|:m minutes late`,
       `:m minute early|:m minutes early`), settings modal strings (title, label, hint,
       save), export strings (excel, csv, button title), toast messages. Reuse
       `common::words.*` keys where present (e.g., `unassigned` for the neutral
       marker).
-- [ ] T005 Create `tests/Feature/Ruby/AttendanceTestCase.php` extending
+- [x] T005 Create `tests/Feature/Ruby/AttendanceTestCase.php` extending
       `StaffTestCase` (reuses MariaDB bootstrap, tenancy bypass, `postAjax`):
       helpers `makeShift($start, $end)` (factory), `makePunch($type, $latency,
       $shift, $overrides = [])` and a DataTables-shaped `postIndex` helper returning
@@ -66,7 +66,7 @@ returns the correct text + CSS class for each (spec US1 scenarios 1–8).
 
 ### Tests for User Story 1 (write first, must fail)
 
-- [ ] T006 [P] [US1] `tests/Feature/Ruby/PunctualityColumnTest.php`: six rule cells
+- [x] T006 [P] [US1] `tests/Feature/Ruby/PunctualityColumnTest.php`: six rule cells
       (In 12/20 min late, In 10 early, Out 8/25 early, Out 30 late, Out 0 on time at
       default threshold 15) assert rendered `<span>` classes (`text-primary`,
       `text-danger`, `text-success font-weight-bold`, `text-success`) and texts;
@@ -78,18 +78,18 @@ returns the correct text + CSS class for each (spec US1 scenarios 1–8).
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Create `Modules/Ruby/App/Support/Punctuality.php`: constants
+- [x] T007 [US1] Create `Modules/Ruby/App/Support/Punctuality.php`: constants
       `KEY = 'ruby.attendance.punctularity_threshold'`, `DEFAULT = 15`, `MAX = 240`;
       `threshold(): int` (via `\Settings::get(KEY, DEFAULT)`, clamped to 0–MAX);
       `reading(Punch $punch): ?array{text, class}` implementing the full FR-001/FR-002
       matrix (sign × type; favorable = `text-success font-weight-bold`, on-time =
       `text-success`, adverse > threshold = `text-danger`, adverse ≤ threshold =
       `text-primary`, null latency = null) with trans-choice labels.
-- [ ] T008 [US1] `Modules/Ruby/App/Http/Controllers/AttendanceController@postIndex`:
+- [x] T008 [US1] `Modules/Ruby/App/Http/Controllers/AttendanceController@postIndex`:
       `addColumn('punctuality')` rendering `Punctuality::reading()` as a styled span
       (or the neutral marker); add `punctuality` to `rawColumns`; verify the shared
       filter/order path keeps working with the new column.
-- [ ] T009 [US1] `Modules/Ruby/resources/views/attendance.blade.php`: add
+- [x] T009 [US1] `Modules/Ruby/resources/views/attendance.blade.php`: add
       `<dt-column name="r_punches.latency" data="punctuality" :searchable="false">`
       (label `ruby::attendance.punctuality`) between Type and Created At; shift the
       default `:sort` index so Created At stays the initial descending sort.
@@ -109,7 +109,7 @@ punch turns red after reload; as `team-lead` the save is a 403.
 
 ### Tests for User Story 2 (write first, must fail)
 
-- [ ] T010 [P] [US2] `tests/Feature/Ruby/AttendanceSettingsTest.php`: default 15
+- [x] T010 [P] [US2] `tests/Feature/Ruby/AttendanceSettingsTest.php`: default 15
       returned when no row exists (FR-004); set/get roundtrip persists
       `lc_settings`; rejections (empty, non-integer, negative, 241) return 422 JSON
       and leave the stored value unchanged (FR-006, SC-005); `hr-manager` (granted)
@@ -118,22 +118,22 @@ punch turns red after reload; as `team-lead` the save is a 403.
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] Routes in `Modules/Ruby/routes/routes.php` (attendance group):
+- [x] T011 [US2] Routes in `Modules/Ruby/routes/routes.php` (attendance group):
       `GET attendance/settings` → `AttendanceController@getSettings`,
       `POST attendance/settings` → `postSettings`, both behind
       `can:manage-attendance-settings` (in addition to the group's `auth + can:ruby`).
-- [ ] T012 [US2] `Modules/Ruby/App/Http/Requests/SettingRequest.php`:
+- [x] T012 [US2] `Modules/Ruby/App/Http/Requests/SettingRequest.php`:
       `threshold` required, integer, min 0, max 240; `AttendanceController`:
       `getSettings` returns `{threshold: Punctuality::threshold()}`;
       `postSettings` validates via `SettingRequest` (AJAX 422 JSON via `postAjax`
       semantics), stores `\Settings::set(Punctuality::KEY, $threshold)`, returns the
       saved value.
-- [ ] T013 [US2] `Modules/Ruby/resources/views/components/modals/attendance-settings.blade.php`
+- [x] T013 [US2] `Modules/Ruby/resources/views/components/modals/attendance-settings.blade.php`
       (business Blade, pattern: `department-form`): numeric field, current value
       loaded from `attendance/settings`, save via the existing form-submit pattern
       with per-field error display; gear button in the attendance card header
       (`attendance.blade.php`) wrapped in `@can('manage-attendance-settings')`.
-- [ ] T014 [US2] Wire `resources/js/ruby/attendance.js`: settings modal open/submit
+- [x] T014 [US2] Wire `resources/js/ruby/attendance.js`: settings modal open/submit
       (pattern: `departments.js` submit: form.submit → toast → `dataTable.draw()` so
       colors refresh immediately, FR-005).
 
@@ -154,7 +154,7 @@ scenario 1).
 
 ### Tests for User Story 3 (write first, must fail)
 
-- [ ] T015 [P] [US3] `tests/Feature/Ruby/AttendanceExportTest.php`: seeded punches +
+- [x] T015 [P] [US3] `tests/Feature/Ruby/AttendanceExportTest.php`: seeded punches +
       department/date/type filter payload → CSV body matches the filtered `postIndex`
       row set exactly (order included; cells serialized per plan §Key Decisions #7)
       with localized headers, leading UTF-8 BOM, punctuality text column, NO Actions
@@ -165,10 +165,10 @@ scenario 1).
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] Refactor `AttendanceController@postIndex`: extract the
+- [x] T016 [US3] Refactor `AttendanceController@postIndex`: extract the
       filter/order/with-relationships query into a private `attendanceQuery()` used by
       both the DataTables feed and the exporter (single source of filter truth).
-- [ ] T017 [US3] Route `POST attendance/export` (inside the attendance group — same
+- [x] T017 [US3] Route `POST attendance/export` (inside the attendance group — same
       access as viewing the table) → `AttendanceController@postExport`: accept the
       DataTables request shape (the JS sends `table.ajax.params()`) + `format`
       (`xlsx|csv`); render ALL matching rows (yajra over `attendanceQuery()` with
@@ -178,7 +178,7 @@ scenario 1).
       timestamp format, empty punctuality cell for shift-less punches) via
       `trans()` in the requesting locale; filename
       `attendance_YYYY-MM-DD.xlsx|.csv` in `Content-Disposition`.
-- [ ] T018 [US3] `attendance.blade.php`: Excel + CSV buttons in the attendance card
+- [x] T018 [US3] `attendance.blade.php`: Excel + CSV buttons in the attendance card
       header; `resources/js/ruby/attendance.js`: `exportTable(format)` posts
       `dataTable.ajax.params()` + format as a blob, triggers browser download from
       the response `Content-Disposition` filename.
@@ -189,18 +189,18 @@ scenario 1).
 
 ## Phase 5: Finalization
 
-- [ ] T019 Build assets in the container:
+- [x] T019 Build assets in the container:
       `docker exec -w /home/projects/theultragrey/oaters lemp-php-1 npm run development`
       and verify the attendance page in the browser (EN + AR pass: column colors,
       settings modal, exports open in LibreOffice/Excel); time an export of one
       month of punches (~5,000 rows) in both formats against SC-003 (< 10 s each).
-- [ ] T020 `docker exec -w /home/projects/theultragrey/oaters lemp-php-1
+- [x] T020 `docker exec -w /home/projects/theultragrey/oaters lemp-php-1
       ./vendor/bin/pint` over touched files; full
       `php vendor/bin/phpunit` green (existing staff suite + new tests).
-- [ ] T021 Update VitePress docs on the `docs` branch (linked follow-up commit,
+- [x] T021 Update VitePress docs on the `docs` branch (linked follow-up commit,
       constitution documentation gate): Ruby attendance page — punctuality column,
       threshold setting (roles, bounds, default), export behavior.
-- [ ] T022 Mark spec.md **Status: Implemented** and check off this task list.
+- [x] T022 Mark spec.md **Status: Implemented** and check off this task list.
 
 ---
 

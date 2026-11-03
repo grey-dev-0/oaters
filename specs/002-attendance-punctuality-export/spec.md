@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-02
 
-**Status**: Draft
+**Status**: Implemented
 
 **Input**: User description: "Add a 'Punctuality' column to the Ruby attendance table showing
 values like 'on time', 'X minutes late' or 'X minutes early', computed from each punch's

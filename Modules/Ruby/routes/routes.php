@@ -3,10 +3,10 @@
 Route::get('login', 'ModuleController@getLogin')->name('login');
 Route::post('login', 'ModuleController@postLogin');
 
-Route::group(['middleware' => ['auth', 'can:ruby']], function(){
+Route::group(['middleware' => ['auth', 'can:ruby']], function () {
     Route::get('logout', 'ModuleController@getLogout')->name('logout');
 
-    Route::prefix('departments')->as('departments.')->group(function(){
+    Route::prefix('departments')->as('departments.')->group(function () {
         Route::get('/', 'DepartmentController@getIndex')->name('index');
         Route::post('/', 'DepartmentController@postIndex');
         Route::post('create', 'DepartmentController@postCreateOrUpdate')->name('create');
@@ -14,7 +14,7 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
         Route::get('{department}', 'DepartmentController@getDepartment')->where('department', '[0-9]+')->name('department');
     });
 
-    Route::prefix('contacts')->as('contacts.')->group(function(){
+    Route::prefix('contacts')->as('contacts.')->group(function () {
         Route::get('/', 'ContactController@getIndex')->name('index');
         Route::post('/', 'ContactController@postIndex');
         Route::post('create', 'ContactController@postCreateOrUpdate')->name('create');
@@ -29,12 +29,15 @@ Route::group(['middleware' => ['auth', 'can:ruby']], function(){
         Route::get('structure', 'ContactController@getStructure')->name('structure');
     });
 
-    Route::prefix('attendance')->as('attendance.')->group(function(){
+    Route::prefix('attendance')->as('attendance.')->group(function () {
         Route::get('/', 'AttendanceController@getIndex')->name('index');
         Route::post('/', 'AttendanceController@postIndex');
+        Route::get('settings', 'AttendanceController@getSettings')->name('settings')->middleware('can:manage-attendance-settings');
+        Route::post('settings', 'AttendanceController@postSettings')->name('settings.update')->middleware('can:manage-attendance-settings');
+        Route::post('export', 'AttendanceController@postExport')->name('export');
     });
 
-    Route::prefix('documents')->as('documents.')->group(function(){
+    Route::prefix('documents')->as('documents.')->group(function () {
         Route::get('download/{filename}', 'DocumentController@getDocument')->name('download');
     });
 

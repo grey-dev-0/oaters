@@ -25,6 +25,9 @@
 - **Punch In/Out**: Record employee check-in and check-out times
 - **Attendance Records**: Track employee presence with timestamp tracking
 - **Simple Time Tracking**: Streamlined punch system with in/out types
+- **Punctuality Column**: Each punch displays a derived punctuality reading — "on time", "X minutes late" or "X minutes early" — computed from the punch's recorded latency against its closest shift. Color coding follows the punch type: late ins and early outs render red beyond the configured threshold and blue at or below it; on-time punches render green; early ins and late outs render bold green. Punches without a matched shift show a neutral marker
+- **Lateness Threshold Setting**: A tenant-scoped punctuality threshold (whole minutes, 0–240, default 15) is editable through the attendance settings surface by the general manager, HR manager and HR assistant roles. The value is stored via the shared settings mechanism (`lc_settings`, owned by Lava Common) under the `ruby.attendance.punctuality_threshold` key with a code-declared default
+- **Filtered Export**: The attendance table exports to Excel (.xlsx) or CSV. The export always mirrors the on-screen table exactly — same filters, search, ordering and columns (Name, Role, Departments, Type, Punctuality, Created At; punctuality as plain text) — and includes every matching punch, not just the visible page. CSV is written UTF-8 with BOM so Arabic content opens correctly in spreadsheet applications
 
 #### 4. Leave Management
 - **Leave Applications**: Submit and manage leave requests

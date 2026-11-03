@@ -448,6 +448,12 @@ Manages general purpose entities including contacts, addresses, colors, and geog
    - Multi-language color names
    - Used for UI theming and categorization
 
+7. **Settings** (`lc_settings`)
+   - Tenant-scoped key/value store for module preferences
+   - Consumed through the shared `Settings` service (`\Settings::get`/`set`)
+   - Code-declared defaults apply when a tenant has no stored value
+   - Keys are namespaced by the consuming module (e.g. `ruby.attendance.punctuality_threshold`)
+
 ### Database Schema
 
 #### Core Models

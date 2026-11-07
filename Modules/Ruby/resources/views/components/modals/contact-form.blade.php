@@ -1,4 +1,4 @@
-@props(['id', 'ref', 'color', 'title', 'edit' => false, 'cities', 'countries', 'degrees'])
+@props(['id', 'ref', 'color', 'title', 'edit' => false, 'countries', 'degrees'])
 
 <modal id="{{$id}}" ref="{{$ref}}" static size="lg" color="{{$color}}">
     <template #header>{{$title}}@if($edit) - @{{ openContact.name }}@endif</template>
@@ -59,12 +59,10 @@
                 <h6 class="col-12 font-weight-bolder">{{trans('common::words.addresses')}}</h6>
                 <div class="form-group row col-12 m-0" v-for="(address, i) in form.addresses" :key="'address-' + i">
                     <div class="col-md-5 pl-0">
-                        <select :name="'addresses[' + i + '][city_id]'" v-model="address.city_id" :class="'form-control' + (error('addresses[' + i + '][city_id]')? ' border-danger' : '')">
-                            <option value="">-- {{trans('ruby::contacts.city')}} --</option>
-                            @foreach($cities as $cityId => $cityName)
-                                <option value="{{$cityId}}">{{$cityName}}</option>
-                            @endforeach
-                        </select>
+                        <autocomplete :id="'{{($edit)? 'e_' : ''}}city-' + i" :name="'addresses[' + i + '][city_id]'" :url="citiesUrl" :limit="10"
+                                      :selected-id="address.city_id? String(address.city_id) : ''" :selected-title="address.city_name"
+                                      placeholder="{{trans('ruby::contacts.city')}}" @change="(name, cityId, cityName) => { address.city_id = cityId; address.city_name = cityName; }">
+                        </autocomplete>
                     </div>
                     <div class="col-md-3 p-0">
                         <input type="text" :name="'addresses[' + i + '][line_1]'" v-model="address.line_1" class="form-control" placeholder="{{trans('common::words.address')}} 1">

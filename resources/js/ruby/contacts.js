@@ -15,7 +15,7 @@ select2();
 let app = createApp({
     data(){
         return {
-            roles, departments, statuses, locale,
+            roles, departments, statuses, locale, citiesUrl,
             toast: {
                 color: 'primary',
                 content: null
@@ -56,7 +56,7 @@ let app = createApp({
             let presets = {
                 emails: {address: '', default: !this.form.emails.length},
                 phones: {number: '', default: !this.form.phones.length},
-                addresses: {city_id: '', line_1: '', line_2: ''},
+                addresses: {city_id: null, city_name: '', line_1: '', line_2: ''},
                 newDocuments: {title: ''}
             };
             this.form[type].push(presets[type]);
@@ -97,7 +97,8 @@ let app = createApp({
                 view.form = {
                     emails: response.emails.map(email => ({address: email.address, default: !!email.default})),
                     phones: response.phones.map(phone => ({number: phone.number, default: !!phone.default})),
-                    addresses: response.addresses.map(address => ({city_id: address.city_id, line_1: address.line_1, line_2: address.line_2})),
+                    addresses: response.addresses.map(address => ({city_id: address.city_id, city_name: address.city?.translations?.[0]?.name ?? '',
+                        line_1: address.line_1, line_2: address.line_2})),
                     applicantMode: response.applicant? 'existing' : 'new',
                     nationality: response.applicant? response.applicant.country_id ?? '' : '',
                     degree: response.applicant? response.applicant.degree_id ?? '' : '',
@@ -184,7 +185,7 @@ let app = createApp({
     created(){
         this.emptyForm();
     }
-}), bundles = [Datatable, Form, Timeline, List, Tab], components = {Modal: 'modal'};
+}), bundles = [Datatable, Form, Timeline, List, Tab], components = {Modal: 'modal', Autocomplete: 'autocomplete'};
 
 app.config.globalProperties.$appInstance = app;
 common.load(app);

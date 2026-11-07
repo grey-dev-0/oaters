@@ -79,6 +79,26 @@ class ContactUpdateTest extends StaffTestCase
         $this->assertSame($hashBefore, $this->account->fresh()->password);
     }
 
+    public function test_update_keeping_roles_unchanged_retains_them(): void
+    {
+        // The edit form prefills the roles select with the member's current
+        // roles; resubmitting them unchanged must keep contact and account
+        // in sync without demoting the member.
+        $this->postAjax('r/contacts/update', $this->updatePayload())->assertOk();
+
+        $member = $this->member->fresh();
+        $this->assertTrue($member->hasRole('hr-manager'), 'contact keeps its role');
+        $this->assertTrue($member->user->hasRole('hr-manager'), 'account keeps its role');
+    }
+
+    public function test_update_without_roles_is_rejected(): void
+    {
+        $response = $this->postAjax('r/contacts/update', $this->updatePayload(['roles' => null]));
+
+        $response->assertStatus(422)->assertJsonValidationErrors(['roles']);
+        $this->assertTrue($this->member->fresh()->hasRole('hr-manager'), 'roles untouched on rejection');
+    }
+
     public function test_update_changes_password_when_provided(): void
     {
         $this->postAjax('r/contacts/update', $this->updatePayload([

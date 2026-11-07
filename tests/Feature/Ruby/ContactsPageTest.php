@@ -16,6 +16,25 @@ class ContactsPageTest extends StaffTestCase
         auth()->user()->contact()->save(Contact::create(['name' => 'Contacts Tester']));
     }
 
+    public function test_contacts_page_renders_the_roles_select_and_default_radios(): void
+    {
+        $response = $this->get('r/contacts');
+
+        $response->assertOk();
+        $content = $response->getContent();
+        $this->assertSame(2, substr_count($content, 'name="roles[]"'), 'both staff form modals carry a roles select');
+        $this->assertStringContainsString('id="contact-roles"', $content);
+        $this->assertStringContainsString('id="e_contact-roles"', $content);
+        // The roles select sits right after the Job Title field of the contact pane.
+        $this->assertGreaterThan(strpos($content, 'name="job"'), strpos($content, 'id="contact-roles"'));
+        // Defaults are labeled radios carrying explicit 1/0 values, not bare checkboxes.
+        $this->assertSame(0, substr_count($content, 'type="checkbox"'), 'no checkboxes left for defaults');
+        $this->assertStringContainsString("type=\"radio\"", $content);
+        $this->assertStringContainsString("email.default ? 1 : 0", $content);
+        $this->assertStringContainsString("phone.default ? 1 : 0", $content);
+        $this->assertStringContainsString(trans('ruby::contacts.default'), $content, 'localized default label');
+    }
+
     public function test_contacts_page_does_not_inline_the_city_catalog(): void
     {
         foreach (range(1, 30) as $i) {

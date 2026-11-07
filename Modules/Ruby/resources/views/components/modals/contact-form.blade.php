@@ -1,4 +1,4 @@
-@props(['id', 'ref', 'color', 'title', 'edit' => false, 'countries', 'degrees'])
+@props(['id', 'ref', 'color', 'title', 'edit' => false, 'roles', 'countries', 'degrees'])
 
 <modal id="{{$id}}" ref="{{$ref}}" static size="lg" color="{{$color}}">
     <template #header>{{$title}}@if($edit) - @{{ openContact.name }}@endif</template>
@@ -22,12 +22,28 @@
                 <vue-field name="name" type="text" id="{{($edit)? 'e_' : ''}}name">{{trans('common::words.name')}}</vue-field>
                 <vue-field name="job" type="text" id="{{($edit)? 'e_' : ''}}job">{{trans('ruby::contacts.job')}}</vue-field>
 
+                <div class="form-group row">
+                    <label class="col-12 col-sm-6 col-md-3 col-lg-3 col-form-label">{{trans('common::words.role')}}</label>
+                    <div class="col-12 col-sm-6 col-md-9 col-lg-9">
+                        <select name="roles[]" id="{{($edit)? 'e_' : ''}}contact-roles" :class="'form-control' + (error('roles')? ' border-danger' : '')" multiple v-model="form.roles">
+                            @foreach($roles as $roleId => $roleTitle)
+                                <option value="{{$roleId}}">{{$roleTitle}}</option>
+                            @endforeach
+                        </select>
+                        <small class="text-danger d-block" v-if="error('roles')">@{{ error('roles') }}</small>
+                    </div>
+                </div>
+
                 <h6 class="col-12 font-weight-bolder">{{trans('common::words.emails')}}</h6>
                 <div class="form-group row col-12 m-0" v-for="(email, i) in form.emails" :key="'email-' + i">
-                    <div class="col-md-1 text-center pt-2">
-                        <input type="checkbox" :name="'emails[' + i + '][default]'" v-model="email.default" @change="markDefault('emails', i)" title="{{trans('ruby::contacts.default')}}">
+                    <div class="col-md-2 pt-2">
+                        <div class="form-check m-0">
+                            <input class="form-check-input" type="radio" :id="'{{($edit)? 'e_' : ''}}email-default-' + i" :checked="email.default" @change="markDefault('emails', i)">
+                            <label class="form-check-label" :for="'{{($edit)? 'e_' : ''}}email-default-' + i">{{trans('ruby::contacts.default')}}</label>
+                        </div>
+                        <input type="hidden" :name="'emails[' + i + '][default]'" :value="email.default ? 1 : 0">
                     </div>
-                    <div class="col-md-8 p-0">
+                    <div class="col-md-7 p-0">
                         <input type="email" :name="'emails[' + i + '][address]'" v-model="email.address" :class="'form-control' + (error('emails[' + i + '][address]')? ' border-danger' : '')" placeholder="{{trans('common::words.email')}}" required>
                         <small class="text-danger d-block" v-if="error('emails[' + i + '][address]')">@{{ error('emails[' + i + '][address]') }}</small>
                     </div>
@@ -41,10 +57,14 @@
 
                 <h6 class="col-12 font-weight-bolder">{{trans('common::words.phones')}}</h6>
                 <div class="form-group row col-12 m-0" v-for="(phone, i) in form.phones" :key="'phone-' + i">
-                    <div class="col-md-1 text-center pt-2">
-                        <input type="checkbox" :name="'phones[' + i + '][default]'" v-model="phone.default" @change="markDefault('phones', i)" title="{{trans('ruby::contacts.default')}}">
+                    <div class="col-md-2 pt-2">
+                        <div class="form-check m-0">
+                            <input class="form-check-input" type="radio" :id="'{{($edit)? 'e_' : ''}}phone-default-' + i" :checked="phone.default" @change="markDefault('phones', i)">
+                            <label class="form-check-label" :for="'{{($edit)? 'e_' : ''}}phone-default-' + i">{{trans('ruby::contacts.default')}}</label>
+                        </div>
+                        <input type="hidden" :name="'phones[' + i + '][default]'" :value="phone.default ? 1 : 0">
                     </div>
-                    <div class="col-md-8 p-0">
+                    <div class="col-md-7 p-0">
                         <input type="tel" :name="'phones[' + i + '][number]'" v-model="phone.number" maxlength="16" :class="'form-control' + (error('phones[' + i + '][number]')? ' border-danger' : '')" placeholder="{{trans('common::words.phone')}}" required>
                         <small class="text-danger d-block" v-if="error('phones[' + i + '][number]')">@{{ error('phones[' + i + '][number]') }}</small>
                     </div>

@@ -42,6 +42,7 @@ let app = createApp({
         },
         emptyForm(){
             this.form = {
+                roles: [],
                 emails: [{address: '', default: true}],
                 phones: [{number: '', default: true}],
                 addresses: [],
@@ -63,9 +64,29 @@ let app = createApp({
         },
         removeRow(type, i){
             this.form[type].splice(i, 1);
+            // A collection always keeps exactly one default row (FR-002):
+            // when the default row is removed, the first row takes over.
+            if((type == 'emails' || type == 'phones') && this.form[type].length
+                && !this.form[type].some(row => row.default))
+                this.form[type][0].default = true;
         },
         markDefault(type, i){
             this.form[type].forEach((row, index) => row.default = index == i);
+        },
+        /**
+         * (Re)initializes the roles multiple-select of a staff form modal
+         * as a select2. Called after the modal's form reset, once Vue has
+         * re-applied the selection from form.roles.
+         */
+        initRolesSelect(id){
+            let element = $('#' + id);
+            if(element.hasClass('select2-hidden-accessible'))
+                element.select2('destroy');
+            element.select2({
+                theme: 'bootstrap',
+                placeholder: this.locale.contacts.select_roles,
+                width: '100%'
+            });
         },
         error(field){
             let form = this.activeForm && this.$refs[this.activeForm];
@@ -86,7 +107,10 @@ let app = createApp({
         addContact(){
             this.activeForm = 'createContactForm';
             this.emptyForm();
-            this.$refs.createContact.show(() => this.$refs.createContactForm.reset());
+            this.$refs.createContact.show(() => {
+                this.$refs.createContactForm.reset();
+                this.$nextTick(() => this.initRolesSelect('contact-roles'));
+            });
         },
         editContact(e){
             let view = this;
@@ -95,6 +119,7 @@ let app = createApp({
             $.get(`${baseUrl}/contacts/${row.id}`).then(response => {
                 view.activeForm = 'updateContactForm';
                 view.form = {
+                    roles: response.roles_ids ?? [],
                     emails: response.emails.map(email => ({address: email.address, default: !!email.default})),
                     phones: response.phones.map(phone => ({number: phone.number, default: !!phone.default})),
                     addresses: response.addresses.map(address => ({city_id: address.city_id, city_name: address.city?.translations?.[0]?.name ?? '',
@@ -115,6 +140,7 @@ let app = createApp({
                         recruited_at: response.applicant && response.applicant.recruited_at? response.applicant.recruited_at.slice(0, 10) : '',
                         applicant_id: response.applicant? {id: response.id, text: response.name} : undefined
                     });
+                    view.$nextTick(() => view.initRolesSelect('e_contact-roles'));
                 }));
             });
         },

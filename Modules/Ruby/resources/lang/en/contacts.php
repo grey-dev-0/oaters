@@ -27,6 +27,7 @@ return [
     'reactivated' => 'Staff member reactivated. Their account access is restored.',
     'recent_leaves' => 'Recent Leaves',
     'select_applicant' => 'Search applicants by name...',
+    'select_roles' => 'Select roles...',
     'updated' => 'Staff member updated successfully.',
     'user' => 'User Account',
     'username_taken' => 'This username is already taken.',

@@ -17,6 +17,14 @@
             <alert id="toast" ref="toast" :color="toast.color" :content="toast.content"></alert>
 
             <card title="{{trans('ruby::words.attendance')}}" color="green-1">
+                <template #toolbar>
+                    @can('manage-attendance-settings')
+                        <div class="btn btn-sm btn-outline-secondary mr-1" title="{{trans('ruby::attendance.settings')}}" @click="openSettings"><i class="fa fas fa-cog align-middle"></i></div>
+                    @endcan
+                    <div class="btn btn-sm btn-success mr-1" title="{{trans('ruby::attendance.export_excel')}}" @click="exportTable('xlsx')"><i class="fa fas fa-file-excel align-middle"></i></div>
+                    <div class="btn btn-sm btn-secondary text-white" title="{{trans('ruby::attendance.export_csv')}}" @click="exportTable('csv')"><i class="fa fas fa-file-csv align-middle"></i></div>
+                </template>
+
                 <vue-datafilter :cols="4" datatable-ref="attendanceTable">
                     <dt-filter name="contact.name" type="text" label="{{trans('common::words.name')}}"></dt-filter>
                     <dt-filter name="contact.roles.title" type="select2" multiple :values="roles" label="{{trans('common::words.role')}}"></dt-filter>
@@ -25,11 +33,12 @@
                     <dt-filter name="type" type="select" :values="{in: '{{__('common::words.in')}}', out: '{{__('common::words.out')}}'}" label="{{__('common::words.type')}}"></dt-filter>
                 </vue-datafilter>
 
-                <vue-datatable datatable-id="attendance-table" ref="attendanceTable" :sort="[[4, 'desc']]" :ajax-complete="renderActions">
+                <vue-datatable datatable-id="attendance-table" ref="attendanceTable" :sort="[[5, 'desc']]" :ajax-complete="renderActions">
                     <dt-column name="contact.name" data="contact.name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="contact.roles.title" data="contact.roles.0.title" :searchable="false">{{trans('common::words.role')}}</dt-column>
                     <dt-column name="contact.departments.name" :data="renderDepartments" :searchable="false" :orderable="false">{{trans('common::words.departments')}}</dt-column>
                     <dt-column name="type" data="type">{{trans('common::words.type')}}</dt-column>
+                    <dt-column name="r_punches.latency" data="punctuality" :searchable="false">{{trans('ruby::attendance.punctuality')}}</dt-column>
                     <dt-column name="r_punches.created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
                 </vue-datatable>
@@ -38,6 +47,7 @@
     </div>
 
     <x-ruby::modals.profile/>
+    <x-ruby::modals.attendance-settings/>
 @endsection
 
 @push('scripts')

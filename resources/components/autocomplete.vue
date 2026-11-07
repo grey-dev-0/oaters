@@ -73,7 +73,21 @@ export default {
             return classes.join(' ');
         }
     },
+    watch: {
+        selectedId(value){
+            this.applySelection(value, this.selectedTitle);
+        },
+        selectedTitle(value){
+            this.applySelection(this.selectedId, value);
+        }
+    },
     methods: {
+        applySelection(id, title){
+            if(id !== undefined && id !== null)
+                this.selection = String(id);
+            if(title !== undefined && title !== null)
+                this.query = title;
+        },
         search: _debounce(function(e){
             if(this.validation[this.name])
                 this.validation[this.name] = [];
@@ -108,12 +122,12 @@ export default {
             this.selection = selectedKey;
             this.query = selectedValue;
             this.show = false;
-            this.$emit('change', this.name, selectedKey);
+            this.$emit('change', this.name, selectedKey, selectedValue);
         },
         clear: function(){
             this.query = '';
             this.selection = '';
-            this.$emit('change', this.name, null);
+            this.$emit('change', this.name, null, null);
         },
         close(delayed){
             if(!delayed)
@@ -127,19 +141,16 @@ export default {
         }
     },
     mounted(){
-        if(this.$parent.$options.name != 'VueField')
-            return;
-        if(this.selectedId !== undefined)
-            this.selection = this.selectedId;
-        if(this.selectedTitle !== undefined)
-            this.query = this.selectedTitle;
-        let component = this;
-        this.$nextTick(function(){
-            this.$parent.$parent.$parent.emitter.on('destroy', function(fieldName){
-                if(component.name == fieldName)
-                    component.clear();
+        this.applySelection(this.selectedId, this.selectedTitle);
+        if(this.$parent.$options.name == 'VueField'){
+            let component = this;
+            this.$nextTick(() => {
+                this.$parent.$parent.$parent.emitter.on('destroy', function(fieldName){
+                    if(component.name == fieldName)
+                        component.clear();
+                });
             });
-        });
+        }
         if(!this.multiple)
             return;
         let input = $('#' + this.id);

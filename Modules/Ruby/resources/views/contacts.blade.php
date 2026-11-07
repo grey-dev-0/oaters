@@ -38,8 +38,8 @@
     </div>
 
     <x-ruby::modals.profile/>
-    <x-ruby::modals.contact-form id="create-contact" ref="createContact" :title="trans('ruby::contacts.new')" color="green-1" :cities="$cities" :countries="$countries" :degrees="$degrees"/>
-    <x-ruby::modals.contact-form id="update-contact" ref="updateContact" :title="trans('ruby::words.staff')" color="teal-2" edit :cities="$cities" :countries="$countries" :degrees="$degrees"/>
+    <x-ruby::modals.contact-form id="create-contact" ref="createContact" :title="trans('ruby::contacts.new')" color="green-1" :roles="$roles" :countries="$countries" :degrees="$degrees"/>
+    <x-ruby::modals.contact-form id="update-contact" ref="updateContact" :title="trans('ruby::words.staff')" color="teal-2" edit :roles="$roles" :countries="$countries" :degrees="$degrees"/>
 @endsection
 
 @push('scripts')
@@ -48,10 +48,11 @@
             $locale = [
                 'common' => \Arr::only(trans('common::words'), 'unassigned'),
                 'leaves' => \Arr::only(trans('ruby::leaves'), 'types'),
-                'contacts' => \Arr::only(trans('ruby::contacts'), ['confirm_delete', 'confirm_reactivate'])
+                'contacts' => \Arr::only(trans('ruby::contacts'), ['confirm_delete', 'confirm_reactivate', 'select_roles'])
             ];
         @endphp
         let roles = @json($roles), departments = @json($departments), statuses = @json(['inactive' => trans('common::words.inactive')]);
+        let citiesUrl = @json(route('ruby::contacts.cities'));
         locale = @json($locale);
     </script>
     @vite('resources/js/ruby/contacts.js')

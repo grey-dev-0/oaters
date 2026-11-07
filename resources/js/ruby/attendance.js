@@ -37,6 +37,40 @@ let app = createApp({
         closeContact(){
             this.openContact.addresses = undefined;
         },
+        openSettings(){
+            this.$refs.attendanceSettings.show(() => {
+                $.get(`${baseUrl}/attendance/settings`).then(response => {
+                    this.$refs.attendanceSettingsForm.reset({threshold: response.threshold});
+                });
+            });
+        },
+        submitSettings(){
+            this.$refs.attendanceSettingsForm.submit().then(response => {
+                this.$refs.attendanceSettings.hide();
+                this.toast = {
+                    color: 'success',
+                    content: response.message
+                };
+                this.dataTable.draw();
+                this.$nextTick(() => this.$refs.toast.show());
+            });
+        },
+        exportTable(format){
+            $.ajax({
+                url: `${baseUrl}/attendance/export`,
+                method: 'POST',
+                data: {...this.dataTable.ajax.params(), format},
+                xhrFields: {responseType: 'blob'}
+            }).then(blob => {
+                let url = URL.createObjectURL(blob), link = document.createElement('a');
+                link.href = url;
+                link.download = '';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                URL.revokeObjectURL(url);
+            });
+        },
         renderActions(){
             let view = this, appInstance = this.$appInstance;
             const showProfile = e => {

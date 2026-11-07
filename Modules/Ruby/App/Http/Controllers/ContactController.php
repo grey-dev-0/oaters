@@ -36,9 +36,10 @@ class ContactController extends Controller
         $departments = \Modules\Ruby\App\Models\DepartmentLocale::whereLocale($locale)->pluck('name', 'department_id');
         $degrees = DegreeLocale::whereLocale($locale)->pluck('name', 'degree_id');
         $countries = CountryLocale::whereLocale($locale)->pluck('name', 'country_id');
-        $cities = \Modules\Common\App\Models\CityLocale::whereLocale($locale)->pluck('name', 'city_id');
 
-        return view('ruby::contacts', compact('roles', 'departments', 'degrees', 'countries', 'cities'));
+        // Cities are intentionally NOT listed here: the catalog is huge and
+        // is searched remotely through postCities() from the staff form.
+        return view('ruby::contacts', compact('roles', 'departments', 'degrees', 'countries'));
     }
 
     public function postIndex()
@@ -158,6 +159,31 @@ class ContactController extends Controller
         });
 
         return response()->json(['success' => true, 'message' => trans('ruby::contacts.reactivated')]);
+    }
+
+    /**
+     * Renders the organizational structure chart. Every row of
+     * r_subordinates is a manager-member edge grouped by department;
+     * manager-only rows (NULL contact_id) and edges referencing
+     * deactivated (soft-deleted) members carry no node and are skipped.
+     */
+    public function getStructure()
+    {
+        $locale = app()->getLocale();
+        $subordinates = Subordinate::with(['manager', 'contact',
+            'department.translations' => fn ($locales) => $locales->whereLocale($locale)])
+            ->get()
+            ->filter(fn ($subordinate) => $subordinate->manager && $subordinate->contact)
+            ->map(fn ($subordinate) => [
+                'manager' => $subordinate->manager->only(['id', 'name']),
+                'member' => $subordinate->contact->only(['id', 'name']),
+                'department' => [
+                    'id' => $subordinate->department_id,
+                    'name' => $subordinate->department?->{"name:$locale"},
+                ],
+            ])->values();
+
+        return view('ruby::structure', compact('subordinates'));
     }
 
     /**

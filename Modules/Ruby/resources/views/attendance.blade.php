@@ -55,7 +55,8 @@
         @php
             $locale = [
                 'common' => \Arr::only(trans('common::words'), 'unassigned'),
-                'leaves' => \Arr::only(trans('ruby::leaves'), 'types')
+                'leaves' => \Arr::only(trans('ruby::leaves'), 'types'),
+                'attendance' => \Arr::only(trans('ruby::attendance'), 'save_failed')
             ];
         @endphp
         let roles = @json($roles), departments = @json($departments);

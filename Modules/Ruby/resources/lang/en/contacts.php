@@ -1,4 +1,5 @@
 <?php
+
 return [
     'account' => 'User Account',
     'actions' => 'Actions',
@@ -28,6 +29,7 @@ return [
     'recent_leaves' => 'Recent Leaves',
     'select_applicant' => 'Search applicants by name...',
     'select_roles' => 'Select roles...',
+    'save_failed' => 'Could not save the staff member. Please review the form and try again.',
     'updated' => 'Staff member updated successfully.',
     'user' => 'User Account',
     'username_taken' => 'This username is already taken.',

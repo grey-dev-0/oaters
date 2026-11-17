@@ -1,4 +1,5 @@
 <?php
+
 return [
     'staff' => 'الموظفون',
     'attendance' => 'الحضور',
@@ -9,5 +10,5 @@ return [
     'salaries' => 'الرواتب',
     'recruitment' => 'التوظيف',
     'vacancies' => 'الوظائف الشاغرة',
-    'applicants' => 'المتقدمون'
+    'applicants' => 'المتقدمون',
 ];

@@ -5,7 +5,8 @@ namespace Modules\Ruby\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Ruby\App\Models\Applicant;
 
-class DocumentsFactory extends Factory{
+class DocumentsFactory extends Factory
+{
     /**
      * The name of the factory's corresponding model.
      */
@@ -14,12 +15,12 @@ class DocumentsFactory extends Factory{
     /**
      * Define the model's default state.
      */
-    public function definition(): array{
+    public function definition(): array
+    {
         return [
             'applicant_id' => Applicant::factory(),
             'title' => $this->faker->sentence(3),
-            'filename' => 'example.txt'
+            'filename' => 'example.txt',
         ];
     }
 }
-

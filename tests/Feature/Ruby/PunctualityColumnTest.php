@@ -48,6 +48,28 @@ class PunctualityColumnTest extends AttendanceTestCase
         $this->assertStringContainsString('on time', $cells[$greenOnTime->id]);
     }
 
+    public function test_table_survives_punches_of_deactivated_members(): void
+    {
+        // Deactivating a member keeps their punch history; the table must still
+        // draw, with the trashed contact resolved for name/role rendering (F-101).
+        $shift = $this->makeShift();
+        $deactivated = $this->makePunch('in', 6, $shift);
+        $deactivated->contact->delete();
+
+        $active = $this->makePunch('in', 3, $shift);
+
+        $rows = $this->attendanceRows();
+
+        $ids = array_column($rows, 'id');
+        $expected = [$active->id, $deactivated->id];
+        sort($ids);
+        sort($expected);
+        $this->assertSame($expected, $ids);
+        $byId = collect($rows)->keyBy('id');
+        $this->assertNotNull($byId[$deactivated->id]['contact'], 'trashed contact still resolved');
+        $this->assertSame($deactivated->contact->name, $byId[$deactivated->id]['contact']['name']);
+    }
+
     public function test_renders_neutral_marker_for_shiftless_punches(): void
     {
         $punch = $this->makePunch('in', null);
@@ -71,7 +93,7 @@ class PunctualityColumnTest extends AttendanceTestCase
         $this->assertStringContainsString('text-danger', $this->attendancePunctualityById()[$punch->id]);
     }
 
-    public function test_punctuality_column_sorts_by_recorded_latency(): void
+    public function test_punctuality_column_sorts_ascending_by_latency(): void
     {
         $shift = $this->makeShift();
         $late = $this->makePunch('in', 20, $shift);
@@ -82,6 +104,24 @@ class PunctualityColumnTest extends AttendanceTestCase
 
         $this->assertSame(
             [$early->id, $mid->id, $late->id],
+            array_column($rows, 'id')
+        );
+    }
+
+    public function test_punctuality_column_sorts_descending_by_latency(): void
+    {
+        // Separate test from the ascending one: yajra's request wrapper is a
+        // container singleton, so its captured order data must not leak
+        // between requests within a single test.
+        $shift = $this->makeShift();
+        $late = $this->makePunch('in', 20, $shift);
+        $early = $this->makePunch('in', -10, $shift);
+        $mid = $this->makePunch('in', 12, $shift);
+
+        $rows = $this->attendanceRows(['order' => [['column' => 4, 'dir' => 'desc']]]);
+
+        $this->assertSame(
+            [$late->id, $mid->id, $early->id],
             array_column($rows, 'id')
         );
     }

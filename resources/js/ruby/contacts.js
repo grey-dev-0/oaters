@@ -16,6 +16,7 @@ let app = createApp({
     data(){
         return {
             roles, departments, statuses, locale, citiesUrl,
+            rolesOptions: {...roles},
             toast: {
                 color: 'primary',
                 content: null
@@ -102,7 +103,11 @@ let app = createApp({
                 };
                 this.dataTable.draw();
                 this.$nextTick(() => this.$refs.toast.show());
-            }).catch(() => {});
+            }).catch(() => {
+                // Non-422 failures: 422s render inline via the form component.
+                this.toast = {color: 'danger', content: this.locale.contacts.save_failed};
+                this.$nextTick(() => this.$refs.toast.show());
+            });
         },
         addContact(){
             this.activeForm = 'createContactForm';
@@ -118,8 +123,11 @@ let app = createApp({
             view.openContact = row;
             $.get(`${baseUrl}/contacts/${row.id}`).then(response => {
                 view.activeForm = 'updateContactForm';
+                // Offer the member's current roles even when outside the standard
+                // set (F-003), and select by string keys to match option values.
+                view.rolesOptions = {...view.rolesOptions, ...response.roles_options};
                 view.form = {
-                    roles: response.roles_ids ?? [],
+                    roles: (response.roles_ids ?? []).map(String),
                     emails: response.emails.map(email => ({address: email.address, default: !!email.default})),
                     phones: response.phones.map(phone => ({number: phone.number, default: !!phone.default})),
                     addresses: response.addresses.map(address => ({city_id: address.city_id, city_name: address.city?.translations?.[0]?.name ?? '',
@@ -184,14 +192,16 @@ let app = createApp({
             };
             $('[vue-template]').each(function(){
                 let data = view.dataTable.row($(this).closest('tr')).data();
+                // Toggle BEFORE renderVueTemplate: it removes the template node, so
+                // toggling afterwards would style a detached subtree (F-002).
+                $(this).find('.profile, .edit, .delete').toggle(!(data && data.deleted_at));
+                $(this).find('.reactivate').toggle(!!(data && data.deleted_at));
                 renderVueTemplate(this, appInstance, {methods: {
                     showProfile,
                     editContact: e => view.editContact(e),
                     deleteContact: e => view.deleteContact(e),
                     reactivateContact: e => view.reactivateContact(e)
                 }});
-                $(this).find('.profile, .edit, .delete').toggle(!(data && data.deleted_at));
-                $(this).find('.reactivate').toggle(!!(data && data.deleted_at));
             });
         }
     },

@@ -45,7 +45,11 @@ class ContactController extends Controller
     public function postIndex()
     {
         $contacts = Contact::activeRecruit()->withRoles()->withDefaultInfo()->withDepartments()->with('applicant:id,recruited_at')->select(['lc_contacts.id', 'name', 'job', 'deleted_at']);
-        if (request('status') == 'inactive') {
+        // The Inactive filter writes its value to the hidden status column's search
+        // (datafilter convention); direct status params (tests, API) also work (F-002).
+        $columns = \DataTablesHelper::getColumns();
+        $status = request('status') ?? (isset($columns['status']) ? request("columns.{$columns['status']}.search.value") : null);
+        if ($status == 'inactive') {
             $contacts->onlyTrashed();
         }
 
@@ -59,10 +63,17 @@ class ContactController extends Controller
             if (! empty($roles = request("columns.{$columns['roles']}.search.value"))) {
                 $query->whereHas('roles', fn ($r) => $r->whereIn('id', $roles));
             }
-        })->addColumn('actions', fn () => view('ruby::actions.contacts'))->orderColumn('roles', function ($query, $direction) {
-            $query->leftJoin('s_model_has_roles AS mr', fn ($join) => $join->on('lc_contacts.id', 'mr.model_id')
-                ->where('model_type', Contact::class))->leftJoin('s_role_locales AS rl', 'mr.role_id', 'rl.role_id')->orderBy('rl.title', $direction);
-        })->rawColumns(['actions'])->make();
+        })->addColumn('actions', fn () => view('ruby::actions.contacts'))
+            // The Inactive filter writes its search to the hidden status column;
+            // intercept the default LIKE (the column is virtual) into the
+            // deactivated-only branch (F-002).
+            ->filterColumn('status', function ($query, $keyword) {
+                // Suppressed: the branch is applied on the base query above.
+            })
+            ->orderColumn('roles', function ($query, $direction) {
+                $query->leftJoin('s_model_has_roles AS mr', fn ($join) => $join->on('lc_contacts.id', 'mr.model_id')
+                    ->where('model_type', Contact::class))->leftJoin('s_role_locales AS rl', 'mr.role_id', 'rl.role_id')->orderBy('rl.title', $direction);
+            })->rawColumns(['actions'])->make();
     }
 
     public function postCreateOrUpdate(ContactRequest $request)
@@ -80,6 +91,8 @@ class ContactController extends Controller
         $contact->applicant?->documents->each(fn ($document) => $document->setAppends(['download_url']));
 
         return response()->json($contact->setAttribute('roles_ids', $contact->roles->pluck('id'))
+            ->setAttribute('roles_options', RoleLocale::whereLocale(app()->getLocale())
+                ->whereIn('role_id', $contact->roles->pluck('id'))->pluck('title', 'role_id'))
             ->setAttribute('departments_member', $contact->memberships->pluck('department_id')->unique()->values())
             ->setAttribute('departments_managed', Subordinate::whereManagerId($contact->id)->whereNull('contact_id')->pluck('department_id'))
             ->setAttribute('username', AccountManager::username($contact->id))

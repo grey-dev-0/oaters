@@ -26,9 +26,7 @@
                     <label class="col-12 col-sm-6 col-md-3 col-lg-3 col-form-label">{{trans('common::words.role')}}</label>
                     <div class="col-12 col-sm-6 col-md-9 col-lg-9">
                         <select name="roles[]" id="{{($edit)? 'e_' : ''}}contact-roles" :class="'form-control' + (error('roles')? ' border-danger' : '')" multiple v-model="form.roles">
-                            @foreach($roles as $roleId => $roleTitle)
-                                <option value="{{$roleId}}">{{$roleTitle}}</option>
-                            @endforeach
+                            <option v-for="(title, id) in rolesOptions" :key="id" :value="id">@{{ title }}</option>
                         </select>
                         <small class="text-danger d-block" v-if="error('roles')">@{{ error('roles') }}</small>
                     </div>

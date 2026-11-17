@@ -7,34 +7,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Common\App\Models\Contact;
 
-class Department extends Model{
+class Department extends Model
+{
     use HasFactory, Translatable;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_departments';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = [];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $hidden = ['staff'];
 
     /**
-     * @var string[] $translatedAttributes Attributes translated in the related localization table.
+     * @var string[] Attributes translated in the related localization table.
      */
     public $translatedAttributes = ['name'];
 
-    public function managers(){
+    public function managers()
+    {
         return $this->belongsToMany(Contact::class, 'r_subordinates', 'department_id', 'manager_id');
     }
 
-    public function employees(){
+    public function employees()
+    {
         return $this->belongsToMany(Contact::class, 'r_subordinates', 'department_id', 'contact_id');
     }
 
@@ -44,8 +47,9 @@ class Department extends Model{
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function head() {
-        return $this->managers()->whereNotExists(fn($query) => $query->selectRaw(1)->from('r_subordinates AS rs')
+    public function head()
+    {
+        return $this->managers()->whereNotExists(fn ($query) => $query->selectRaw(1)->from('r_subordinates AS rs')
             ->whereRaw('r_subordinates.department_id = rs.department_id AND lc_contacts.id = rs.contact_id'));
     }
 
@@ -54,8 +58,10 @@ class Department extends Model{
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function staff(){
+    public function staff()
+    {
         $this->appends[] = 'members';
+
         return $this->subordinates()->with(['managers', 'contacts']);
     }
 
@@ -64,19 +70,23 @@ class Department extends Model{
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subordinates() {
+    public function subordinates()
+    {
         return $this->hasMany(Subordinate::class);
     }
 
-    public function applicants(){
+    public function applicants()
+    {
         return $this->morphToMany(Applicant::class, 'applicable');
     }
 
-    public function vacancies(){
+    public function vacancies()
+    {
         return $this->hasMany(Vacancy::class);
     }
 
-    public function getMembersAttribute(){
+    public function getMembersAttribute()
+    {
         return $this->staff->managers->merge($this->staff->contacts)->unique('id')->values();
     }
 }

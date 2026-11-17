@@ -29,9 +29,9 @@ class ContactsPageTest extends StaffTestCase
         $this->assertGreaterThan(strpos($content, 'name="job"'), strpos($content, 'id="contact-roles"'));
         // Defaults are labeled radios carrying explicit 1/0 values, not bare checkboxes.
         $this->assertSame(0, substr_count($content, 'type="checkbox"'), 'no checkboxes left for defaults');
-        $this->assertStringContainsString("type=\"radio\"", $content);
-        $this->assertStringContainsString("email.default ? 1 : 0", $content);
-        $this->assertStringContainsString("phone.default ? 1 : 0", $content);
+        $this->assertStringContainsString('type="radio"', $content);
+        $this->assertStringContainsString('email.default ? 1 : 0', $content);
+        $this->assertStringContainsString('phone.default ? 1 : 0', $content);
         $this->assertStringContainsString(trans('ruby::contacts.default'), $content, 'localized default label');
     }
 

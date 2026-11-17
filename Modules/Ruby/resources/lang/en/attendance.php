@@ -16,4 +16,5 @@ return [
     'validation_max' => 'The lateness threshold may not be greater than :max minutes.',
     'export_excel' => 'Export to Excel',
     'export_csv' => 'Export to CSV',
+    'save_failed' => 'Could not save the settings. Please review the value and try again.',
 ];

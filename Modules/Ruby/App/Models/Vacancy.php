@@ -5,20 +5,22 @@ namespace Modules\Ruby\App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Vacancy extends Model{
+class Vacancy extends Model
+{
     use HasFactory;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_vacancies';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = [];
 
-    public function applicants(){
+    public function applicants()
+    {
         return $this->morphToMany(Applicant::class, 'applicable');
     }
 }

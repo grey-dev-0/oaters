@@ -4,19 +4,20 @@ namespace Modules\Ruby\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DegreeLocale extends Model{
+class DegreeLocale extends Model
+{
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $timestamps = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_degree_locales';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = [];
 }

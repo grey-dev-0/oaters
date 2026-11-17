@@ -4,24 +4,26 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration{
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
-    public function up(): void{
-        Schema::create('r_salaries', function(Blueprint $table){
+    public function up(): void
+    {
+        Schema::create('r_salaries', function (Blueprint $table) {
             $table->unsignedInteger('id')->primary();
             $table->foreign('id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('type', ['hourly', 'monthly', 'annual']);
             $table->timestamps();
         });
 
-        Schema::create('r_payroll_components', function(Blueprint $table){
+        Schema::create('r_payroll_components', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('type', ['basic', 'allowance', 'incentive']);
         });
 
-        Schema::create('r_payroll_component_locales', function(Blueprint $table){
+        Schema::create('r_payroll_component_locales', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('payroll_component_id');
             $table->foreign('payroll_component_id')->references('id')->on('r_payroll_components')->onUpdate('cascade')->onDelete('cascade');
@@ -29,7 +31,7 @@ return new class extends Migration{
             $table->string('locale', 2);
         });
 
-        Schema::create('r_salary_components', function(Blueprint $table){
+        Schema::create('r_salary_components', function (Blueprint $table) {
             $table->unsignedInteger('salary_id');
             $table->unsignedInteger('payroll_component_id');
             $table->primary(['salary_id', 'payroll_component_id']);
@@ -38,7 +40,7 @@ return new class extends Migration{
             $table->float('amount');
         });
 
-        Schema::create('r_payroll_payments', function(Blueprint $table){
+        Schema::create('r_payroll_payments', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('salary_id')->nullable();
             $table->foreign('salary_id')->references('id')->on('r_salaries')->onUpdate('cascade')->onDelete('set null');
@@ -49,7 +51,7 @@ return new class extends Migration{
             $table->timestamps();
         });
 
-        Schema::create('r_payment_components', function(Blueprint $table){
+        Schema::create('r_payment_components', function (Blueprint $table) {
             $table->unsignedInteger('payroll_payment_id');
             $table->unsignedInteger('payroll_component_id');
             $table->primary(['payroll_payment_id', 'payroll_component_id'], 'pivot_primary_key');
@@ -58,7 +60,7 @@ return new class extends Migration{
             $table->float('amount');
         });
 
-        Schema::create('r_notices', function(Blueprint $table){
+        Schema::create('r_notices', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('author_id');
             $table->foreign('author_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
@@ -71,7 +73,7 @@ return new class extends Migration{
             $table->timestamps();
         });
 
-        Schema::create('r_leaves', function(Blueprint $table){
+        Schema::create('r_leaves', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('contact_id');
             $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
@@ -82,12 +84,12 @@ return new class extends Migration{
             $table->timestamps();
         });
 
-        Schema::create('r_departments', function(Blueprint $table){
+        Schema::create('r_departments', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
 
-        Schema::create('r_department_locales', function(Blueprint $table){
+        Schema::create('r_department_locales', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('department_id');
             $table->foreign('department_id')->references('id')->on('r_departments')->onUpdate('cascade')->onDelete('cascade');
@@ -95,7 +97,7 @@ return new class extends Migration{
             $table->string('name');
         });
 
-        Schema::create('r_subordinates', function(Blueprint $table){
+        Schema::create('r_subordinates', function (Blueprint $table) {
             $table->string('id', 18)->primary()->default(DB::raw('uuid_short()'));
             $table->unsignedInteger('manager_id')->nullable();
             $table->unsignedInteger('contact_id')->nullable();
@@ -106,7 +108,7 @@ return new class extends Migration{
             $table->foreign('department_id')->references('id')->on('r_departments')->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create('r_punches', function(Blueprint $table){
+        Schema::create('r_punches', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('contact_id');
             $table->foreign('contact_id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
@@ -114,7 +116,7 @@ return new class extends Migration{
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('r_vacancies', function(Blueprint $table){
+        Schema::create('r_vacancies', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('department_id');
             $table->boolean('active')->default(false);
@@ -122,7 +124,7 @@ return new class extends Migration{
             $table->timestamps();
         });
 
-        Schema::create('r_vacancy_locales', function(Blueprint $table){
+        Schema::create('r_vacancy_locales', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('vacancy_id');
             $table->foreign('vacancy_id')->references('id')->on('r_vacancies')->onUpdate('cascade')->onDelete('cascade');
@@ -131,11 +133,11 @@ return new class extends Migration{
             $table->text('description');
         });
 
-        Schema::create('r_degrees', function(Blueprint $table){
+        Schema::create('r_degrees', function (Blueprint $table) {
             $table->increments('id');
         });
 
-        Schema::create('r_degree_locales', function(Blueprint $table){
+        Schema::create('r_degree_locales', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('degree_id');
             $table->foreign('degree_id')->references('id')->on('r_degrees')->onUpdate('cascade')->onDelete('cascade');
@@ -143,7 +145,7 @@ return new class extends Migration{
             $table->string('name');
         });
 
-        Schema::create('r_applicants', function(Blueprint $table){
+        Schema::create('r_applicants', function (Blueprint $table) {
             $table->unsignedInteger('id')->primary();
             $table->foreign('id')->references('id')->on('lc_contacts')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('country_id');
@@ -156,14 +158,14 @@ return new class extends Migration{
             $table->timestamps();
         });
 
-        Schema::create('r_applicables', function(Blueprint $table){
+        Schema::create('r_applicables', function (Blueprint $table) {
             $table->unsignedInteger('applicant_id');
             $table->morphs('applicable');
             $table->primary(['applicant_id', 'applicable_type', 'applicable_id']);
             $table->foreign('applicant_id')->references('id')->on('r_applicants')->onUpdate('cascade')->onDelete('cascade');
         });
 
-        Schema::create('r_documents', function(Blueprint $table){
+        Schema::create('r_documents', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('applicant_id');
             $table->foreign('applicant_id')->references('id')->on('r_applicants')->onUpdate('cascade')->onDelete('cascade');
@@ -176,7 +178,8 @@ return new class extends Migration{
     /**
      * Reverse the migrations.
      */
-    public function down(): void{
+    public function down(): void
+    {
         Schema::dropIfExists('r_documents');
         Schema::dropIfExists('r_applicables');
         Schema::dropIfExists('r_applicants');

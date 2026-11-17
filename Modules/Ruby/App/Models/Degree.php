@@ -5,30 +5,32 @@ namespace Modules\Ruby\App\Models;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Degree extends Model{
+class Degree extends Model
+{
     use Translatable;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $timestamps = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_degrees';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = ['id'];
 
     /**
-     * @var string[] $translatedAttributes Attributes translated in the related localization table.
+     * @var string[] Attributes translated in the related localization table.
      */
     public $translatedAttributes = ['name'];
 
-    public function applicants(){
+    public function applicants()
+    {
         return $this->hasMany(Applicant::class);
     }
 }

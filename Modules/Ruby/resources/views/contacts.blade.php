@@ -48,7 +48,7 @@
             $locale = [
                 'common' => \Arr::only(trans('common::words'), 'unassigned'),
                 'leaves' => \Arr::only(trans('ruby::leaves'), 'types'),
-                'contacts' => \Arr::only(trans('ruby::contacts'), ['confirm_delete', 'confirm_reactivate', 'select_roles'])
+                'contacts' => \Arr::only(trans('ruby::contacts'), ['confirm_delete', 'confirm_reactivate', 'select_roles', 'save_failed'])
             ];
         @endphp
         let roles = @json($roles), departments = @json($departments), statuses = @json(['inactive' => trans('common::words.inactive')]);

@@ -157,10 +157,11 @@ class AttendanceController extends Controller
     {
         \DataTablesHelper::filterByDate($query, ['r_punches.created_at'], false);
         $columns = \DataTablesHelper::getColumns();
-        if (! empty($departments = request("columns.{$columns['contact.departments.name']}.search.value"))) {
+        // Column keys are guarded: non-standard clients may omit some columns (F-104).
+        if (isset($columns['contact.departments.name']) && ! empty($departments = request("columns.{$columns['contact.departments.name']}.search.value"))) {
             $query->whereHas('contact.departments', fn ($depts) => $depts->whereIn('r_departments.id', $departments));
         }
-        if (! empty($roles = request("columns.{$columns['contact.roles.title']}.search.value"))) {
+        if (isset($columns['contact.roles.title']) && ! empty($roles = request("columns.{$columns['contact.roles.title']}.search.value"))) {
             $query->whereHas('contact.roles', fn ($r) => $r->whereIn('id', $roles));
         }
     }

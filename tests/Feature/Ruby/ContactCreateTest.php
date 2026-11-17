@@ -8,6 +8,21 @@ use Modules\Sapphire\App\Models\User;
 
 class ContactCreateTest extends StaffTestCase
 {
+    public function test_create_accepts_string_role_ids_from_html_forms(): void
+    {
+        // HTML forms serialize every input as a string; spatie resolves numeric
+        // strings by role NAME and throws (F-001 regression).
+        $payload = $this->memberPayload();
+        $payload['roles'] = array_map('strval', $payload['roles']);
+
+        $response = $this->postAjax('r/contacts/create', $payload);
+
+        $response->assertOk()->assertJsonPath('success', true);
+        $contact = Contact::firstOrFail();
+        $this->assertTrue($contact->hasRole($this->hrRole()));
+        $this->assertTrue($contact->user->hasRole($this->hrRole()), 'account received the same roles');
+    }
+
     public function test_create_persists_member_collections_and_account(): void
     {
         $document = $this->sampleDocument();

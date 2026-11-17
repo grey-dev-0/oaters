@@ -1,6 +1,7 @@
 import {createApp} from "vue";
 import common, {jQuery as $, renderVueTemplate} from "../common.js";
 import Datatable from "../../components/datatable";
+import Form from "../../components/form";
 import List from "../../components/list/index.js";
 import Timeline from "../../components/timeline/index.js";
 import select2 from 'select2';
@@ -28,10 +29,12 @@ let app = createApp({
     methods: {
         renderDepartments(row){
             let departments = [], i;
-            for(i in row.contact.departments)
-                departments.push(`<p class="m-0 text-primary">${row.contact.departments[i].name}</p>`);
-            for(i in row.contact.managed_departments)
-                departments.push(`<p class="m-0 text-info">${row.contact.managed_departments[i].name}</p>`);
+            // Punches of deactivated members keep a trashed contact (F-101).
+            let contact = row.contact ?? {};
+            for(i in contact.departments)
+                departments.push(`<p class="m-0 text-primary">${contact.departments[i].name}</p>`);
+            for(i in contact.managed_departments)
+                departments.push(`<p class="m-0 text-info">${contact.managed_departments[i].name}</p>`);
             return departments.length? departments.join('') : `<small class="text-muted">${window.locale.common.unassigned}</small>`;
         },
         closeContact(){
@@ -52,6 +55,9 @@ let app = createApp({
                     content: response.message
                 };
                 this.dataTable.draw();
+                this.$nextTick(() => this.$refs.toast.show());
+            }).catch(() => {
+                this.toast = {color: 'danger', content: window.locale.attendance?.save_failed ?? 'Could not save settings.'};
                 this.$nextTick(() => this.$refs.toast.show());
             });
         },
@@ -74,7 +80,9 @@ let app = createApp({
         renderActions(){
             let view = this, appInstance = this.$appInstance;
             const showProfile = e => {
-                view.openContact = view.dataTable.row($(e.target).closest('tr')).data().contact;
+                view.openContact = view.dataTable.row($(e.target).closest('tr')).data().contact ?? {id: null, name: null};
+                if(!view.openContact.id)
+                    return;
                 view.$nextTick(() => {
                     view.$refs.profileModal.show(() => {
                         $.get(`${baseUrl}/contacts/${view.openContact.id}`).then(response => {
@@ -101,7 +109,7 @@ let app = createApp({
                 && (this.openContact.applicant.tenure % 12) || 0;
         }
     }
-}), bundles = [Datatable, Timeline, List], components = {Modal: 'modal'};
+}), bundles = [Datatable, Form, Timeline, List], components = {Modal: 'modal'};
 
 app.config.globalProperties.$appInstance = app;
 common.load(app);

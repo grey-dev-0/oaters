@@ -1,4 +1,5 @@
 <?php
+
 return [
     'staff' => 'Staff',
     'attendance' => 'Attendance',
@@ -9,5 +10,5 @@ return [
     'salaries' => 'Salaries',
     'recruitment' => 'Recruitment',
     'vacancies' => 'Vacancies',
-    'applicants' => 'Applicants'
+    'applicants' => 'Applicants',
 ];

@@ -4,14 +4,15 @@ namespace Modules\Ruby\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ModuleServiceProvider extends ServiceProvider{
+class ModuleServiceProvider extends ServiceProvider
+{
     /**
-     * @var string $moduleName
+     * @var string
      */
     protected $moduleName = 'Ruby';
 
     /**
-     * @var string $moduleNameLower
+     * @var string
      */
     protected $moduleNameLower = 'ruby';
 
@@ -20,7 +21,8 @@ class ModuleServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function boot(){
+    public function boot()
+    {
         $this->registerTranslations();
         $this->registerViews();
     }
@@ -30,7 +32,8 @@ class ModuleServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function register(){
+    public function register()
+    {
         $this->app->register(RouteServiceProvider::class);
     }
 
@@ -39,7 +42,8 @@ class ModuleServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function registerViews(){
+    public function registerViews()
+    {
         $viewsPath = module_path($this->moduleName, 'resources/views');
         $this->loadViewsFrom([$viewsPath], $this->moduleNameLower);
     }
@@ -49,7 +53,8 @@ class ModuleServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function registerTranslations(){
+    public function registerTranslations()
+    {
         $this->loadTranslationsFrom(module_path($this->moduleName, 'resources/lang'), $this->moduleNameLower);
     }
 }

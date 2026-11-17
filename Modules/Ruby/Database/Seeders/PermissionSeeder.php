@@ -6,11 +6,13 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class PermissionSeeder extends Seeder{
+class PermissionSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      */
-    public function run(): void{
+    public function run(): void
+    {
         $permissions = collect([
             ['name' => 'ruby', 'guard_name' => 'web'],
             ['name' => 'view-personnel', 'guard_name' => 'web'],
@@ -18,8 +20,9 @@ class PermissionSeeder extends Seeder{
             ['name' => 'view-notices', 'guard_name' => 'web'],
             ['name' => 'view-leaves', 'guard_name' => 'web'],
             ['name' => 'view-attendance', 'guard_name' => 'web'],
-            ['name' => 'view-recruitment', 'guard_name' => 'web']
-        ])->map(fn($permission) => Permission::create($permission));
+            ['name' => 'view-recruitment', 'guard_name' => 'web'],
+            ['name' => 'manage-attendance-settings', 'guard_name' => 'web'],
+        ])->map(fn ($permission) => Permission::create($permission));
 
         // Getting all roles involved with ruby module.
         $roles = Role::whereNotIn('name', ['supplier', 'customer'])->get();
@@ -29,15 +32,15 @@ class PermissionSeeder extends Seeder{
         // Authorizing corresponding roles to their relevant permissions.
         $rolePermissions = [
             'general-manager' => $permissions,
-            'financial-manager' => $permissions->where('name', '!=', 'view-recruitment'),
+            'financial-manager' => $permissions->whereNotIn('name', ['view-recruitment', 'manage-attendance-settings']),
             'hr-manager' => $permissions,
             'director' => $permissions->whereIn('name', ['ruby', 'view-personnel', 'view-notices', 'view-leaves', 'view-attendance']),
             'team-lead' => $permissions->whereIn('name', ['ruby', 'view-personnel', 'view-notices', 'view-leaves', 'view-attendance']),
-            'accountant' =>  $permissions->where('name', '!=', 'view-recruitment'),
+            'accountant' => $permissions->where('name', '!=', 'view-recruitment'),
             'hr-assistant' => $permissions,
-            'employee' => $permissions->whereIn('name', ['ruby', 'view-notices', 'view-leaves', 'view-attendance'])
+            'employee' => $permissions->whereIn('name', ['ruby', 'view-notices', 'view-leaves', 'view-attendance']),
         ];
-        $roles->each(function($role) use($rolePermissions){
+        $roles->each(function ($role) use ($rolePermissions) {
             $role->syncPermissions($rolePermissions[$role->name]);
         });
     }

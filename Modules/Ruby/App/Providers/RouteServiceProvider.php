@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-class RouteServiceProvider extends ServiceProvider{
+class RouteServiceProvider extends ServiceProvider
+{
     /**
      * The module namespace to assume when generating URLs to actions.
      *
@@ -22,7 +23,8 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function boot(){
+    public function boot()
+    {
         parent::boot();
     }
 
@@ -31,7 +33,8 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function map(){
+    public function map()
+    {
         $this->mapWebRoutes();
     }
 
@@ -42,7 +45,8 @@ class RouteServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    protected function mapWebRoutes(){
+    protected function mapWebRoutes()
+    {
         Route::middleware([
             'web',
             InitializeTenancyBySubdomain::class,

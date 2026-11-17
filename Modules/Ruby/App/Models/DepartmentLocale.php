@@ -5,21 +5,22 @@ namespace Modules\Ruby\App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DepartmentLocale extends Model{
+class DepartmentLocale extends Model
+{
     use HasFactory;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $timestamps = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_department_locales';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = [];
 }

@@ -50,7 +50,12 @@ class ContactRequest extends FormRequest
 
             'applicant_mode' => ['required', 'in:existing,new'],
             'applicant_id' => [
-                'required_if:applicant_mode,existing', 'nullable',
+                // On update the member's applicant is PK-linked and derivable -
+                // the id is optional and, when sent, must be the member's own.
+                $this->route()->getName() == 'ruby::contacts.update'
+                    ? 'nullable'
+                    : 'required_if:applicant_mode,existing',
+                'nullable',
                 $this->route()->getName() == 'ruby::contacts.update'
                     // The member's own applicant record - already recruited.
                     ? Rule::exists('r_applicants', 'id')->where('id', $this->id)
@@ -113,15 +118,18 @@ class ContactRequest extends FormRequest
                 $this->syncEmails($contact);
                 $this->syncPhones($contact);
                 $this->syncAddresses($contact);
-                $contact->syncRoles($this->roles);
+                // HTML forms serialize role IDs as strings; spatie resolves numeric
+                // strings by NAME and throws - cast to int before syncing (F-001).
+                $roleIds = array_map('intval', $this->roles);
+                $contact->syncRoles($roleIds);
                 $this->syncDepartments($contact);
                 $applicant = $this->handleApplicant($contact);
                 $this->handleDocuments($applicant);
 
                 if ($this->id) {
-                    AccountManager::update($contact->id, $this->username, $this->password, $this->roles);
+                    AccountManager::update($contact->id, $this->username, $this->password, $roleIds);
                 } else {
-                    AccountManager::provision($contact->id, $this->username, $this->password, $this->roles);
+                    AccountManager::provision($contact->id, $this->username, $this->password, $roleIds);
                 }
             });
         } catch (AccountException $exception) {
@@ -248,7 +256,8 @@ class ContactRequest extends FormRequest
         ], fn ($value) => ! empty($value));
 
         if ($this->applicant_mode == 'existing') {
-            $applicant = Applicant::findOrFail($this->applicant_id);
+            // On update the id is optional: the member's own PK-linked applicant.
+            $applicant = Applicant::findOrFail($this->applicant_id ?: $contact->id);
         } else {
             $applicant = new Applicant();
             $applicant->id = $contact->id;

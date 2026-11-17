@@ -1,4 +1,5 @@
 <?php
+
 return [
     'applicant' => 'Applicant',
     'degree' => 'Educational Degree',

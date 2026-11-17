@@ -11,6 +11,7 @@
     @endif
     <dt-column name="applicant.recruited_at" data="applicant.recruited_at" :searchable="false">{{trans('ruby::applicants.recruited_at')}}</dt-column>
     @if(!$inModal)
+        <dt-column name="status" data="deleted_at" :orderable="false" :visible="false">{{trans('common::words.inactive')}}</dt-column>
         <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
     @endif
 </vue-datatable>

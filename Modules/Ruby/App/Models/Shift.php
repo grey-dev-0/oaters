@@ -6,29 +6,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Common\App\Models\Contact;
 
-class Shift extends Model{
+class Shift extends Model
+{
     use HasFactory;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public $timestamps = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_shifts';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = ['id'];
 
-    protected static function newFactory(){
+    protected static function newFactory()
+    {
         return \Modules\Ruby\Database\Factories\ShiftsFactory::new();
     }
 
-    public function contacts(){
+    public function contacts()
+    {
         return $this->belongsToMany(Contact::class, 'r_contact_shifts', 'shift_id', 'contact_id')->withPivot('weekday');
     }
 }

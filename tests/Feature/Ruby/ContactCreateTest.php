@@ -8,6 +8,21 @@ use Modules\Sapphire\App\Models\User;
 
 class ContactCreateTest extends StaffTestCase
 {
+    public function test_create_accepts_string_role_ids_from_html_forms(): void
+    {
+        // HTML forms serialize every input as a string; spatie resolves numeric
+        // strings by role NAME and throws (F-001 regression).
+        $payload = $this->memberPayload();
+        $payload['roles'] = array_map('strval', $payload['roles']);
+
+        $response = $this->postAjax('r/contacts/create', $payload);
+
+        $response->assertOk()->assertJsonPath('success', true);
+        $contact = Contact::firstOrFail();
+        $this->assertTrue($contact->hasRole($this->hrRole()));
+        $this->assertTrue($contact->user->hasRole($this->hrRole()), 'account received the same roles');
+    }
+
     public function test_create_persists_member_collections_and_account(): void
     {
         $document = $this->sampleDocument();
@@ -68,6 +83,41 @@ class ContactCreateTest extends StaffTestCase
         $contact = Contact::firstOrFail();
         $this->assertSame(1, $contact->emails()->whereDefault(true)->count());
         $this->assertSame('a@example.com', $contact->emails()->whereDefault(true)->first()->address);
+    }
+
+    public function test_explicit_zero_default_flags_are_accepted(): void
+    {
+        // The form now sends 1/0 for every row (radio + hidden input),
+        // instead of the browser's raw "on" checkbox value.
+        $payload = $this->memberPayload();
+        $payload['emails'] = [
+            ['address' => 'a@example.com', 'default' => '1'],
+            ['address' => 'b@example.com', 'default' => '0'],
+        ];
+        $payload['phones'] = [
+            ['number' => '0123456789', 'default' => '1'],
+            ['number' => '0987654321', 'default' => '0'],
+        ];
+
+        $this->postAjax('r/contacts/create', $payload)->assertOk();
+
+        $contact = Contact::firstOrFail();
+        $this->assertSame('a@example.com', $contact->emails()->whereDefault(true)->first()->address);
+        $this->assertSame(1, $contact->emails()->where('default', false)->count());
+        $this->assertSame('0123456789', $contact->phones()->whereDefault(true)->first()->number);
+        $this->assertSame(1, $contact->phones()->where('default', false)->count());
+    }
+
+    public function test_raw_checkbox_on_value_is_rejected(): void
+    {
+        $payload = $this->memberPayload();
+        $payload['emails'] = [
+            ['address' => 'a@example.com', 'default' => 'on'],
+        ];
+
+        $this->postAjax('r/contacts/create', $payload)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['emails.0.default']);
     }
 
     public function test_existing_applicant_link_marks_them_recruited(): void

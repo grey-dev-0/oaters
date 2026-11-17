@@ -34,7 +34,9 @@ class Punch extends Model
 
     public function contact()
     {
-        return $this->belongsTo(Contact::class);
+        // Deactivated members keep their punch history (FR-008); the owner of a
+        // punch must stay resolvable for the attendance table (F-101).
+        return $this->belongsTo(Contact::class)->withTrashed();
     }
 
     public function shift()

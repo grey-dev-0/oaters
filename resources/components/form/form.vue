@@ -15,7 +15,7 @@
 <script>
 import {computed} from 'vue';
 import emitter from 'mitt';
-import {jQuery as $} from '../../js/common';
+import {jQuery as $, bootbox} from '../../js/common';
 
 export default {
     name: "VueForm",
@@ -95,7 +95,7 @@ export default {
                     url: this.action || window.location.href,
                     type: 'POST',
                     error: (xhr) => {                        if(xhr.status != 422){
-                            this.$root.bootbox().alert('Something went wrong!');
+                            bootbox.alert('Something went wrong!');
                             console.error(xhr.responseText);
                         } else{
                             let errors = xhr.responseJSON.errors, validation = {}, splitKey, error;

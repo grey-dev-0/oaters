@@ -1,4 +1,5 @@
 <?php
+
 return [
     'created' => 'Department has been created successfully.',
     'edit' => 'Edit Department',

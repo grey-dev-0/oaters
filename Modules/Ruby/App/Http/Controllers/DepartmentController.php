@@ -7,27 +7,33 @@ use Modules\Ruby\App\Http\Requests\DepartmentRequest;
 use Modules\Ruby\App\Models\Department;
 use Modules\Sapphire\App\Models\RoleLocale;
 
-class DepartmentController extends Controller{
-    public function getIndex(){
-        $roles = RoleLocale::whereLocale(app()->getLocale())->whereHas('role', fn($role) => $role->whereIn('name', ['general-manager', 'financial-manager', 'hr-manager', 'director', 'team-lead', 'accountant', 'hr-assistant', 'employee']))->pluck('title', 'role_id');
+class DepartmentController extends Controller
+{
+    public function getIndex()
+    {
+        $roles = RoleLocale::whereLocale(app()->getLocale())->whereHas('role', fn ($role) => $role->whereIn('name', ['general-manager', 'financial-manager', 'hr-manager', 'director', 'team-lead', 'accountant', 'hr-assistant', 'employee']))->pluck('title', 'role_id');
+
         return view('ruby::departments', compact('roles'));
     }
 
-    public function postIndex(){
-        return tap(\DataTables::of(Department::with(['translations' => fn($locales) => $locales->select('department_id', 'name', 'locale')->whereLocale(app()->getLocale()), 'head'])->withCount(['subordinates', 'vacancies' => fn($vacancies) => $vacancies->whereActive(true)])->groupBy('r_departments.id'))
-            ->editColumn('head', fn($department) => $department->head->first()->name?? '-')->addColumn('actions', fn() => view('ruby::actions.departments'))->filter(function($query){
+    public function postIndex()
+    {
+        return tap(\DataTables::of(Department::with(['translations' => fn ($locales) => $locales->select('department_id', 'name', 'locale')->whereLocale(app()->getLocale()), 'head'])->withCount(['subordinates', 'vacancies' => fn ($vacancies) => $vacancies->whereActive(true)])->groupBy('r_departments.id'))
+            ->editColumn('head', fn ($department) => $department->head->first()->name ?? '-')->addColumn('actions', fn () => view('ruby::actions.departments'))->filter(function ($query) {
                 \DataTablesHelper::filterByDate($query, ['created_at']);
-            }), function($datatable){
+            }), function ($datatable) {
                 \DataTablesHelper::formatTimestampColumns($datatable, ['created_at']);
             })->rawColumns(['actions'])->make();
     }
 
-    public function postCreateOrUpdate(DepartmentRequest $request){
+    public function postCreateOrUpdate(DepartmentRequest $request)
+    {
         return $request->handle();
     }
 
-    public function getDepartment(Department $department){
-        return response()->json($department->load(['head.emails' => fn($emails) => $emails->whereDefault(true),
+    public function getDepartment(Department $department)
+    {
+        return response()->json($department->load(['head.emails' => fn ($emails) => $emails->whereDefault(true),
             'employees', 'translations'])->setHidden(['translations'])
             ->setAttribute('name_ar', $department->translations->where('locale', 'ar')->first()->name));
     }

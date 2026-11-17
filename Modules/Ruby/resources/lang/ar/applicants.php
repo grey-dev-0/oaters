@@ -1,4 +1,5 @@
 <?php
+
 return [
     'applicant' => 'المتقدم',
     'degree' => 'الدرجة العلمية',

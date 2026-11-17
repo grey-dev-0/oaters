@@ -16,18 +16,18 @@ class AccountManager
     /**
      * Provisions a platform account for the given contact and links it.
      *
-     * @param  string[]  $roleNames  Roles granting the account its access.
+     * @param  int[]  $roleIds  Role IDs granting the account its access.
      *
      * @throws AccountException Username already exists.
      */
-    public static function provision(int $contactId, string $username, string $password, array $roleNames = []): void
+    public static function provision(int $contactId, string $username, string $password, array $roleIds = []): void
     {
         if (User::whereUsername($username)->exists()) {
             throw new AccountException('username-taken');
         }
 
         $user = User::create(['username' => $username, 'password' => Hash::make($password), 'active' => true]);
-        $user->assignRole($roleNames);
+        $user->assignRole($roleIds);
         Contact::whereKey($contactId)->update(['user_id' => $user->id]);
     }
 
@@ -35,11 +35,11 @@ class AccountManager
      * Updates the account linked to the given contact. A null password keeps the current one.
      *
      * @param  ?string  $password
-     * @param  string[]  $roleNames
+     * @param  int[]  $roleIds
      *
      * @throws AccountException No linked account or username already exists.
      */
-    public static function update(int $contactId, string $username, ?string $password, array $roleNames = []): void
+    public static function update(int $contactId, string $username, ?string $password, array $roleIds = []): void
     {
         $user = self::linkedUser($contactId);
         if (User::whereUsername($username)->where('id', '!=', $user->id)->exists()) {
@@ -47,8 +47,8 @@ class AccountManager
         }
 
         $user->fill(['username' => $username] + ($password ? ['password' => Hash::make($password)] : []))->save();
-        if ($roleNames) {
-            $user->syncRoles($roleNames);
+        if ($roleIds) {
+            $user->syncRoles($roleIds);
         }
     }
 

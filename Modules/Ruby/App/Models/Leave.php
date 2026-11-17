@@ -6,32 +6,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Common\App\Models\Contact;
 
-class Leave extends Model{
+class Leave extends Model
+{
     use HasFactory;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $table = 'r_leaves';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $guarded = ['id'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected $casts = ['starts_at', 'ends_at'];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected static function newFactory(){
+    protected static function newFactory()
+    {
         return \Modules\Ruby\Database\Factories\LeavesFactory::new();
     }
 
-    public function contact(){
+    public function contact()
+    {
         return $this->belongsTo(Contact::class);
     }
 }

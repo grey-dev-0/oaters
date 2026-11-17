@@ -15,7 +15,8 @@ select2();
 let app = createApp({
     data(){
         return {
-            roles, departments, statuses, locale,
+            roles, departments, statuses, locale, citiesUrl,
+            rolesOptions: {...roles},
             toast: {
                 color: 'primary',
                 content: null
@@ -42,6 +43,7 @@ let app = createApp({
         },
         emptyForm(){
             this.form = {
+                roles: [],
                 emails: [{address: '', default: true}],
                 phones: [{number: '', default: true}],
                 addresses: [],
@@ -56,16 +58,36 @@ let app = createApp({
             let presets = {
                 emails: {address: '', default: !this.form.emails.length},
                 phones: {number: '', default: !this.form.phones.length},
-                addresses: {city_id: '', line_1: '', line_2: ''},
+                addresses: {city_id: null, city_name: '', line_1: '', line_2: ''},
                 newDocuments: {title: ''}
             };
             this.form[type].push(presets[type]);
         },
         removeRow(type, i){
             this.form[type].splice(i, 1);
+            // A collection always keeps exactly one default row (FR-002):
+            // when the default row is removed, the first row takes over.
+            if((type == 'emails' || type == 'phones') && this.form[type].length
+                && !this.form[type].some(row => row.default))
+                this.form[type][0].default = true;
         },
         markDefault(type, i){
             this.form[type].forEach((row, index) => row.default = index == i);
+        },
+        /**
+         * (Re)initializes the roles multiple-select of a staff form modal
+         * as a select2. Called after the modal's form reset, once Vue has
+         * re-applied the selection from form.roles.
+         */
+        initRolesSelect(id){
+            let element = $('#' + id);
+            if(element.hasClass('select2-hidden-accessible'))
+                element.select2('destroy');
+            element.select2({
+                theme: 'bootstrap',
+                placeholder: this.locale.contacts.select_roles,
+                width: '100%'
+            });
         },
         error(field){
             let form = this.activeForm && this.$refs[this.activeForm];
@@ -81,12 +103,19 @@ let app = createApp({
                 };
                 this.dataTable.draw();
                 this.$nextTick(() => this.$refs.toast.show());
-            }).catch(() => {});
+            }).catch(() => {
+                // Non-422 failures: 422s render inline via the form component.
+                this.toast = {color: 'danger', content: this.locale.contacts.save_failed};
+                this.$nextTick(() => this.$refs.toast.show());
+            });
         },
         addContact(){
             this.activeForm = 'createContactForm';
             this.emptyForm();
-            this.$refs.createContact.show(() => this.$refs.createContactForm.reset());
+            this.$refs.createContact.show(() => {
+                this.$refs.createContactForm.reset();
+                this.$nextTick(() => this.initRolesSelect('contact-roles'));
+            });
         },
         editContact(e){
             let view = this;
@@ -94,10 +123,15 @@ let app = createApp({
             view.openContact = row;
             $.get(`${baseUrl}/contacts/${row.id}`).then(response => {
                 view.activeForm = 'updateContactForm';
+                // Offer the member's current roles even when outside the standard
+                // set (F-003), and select by string keys to match option values.
+                view.rolesOptions = {...view.rolesOptions, ...response.roles_options};
                 view.form = {
+                    roles: (response.roles_ids ?? []).map(String),
                     emails: response.emails.map(email => ({address: email.address, default: !!email.default})),
                     phones: response.phones.map(phone => ({number: phone.number, default: !!phone.default})),
-                    addresses: response.addresses.map(address => ({city_id: address.city_id, line_1: address.line_1, line_2: address.line_2})),
+                    addresses: response.addresses.map(address => ({city_id: address.city_id, city_name: address.city?.translations?.[0]?.name ?? '',
+                        line_1: address.line_1, line_2: address.line_2})),
                     applicantMode: response.applicant? 'existing' : 'new',
                     nationality: response.applicant? response.applicant.country_id ?? '' : '',
                     degree: response.applicant? response.applicant.degree_id ?? '' : '',
@@ -114,6 +148,7 @@ let app = createApp({
                         recruited_at: response.applicant && response.applicant.recruited_at? response.applicant.recruited_at.slice(0, 10) : '',
                         applicant_id: response.applicant? {id: response.id, text: response.name} : undefined
                     });
+                    view.$nextTick(() => view.initRolesSelect('e_contact-roles'));
                 }));
             });
         },
@@ -157,14 +192,16 @@ let app = createApp({
             };
             $('[vue-template]').each(function(){
                 let data = view.dataTable.row($(this).closest('tr')).data();
+                // Toggle BEFORE renderVueTemplate: it removes the template node, so
+                // toggling afterwards would style a detached subtree (F-002).
+                $(this).find('.profile, .edit, .delete').toggle(!(data && data.deleted_at));
+                $(this).find('.reactivate').toggle(!!(data && data.deleted_at));
                 renderVueTemplate(this, appInstance, {methods: {
                     showProfile,
                     editContact: e => view.editContact(e),
                     deleteContact: e => view.deleteContact(e),
                     reactivateContact: e => view.reactivateContact(e)
                 }});
-                $(this).find('.profile, .edit, .delete').toggle(!(data && data.deleted_at));
-                $(this).find('.reactivate').toggle(!!(data && data.deleted_at));
             });
         }
     },
@@ -184,7 +221,7 @@ let app = createApp({
     created(){
         this.emptyForm();
     }
-}), bundles = [Datatable, Form, Timeline, List, Tab], components = {Modal: 'modal'};
+}), bundles = [Datatable, Form, Timeline, List, Tab], components = {Modal: 'modal', Autocomplete: 'autocomplete'};
 
 app.config.globalProperties.$appInstance = app;
 common.load(app);

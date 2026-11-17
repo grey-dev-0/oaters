@@ -5,10 +5,12 @@ namespace Modules\Ruby\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Common\App\Models\Contact;
 
-class PunchesFactory extends Factory{
+class PunchesFactory extends Factory
+{
     protected $model = \Modules\Ruby\App\Models\Punch::class;
 
-    public function definition(): array{
+    public function definition(): array
+    {
         return [
             'contact_id' => Contact::factory(),
             'type' => $this->faker->randomElement(['in', 'out']),
@@ -18,8 +20,9 @@ class PunchesFactory extends Factory{
         ];
     }
 
-    public function withShift(): self{
-        return $this->state(function() {
+    public function withShift(): self
+    {
+        return $this->state(function () {
             return [
                 'shift_id' => rand(1, 4),
                 'latency' => rand(-30, 60),
@@ -27,11 +30,13 @@ class PunchesFactory extends Factory{
         });
     }
 
-    public function inPunch(): self{
-        return $this->state(fn() => ['type' => 'in']);
+    public function inPunch(): self
+    {
+        return $this->state(fn () => ['type' => 'in']);
     }
 
-    public function outPunch(): self{
-        return $this->state(fn() => ['type' => 'out']);
+    public function outPunch(): self
+    {
+        return $this->state(fn () => ['type' => 'out']);
     }
 }

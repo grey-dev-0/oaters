@@ -27,6 +27,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/development/getting-started-frontend' },
           { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
           { text: 'Component Development', link: '/development/component-development' },
+          { text: 'Language Switcher (EN/AR + RTL)', link: '/development/language-switcher' },
           { text: 'Notion Review — Status & Backlog', link: '/development/notion-review' },
           { text: 'Database Structure', link: '/database/' }
         ]
@@ -59,6 +60,7 @@ export default defineConfig({
         items: [
           { text: 'Getting Started', link: '/development/getting-started-frontend' },
           { text: 'Frontend Architecture', link: '/development/frontend-architecture' },
+          { text: 'Language Switcher (EN/AR + RTL)', link: '/development/language-switcher' },
           { text: 'Notion Review — Status & Backlog', link: '/development/notion-review' },
           {
             text: 'Component Development',

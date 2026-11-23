@@ -4,6 +4,8 @@
 
 **Ruby** is the Human Resource management module of the OATERS ERP system. It provides comprehensive HR functionality including employee management, payroll processing, attendance tracking, leave management, recruitment, and organizational structure management. Ruby heavily integrates with the **Common module** for contact management and employee information.
 
+Ruby's master layout is the first adopter of the Common-owned language switcher: its `<html>` tag renders dynamic `lang`/`dir` attributes via `common::html-attrs`, and its pages display the EN/العربية navbar dropdown before the username dropdown with full right-to-left presentation. See [Language Switcher](../development/language-switcher.md).
+
 ## Business Functionality
 
 ### Core Features

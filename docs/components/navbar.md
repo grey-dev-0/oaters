@@ -9,6 +9,7 @@ A responsive navigation bar component bundle that provides Bootstrap 4-compatibl
 **Components**:
 - `Navbar` - Main navigation container
 - `NavItem` - Individual navigation item (link or dropdown)
+- `LanguageSwitcher` - EN/العربية interface-language dropdown (rendered automatically at the start of the right slot, before the module's right-hand items; reads the `uiLocale` global — see [Language Switcher](../development/language-switcher.md))
 
 **Type**: Component Bundle
 

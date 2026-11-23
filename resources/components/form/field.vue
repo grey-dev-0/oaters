@@ -27,6 +27,7 @@
 
 <script>
 import Autocomplete from "../autocomplete.vue";
+import moment from 'moment';
 import {jQuery as $} from '../../js/common';
 
 export default {
@@ -145,14 +146,23 @@ export default {
         initDatePicker: function(defaultValue){
             this.setValue(defaultValue);
             let field = this;
+            let locale = {
+                cancelLabel: (window.uiLocale && window.uiLocale.picker && window.uiLocale.picker.clear) || 'Clear'
+            };
+            if(window.uiLocale && window.uiLocale.picker)
+                locale.applyLabel = window.uiLocale.picker.apply;
+            if(window.uiLocale && window.uiLocale.lang === 'ar'){
+                let data = moment.localeData('ar');
+                locale.daysOfWeek = data.weekdaysMin();
+                locale.monthNames = data.months();
+                locale.direction = 'rtl';
+            }
             $('#' + this.id).daterangepicker({
                 showDropdowns: true,
                 autoUpdateInput: false,
                 singleDatePicker: !this.ranged,
-                opens: 'right',
-                locale: {
-                    cancelLabel: 'Clear'
-                }
+                opens: (window.uiLocale && window.uiLocale.dir === 'rtl')? 'left' : 'right',
+                locale: locale
             }).on('apply.daterangepicker', function(e, picker){
                 let startDate = picker.startDate.format('YYYY-MM-DD');
                 let endDate = picker.endDate.format('YYYY-MM-DD');

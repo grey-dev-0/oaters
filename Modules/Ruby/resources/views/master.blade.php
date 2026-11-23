@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html @include('common::html-attrs')>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @yield('title')
     @include('common::resources')
+    @include('common::rtl-styles')
     @stack('styles')
     <script type="text/javascript">
         var baseUrl = '{{url('r')}}';

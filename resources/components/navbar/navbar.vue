@@ -9,6 +9,7 @@
                 <slot></slot>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <language-switcher></language-switcher>
                 <slot name="right"></slot>
             </ul>
         </div>

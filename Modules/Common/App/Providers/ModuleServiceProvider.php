@@ -28,6 +28,8 @@ class ModuleServiceProvider extends ServiceProvider
         $this->app->singleton(Settings::class);
 
         AliasLoader::getInstance()->alias('Settings', \Modules\Common\App\Facades\Settings::class);
+
+        $this->app->register(RouteServiceProvider::class);
     }
 
     /**

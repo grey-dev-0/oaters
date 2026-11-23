@@ -16,7 +16,7 @@ $edit ??= false;
         </vue-field>
     </vue-form>
     <template #footer>
-        <div class="btn btn-outline-secondary" data-dismiss="modal">Cancel</div>
-        <div class="btn btn-{{$color}} text-white" @click="submit('{{$ref}}')">Save</div>
+        <div class="btn btn-outline-secondary" data-dismiss="modal">{{trans('common::words.cancel')}}</div>
+        <div class="btn btn-{{$color}} text-white" @click="submit('{{$ref}}')">{{trans('common::words.save')}}</div>
     </template>
 </modal>

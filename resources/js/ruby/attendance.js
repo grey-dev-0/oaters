@@ -37,6 +37,9 @@ let app = createApp({
                 departments.push(`<p class="m-0 text-info">${contact.managed_departments[i].name}</p>`);
             return departments.length? departments.join('') : `<small class="text-muted">${window.locale.common.unassigned}</small>`;
         },
+        renderType(row){
+            return (row.type !== undefined && window.locale.types && window.locale.types[row.type]) || row.type;
+        },
         closeContact(){
             this.openContact.addresses = undefined;
         },

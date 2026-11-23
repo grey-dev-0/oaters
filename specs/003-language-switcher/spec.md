@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-19
 
-**Status**: Draft
+**Status**: Implemented
 
 **Input**: User description: "Starting from currently checked out branch let's start spec 003 that adds the missing language switcher to the project with the Common (Lava) module and, the navbar switcher icon - preferably right before the username dropdown toggle. Some vue components might need updating to accommodate Arabic localization beside the RTL styling for both the blade views as a whole and the vue components themselves."
 

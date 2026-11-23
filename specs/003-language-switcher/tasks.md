@@ -114,6 +114,6 @@ dependencies with siblings in the same phase).
       `npm run development` emits both LTR and RTL assets; manual quickstart pass EN + AR.
 - [x] T023 English-regression check: with `en` active, pages are byte-identical to
       pre-feature (only `lang`/`dir` attributes and no RTL link differ) — SC-004.
-- [ ] T024 Update VitePress docs on the `docs` branch: language switcher page (usage,
+- [x] T024 Update VitePress docs on the `docs` branch: language switcher page (usage,
       persistence model, RTL build step) + Ruby module page note (constitution gate).
-- [ ] T025 Mark spec.md **Status: Implemented** and check off this task list.
+- [x] T025 Mark spec.md **Status: Implemented** and check off this task list.

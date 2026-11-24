@@ -175,10 +175,12 @@ class Contact extends Model
      */
     public function scopeWithRecruitmentDetails($query)
     {
+        $locales = [app()->getLocale(), static::fallbackLocale()];
+
         return $query->with([
             'applicant:id,country_id,degree_id,degree_date,tenure,recruited_at', 'applicant.nationality:id',
-            'applicant.nationality.translations' => fn ($locales) => $locales->whereLocale(app()->getLocale()),
-            'applicant.degree.translations' => fn ($locales) => $locales->whereLocale(app()->getLocale()),
+            'applicant.nationality.translations' => fn ($translations) => $translations->whereIn('locale', $locales),
+            'applicant.degree.translations' => fn ($translations) => $translations->whereIn('locale', $locales),
             'applicant.documents',
         ]);
     }

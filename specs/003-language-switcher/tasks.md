@@ -117,3 +117,22 @@ dependencies with siblings in the same phase).
 - [x] T024 Update VitePress docs on the `docs` branch: language switcher page (usage,
       persistence model, RTL build step) + Ruby module page note (constitution gate).
 - [x] T025 Mark spec.md **Status: Implemented** and check off this task list.
+
+## Phase 7: Convergence
+
+- [x] T026 Install the full Arabic Laravel validation catalog — core rule messages plus
+      common attribute names — in `lang/ar/validation.php` (currently a two-attribute
+      stub), so form validation errors render in Arabic instead of English (e.g.
+      "The username field is required." on the staff create form) per FR-002, US1/AC2 (partial)
+- [x] T027 Extend `Contact::scopeWithRecruitmentDetails` to eager-load the degree and
+      nationality translations with the fallback locale (`whereIn('locale', [active,
+      fallback])`), matching its sibling scopes, so profile-modal values missing an
+      Arabic row fall back to English instead of rendering empty per FR-003, SC-006 (partial)
+- [x] T028 Replace the hardcoded `Profile - {name}` header in
+      `Modules/Ruby/resources/views/components/modals/profile.blade.php` with
+      `trans('common::words.profile')` (the key already ships bilingual) per
+      FR-002, SC-002 (partial)
+- [x] T029 Review and confirm the out-of-scope `Authenticate::redirectTo` default-arm
+      change (`ruby::login`, commit c57a0c6): required so unauthenticated requests to
+      `/locale` redirect to a real login page instead of a 500, and fixes the same
+      pre-existing failure for every auth route with an unmatched URL segment (unrequested)

@@ -1,5 +1,5 @@
 <modal id="profile-modal" ref="profileModal" color="primary" size="lg" :on-close="closeContact" scrollable>
-    <template #header>Profile - @{{openContact.name}}</template>
+    <template #header>{{trans('common::words.profile')}} - @{{openContact.name}}</template>
     <v-loader v-if="!openContact.addresses"></v-loader>
     <div :class="'row' + (openContact.addresses? '' : ' invisible')">
         <div class="col-12 col-sm-6 col-md-4">

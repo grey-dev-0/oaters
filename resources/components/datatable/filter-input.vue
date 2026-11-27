@@ -14,12 +14,13 @@
             <template v-if="$parent.$parent.count != $parent.$parent.cols">
                 <label><br/></label><br/>
             </template>
-            <div @click="$parent.$parent.clear" class="btn btn-outline-info btn-block"><i class="fa fas fa-filter mr-1" style="margin-top:-5px"></i> Clear Filters</div>
+            <div @click="$parent.$parent.clear" class="btn btn-outline-info btn-block"><i class="fa fas fa-filter mr-1" style="margin-top:-5px"></i> {{ clearFiltersLabel }}</div>
         </div>
     </template>
 </template>
 
 <script>
+import moment from 'moment';
 import {debounce as _debounce} from 'lodash';
 import {jQuery as $} from '../../js/common';
 let select2Options = {theme: 'bootstrap', width: '100%', allowClear: true};
@@ -42,13 +43,24 @@ export default {
                 });
             } else if(this.type == 'date'){
                 let opens = (this.options !== undefined)? (this.options.opens || 'right') : 'right';
+                if(window.uiLocale && window.uiLocale.dir === 'rtl')
+                    opens = 'left';
+                let pickerLocale = {
+                    cancelLabel: (window.uiLocale && window.uiLocale.picker && window.uiLocale.picker.clear) || 'Clear'
+                };
+                if(window.uiLocale && window.uiLocale.picker)
+                    pickerLocale.applyLabel = window.uiLocale.picker.apply;
+                if(window.uiLocale && window.uiLocale.lang === 'ar'){
+                    let data = moment.localeData('ar');
+                    pickerLocale.daysOfWeek = data.weekdaysMin();
+                    pickerLocale.monthNames = data.months();
+                    pickerLocale.direction = 'rtl';
+                }
                 $('#' + this.cssId).daterangepicker({
                     showDropdowns: true,
                     autoUpdateInput: false,
                     opens: opens,
-                    locale: {
-                        cancelLabel: 'Clear'
-                    }
+                    locale: pickerLocale
                 }).on('apply.daterangepicker', function(e, picker){
                     let startDate = picker.startDate.format('YYYY-MM-DD');
                     let endDate = picker.endDate.format('YYYY-MM-DD');
@@ -101,6 +113,9 @@ export default {
     computed: {
         cssId: function(){
             return this.name.replace(/\./g, '-') + '-filter-' + this.type;
+        },
+        clearFiltersLabel: function(){
+            return (window.uiLocale && window.uiLocale.datatable && window.uiLocale.datatable.clear_filters) || 'Clear Filters';
         },
         clearCells: function(){
             let count = this.$parent.$parent.count + 1,

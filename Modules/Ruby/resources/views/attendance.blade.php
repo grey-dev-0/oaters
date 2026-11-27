@@ -37,7 +37,7 @@
                     <dt-column name="contact.name" data="contact.name">{{trans('common::words.name')}}</dt-column>
                     <dt-column name="contact.roles.title" data="contact.roles.0.title" :searchable="false">{{trans('common::words.role')}}</dt-column>
                     <dt-column name="contact.departments.name" :data="renderDepartments" :searchable="false" :orderable="false">{{trans('common::words.departments')}}</dt-column>
-                    <dt-column name="type" data="type">{{trans('common::words.type')}}</dt-column>
+                    <dt-column name="type" :data="renderType">{{trans('common::words.type')}}</dt-column>
                     <dt-column name="r_punches.latency" data="punctuality" :searchable="false">{{trans('ruby::attendance.punctuality')}}</dt-column>
                     <dt-column name="r_punches.created_at" data="created_at" :searchable="false">{{trans('common::words.created_at')}}</dt-column>
                     <dt-column :orderable="false" :searchable="false" class-name="nowrap" name="actions" data="actions">{{trans('common::words.actions')}}</dt-column>
@@ -56,7 +56,8 @@
             $locale = [
                 'common' => \Arr::only(trans('common::words'), 'unassigned'),
                 'leaves' => \Arr::only(trans('ruby::leaves'), 'types'),
-                'attendance' => \Arr::only(trans('ruby::attendance'), 'save_failed')
+                'attendance' => \Arr::only(trans('ruby::attendance'), 'save_failed'),
+                'types' => \Arr::only(trans('common::words'), ['in', 'out'])
             ];
         @endphp
         let roles = @json($roles), departments = @json($departments);

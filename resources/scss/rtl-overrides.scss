@@ -1,0 +1,86 @@
+// Directional overrides for the right-to-left interface (spec 003).
+//
+// The mirrored theme bundle (bootstrap-*.rtl.css) flips Bootstrap's own
+// rules automatically. This entry fixes what that mirror cannot reach:
+// component and vendor styles that Vite's runtime injects with their
+// left-to-right filenames (DataTables chrome, select2, daterangepicker,
+// SFC styles) plus bidirectional text isolation for data values.
+//
+// Every rule is scoped under [dir="rtl"] so the sheet ships in the build
+// but stays inert on English pages (FR-004: English stays untouched).
+
+[dir="rtl"] {
+    // The mirrored theme flips the auto-margin utilities, but the original
+    // left-to-right sheet keeps its !important declarations too (different
+    // properties survive the cascade), which would center the cluster.
+    // Neutralize the left-to-right side so the mirror wins cleanly.
+    .navbar-nav.ml-auto,
+    .ml-auto {
+        margin-left: 0 !important;
+    }
+
+    .mr-auto {
+        margin-right: 0 !important;
+    }
+
+    // DataTables chrome from the SFC style block: the informational
+    // summary and the pager flank the table the other way around.
+    .dt-container {
+        .dt-info {
+            float: right;
+        }
+
+        .dt-paging {
+            float: left;
+        }
+    }
+
+    // select2: the dropdown container keeps bootstrap's flipped grid, but
+    // the inline search field and result rows need explicit direction.
+    .select2-selection__rendered,
+    .select2-results__option {
+        text-align: right;
+    }
+
+    // Breadcrumb separators are drawn by Bootstrap with left-side padding;
+    // mirror the spacing so items read right-to-left evenly.
+    .breadcrumb-item {
+        + .breadcrumb-item {
+            padding-right: 0.5rem;
+            padding-left: 0;
+
+            &::before {
+                padding-right: 0.5rem;
+                padding-left: 0;
+            }
+        }
+    }
+
+    // LTR data values typed into RTL forms (emails, phones, numbers, URLs)
+    // keep their natural direction while aligning with the RTL labels.
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"] {
+        direction: ltr;
+        text-align: right;
+    }
+
+    // Mixed-direction data cells (English names, emails, phone numbers and
+    // dates inside RTL tables) isolate their base direction per value so
+    // embedded left-to-right runs stay readable (U1).
+    .table td,
+    .dt-container td,
+    .table th,
+    .dt-container th {
+        unicode-bidi: plaintext;
+    }
+
+    // The org chart and charts draw internally left-to-right on purpose
+    // (Q2=A); their containers sit in the mirrored flow without further
+    // adjustment - explicitly keep the drawing direction stable.
+    .org-chart,
+    .chart-container {
+        direction: ltr;
+    }
+}

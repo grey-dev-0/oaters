@@ -24,7 +24,7 @@ class User extends Authenticatable
     /**
      * @var string[] Attribute casts.
      */
-    protected $casts = ['active' => 'boolean'];
+    protected $casts = ['active' => 'boolean', 'locale' => 'string'];
 
     protected static function newFactory()
     {

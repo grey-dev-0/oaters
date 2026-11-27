@@ -8,6 +8,7 @@ return [
     'arabic' => 'Arabic',
     'created_at' => 'Created At',
     'count' => 'Count',
+    'cancel' => 'Cancel',
     'delete' => 'Delete',
     'discount' => 'Discount',
     'discount_type' => 'Discount Type',

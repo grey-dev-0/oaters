@@ -48,7 +48,9 @@ class AttendanceSettingsTest extends AttendanceTestCase
     public function test_localizes_validation_messages_to_arabic(): void
     {
         $this->grantSettingsPermission();
-        app()->setLocale('ar');
+        // An Arabic session (the locale middleware's working copy), the way
+        // the language switcher activates Arabic in production.
+        session(['locale' => 'ar']);
 
         $response = $this->postAjax('r/attendance/settings', ['threshold' => 241]);
 

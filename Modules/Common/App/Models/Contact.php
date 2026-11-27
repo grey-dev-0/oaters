@@ -134,7 +134,7 @@ class Contact extends Model
     {
         return $query->with([
             'roles:'.implode(',', $roleColumns),
-            'roles.translations' => fn ($locales) => $locales->whereLocale(app()->getLocale()),
+            'roles.translations' => fn ($locales) => $locales->whereIn('locale', [app()->getLocale(), static::fallbackLocale()]),
         ]);
     }
 
@@ -160,7 +160,8 @@ class Contact extends Model
      */
     public function scopeWithAllInfo($query)
     {
-        $localeFilter = fn ($locales) => $locales->whereLocale(app()->getLocale());
+        $locales = [app()->getLocale(), static::fallbackLocale()];
+        $localeFilter = fn ($translations) => $translations->whereIn('locale', $locales);
 
         return $query->with(['phones', 'emails', 'addresses.city:id,country_id', 'addresses.city.translations' => $localeFilter,
             'addresses.city.country:id', 'addresses.city.country.translations' => $localeFilter]);
@@ -174,10 +175,12 @@ class Contact extends Model
      */
     public function scopeWithRecruitmentDetails($query)
     {
+        $locales = [app()->getLocale(), static::fallbackLocale()];
+
         return $query->with([
             'applicant:id,country_id,degree_id,degree_date,tenure,recruited_at', 'applicant.nationality:id',
-            'applicant.nationality.translations' => fn ($locales) => $locales->whereLocale(app()->getLocale()),
-            'applicant.degree.translations' => fn ($locales) => $locales->whereLocale(app()->getLocale()),
+            'applicant.nationality.translations' => fn ($translations) => $translations->whereIn('locale', $locales),
+            'applicant.degree.translations' => fn ($translations) => $translations->whereIn('locale', $locales),
             'applicant.documents',
         ]);
     }
@@ -201,11 +204,20 @@ class Contact extends Model
      */
     public function scopeWithDepartments($query)
     {
-        $locale = app()->getLocale();
+        $locales = [app()->getLocale(), static::fallbackLocale()];
 
         return $query->with([
-            'departments.translations' => fn ($locales) => $locales->whereLocale($locale),
-            'managed_departments.translations' => fn ($locales) => $locales->whereLocale($locale),
+            'departments.translations' => fn ($translations) => $translations->whereIn('locale', $locales),
+            'managed_departments.translations' => fn ($translations) => $translations->whereIn('locale', $locales),
         ]);
+    }
+
+    /**
+     * The locale whose values are shown when a record has no translation
+     * for the active one (spec 003 FR-003).
+     */
+    public static function fallbackLocale(): string
+    {
+        return config('translatable.fallback_locale') ?: config('app.fallback_locale');
     }
 }

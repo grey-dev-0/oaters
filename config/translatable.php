@@ -12,7 +12,7 @@ return [
     */
     'locales' => [
         'en',
-        'ar'
+        'ar',
     ],
 
     /*
@@ -51,8 +51,11 @@ return [
     | instance, this value will be overridden by the property
     | $useTranslationFallback when defined
     |
+    | Records missing a translation for the active locale fall back to the
+    | English value (spec 003 FR-003) instead of rendering empty cells.
+    |
     */
-    'use_fallback' => false,
+    'use_fallback' => true,
 
     /*
     |--------------------------------------------------------------------------

@@ -102,4 +102,30 @@ class AccountManager
     {
         return Contact::withTrashed()->find($contactId)?->user?->username;
     }
+
+    /**
+     * Gets the interface language stored on the account linked to the given
+     * contact. Defensively resolves to English for unknown contacts or
+     * accounts so the session-seed path never throws.
+     */
+    public static function locale(int $contactId): string
+    {
+        $locale = Contact::withTrashed()->find($contactId)?->user?->locale;
+
+        return in_array($locale, ['en', 'ar'], true) ? $locale : 'en';
+    }
+
+    /**
+     * Stores the interface language on the account linked to the given
+     * contact. Values other than the supported languages are ignored; the
+     * switch endpoint validates before calling.
+     */
+    public static function setLocale(int $contactId, string $locale): void
+    {
+        if (! in_array($locale, ['en', 'ar'], true)) {
+            return;
+        }
+
+        Contact::withTrashed()->find($contactId)?->user?->fill(['locale' => $locale])->save();
+    }
 }

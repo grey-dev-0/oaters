@@ -128,7 +128,9 @@ class PunctualityColumnTest extends AttendanceTestCase
 
     public function test_punctuality_values_localize_to_arabic(): void
     {
-        app()->setLocale('ar');
+        // An Arabic session (the locale middleware's working copy), the way
+        // the language switcher activates Arabic in production.
+        session(['locale' => 'ar']);
 
         $shift = $this->makeShift();
         $late = $this->makePunch('in', 12, $shift);
